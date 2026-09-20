@@ -56,7 +56,7 @@ looks equally remote. That is especially visible because Story Follow already
 frames `previous + current + next`: the camera deliberately reserves room for
 the next stop, while its presentation state still looks like any other pending
 node
-([Story Follow contract](../archify/test/story-follow-camera.test.mjs)).
+([Story Follow contract](../test/story-follow-camera.test.mjs)).
 
 The current 11 Proof Lab artifacts contain 33 authored chapters, 150 resolved
 story stops, and 117 non-final transitions. Re-reading their current compiled

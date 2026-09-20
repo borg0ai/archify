@@ -58,9 +58,9 @@
 #### #14 与 PR #28：CJK 宽度
 
 - **事实**：[#14](https://github.com/tt-a1i/archify/issues/14) 的措辞是 “may be inaccurate” / “likely contributed”；报告者也承认部分 overlap 可能来自坐标放置。它是值得修的 P2，但当前证据没有证明它是 #6 / #22 / #24 的共同根因。
-- **事实**：main 的 `FULLWIDTH_RE` 用一个宽区间覆盖 U+2E80–U+A4CF，并已有 ASCII、Han、混排、补充平面汉字和 emoji 测试。见 [`utils.mjs`](https://github.com/tt-a1i/archify/blob/6d5204d23dfa2cbf3dfff423beeb32250a3dc727/archify/renderers/shared/utils.mjs#L145-L153) 与 [`geometry.test.mjs`](https://github.com/tt-a1i/archify/blob/6d5204d23dfa2cbf3dfff423beeb32250a3dc727/archify/test/geometry.test.mjs#L400-L408)。
+- **事实**：main 的 `FULLWIDTH_RE` 用一个宽区间覆盖 U+2E80–U+A4CF，并已有 ASCII、Han、混排、补充平面汉字和 emoji 测试。见 [`utils.mjs`](https://github.com/tt-a1i/archify/blob/6d5204d23dfa2cbf3dfff423beeb32250a3dc727/archify/renderers/shared/utils.mjs#L145-L153) 与 [`geometry.test.mjs`](https://github.com/tt-a1i/archify/blob/6d5204d23dfa2cbf3dfff423beeb32250a3dc727/test/geometry.test.mjs#L400-L408)。
 - **事实**：open 的 [PR #28](https://github.com/tt-a1i/archify/pull/28) 把该宽区间拆成显式 Unicode ranges，并新增 Han、CJK punctuation、fullwidth、Hangul 与混排单测；head `22eb5c8` 当时没有任何 GitHub check run。
-- **事实**：PR #28 的新 ranges 不等价于 main：它漏掉 main 会按双宽处理的 Hiragana `あ` (U+3042)、Katakana `ア` (U+30A2)、Hangul Compatibility Jamo `ㄱ` (U+3131) 和 Katakana Phonetic Extension `ㇰ` (U+31F0)。因此 “all CJK blocks” 的 PR 描述并不成立。改动见 [`utils.mjs@22eb5c8`](https://github.com/tt-a1i/archify/blob/22eb5c84e917c677c17e1d3c22bee63a811225ce/archify/renderers/shared/utils.mjs#L145-L155)，新增测试见 [`geometry.test.mjs@22eb5c8`](https://github.com/tt-a1i/archify/blob/22eb5c84e917c677c17e1d3c22bee63a811225ce/archify/test/geometry.test.mjs#L400-L418)。
+- **事实**：PR #28 的新 ranges 不等价于 main：它漏掉 main 会按双宽处理的 Hiragana `あ` (U+3042)、Katakana `ア` (U+30A2)、Hangul Compatibility Jamo `ㄱ` (U+3131) 和 Katakana Phonetic Extension `ㇰ` (U+31F0)。因此 “all CJK blocks” 的 PR 描述并不成立。改动见 [`utils.mjs@22eb5c8`](https://github.com/tt-a1i/archify/blob/22eb5c84e917c677c17e1d3c22bee63a811225ce/archify/renderers/shared/utils.mjs#L145-L155)，新增测试见 [`geometry.test.mjs@22eb5c8`](https://github.com/tt-a1i/archify/blob/22eb5c84e917c677c17e1d3c22bee63a811225ce/test/geometry.test.mjs#L400-L418)。
 - **建议**：PR #28 不要原样并入本切片。先补 Kana、Bopomofo / compatibility Jamo 等回归矩阵，并用真实浏览器字体栈的 measured-vs-estimated fixture 证明问题；它应作为独立、可回滚的小修复。
 
 #### #22：多轮打磨消耗 token

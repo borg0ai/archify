@@ -97,7 +97,7 @@ Navigator 只读当前 document 内唯一的 `#archify-compare-receipt`，并要
 
 直接复用当前 `changeRows(receipt)` 的 codepoint-stable 顺序；不要创建“更聪明”的 risk、severity 或 topology-first 排序。总数必须等于三类 changes 的合计，并与 details summary 一致。
 
-格式化、object-key、entity-order、`wraps` / `sources` set-like reordering 已经不改变 Delta artifact；Navigator 不得破坏这一保证。([current deterministic tests](https://github.com/tt-a1i/archify/blob/4aeb07b379f09a8fc026df33e2402ad50ef9821e/archify/test/architecture-delta.test.mjs#L67-L75), [artifact stability tests](https://github.com/tt-a1i/archify/blob/4aeb07b379f09a8fc026df33e2402ad50ef9821e/archify/test/architecture-delta.test.mjs#L130-L177))
+格式化、object-key、entity-order、`wraps` / `sources` set-like reordering 已经不改变 Delta artifact；Navigator 不得破坏这一保证。([current deterministic tests](https://github.com/tt-a1i/archify/blob/4aeb07b379f09a8fc026df33e2402ad50ef9821e/test/architecture-delta.test.mjs#L67-L75), [artifact stability tests](https://github.com/tt-a1i/archify/blob/4aeb07b379f09a8fc026df33e2402ad50ef9821e/test/architecture-delta.test.mjs#L130-L177))
 
 ### 4. UX
 

@@ -163,7 +163,7 @@ distinct owner such as `Archify.motionGovernor` and keep explicit motion export
 separate from live-viewer preference.
 
 See [the current recording implementation](../archify/assets/template.html#L3920-L4025)
-and [animation contract tests](../archify/test/animation.test.mjs).
+and [animation contract tests](../test/animation.test.mjs).
 
 ## Primary-source findings
 

@@ -105,7 +105,7 @@ the adapted product lesson.
 - a link to the full Presentation artifact; and
 - bilingual labels plus arrow-key, Home, and End tab navigation.
 
-[`archify/test/landing.test.mjs`](../archify/test/landing.test.mjs) verifies that
+[`test/landing.test.mjs`](../test/landing.test.mjs) verifies that
 the three choices resolve to real Gallery manifest entries, retain their
 expected presets, node/edge counts, named views, green checks, files, and
 keyboard contract. The proof itself is not speculative marketing content.

@@ -55,15 +55,15 @@ No secondary article is used as evidence for a product or API claim. External UR
 
 ### Semantic Radar already covers overview and minimap navigation
 
-The shared template contains a viewer-only Semantic Radar at [`archify/assets/template.html`](../archify/assets/template.html). It derives simplified rectangles from stable semantic node bounds rather than cloning the canonical SVG. It tracks the logical viewport through desktop pan/zoom and mobile contained horizontal scroll. It can focus a stable node, recenter the main diagram, and expose keyboard panning. The cross-renderer contract is covered by [`archify/test/semantic-radar.test.mjs`](../archify/test/semantic-radar.test.mjs). React Flow describes its MiniMap as an SVG overview of every node plus the current viewport, with optional click, pan, zoom, semantic color, and an accessible name ([official MiniMap reference](https://reactflow.dev/api-reference/components/minimap)). That external pattern is already substantially adapted in Archify. Adding a second overview would duplicate orientation state and increase panel competition without creating a new reader answer.
+The shared template contains a viewer-only Semantic Radar at [`archify/assets/template.html`](../archify/assets/template.html). It derives simplified rectangles from stable semantic node bounds rather than cloning the canonical SVG. It tracks the logical viewport through desktop pan/zoom and mobile contained horizontal scroll. It can focus a stable node, recenter the main diagram, and expose keyboard panning. The cross-renderer contract is covered by [`test/semantic-radar.test.mjs`](../test/semantic-radar.test.mjs). React Flow describes its MiniMap as an SVG overview of every node plus the current viewport, with optional click, pan, zoom, semantic color, and an accessible name ([official MiniMap reference](https://reactflow.dev/api-reference/components/minimap)). That external pattern is already substantially adapted in Archify. Adding a second overview would duplicate orientation state and increase panel competition without creating a new reader answer.
 
 ### Semantic zoom already covers level of detail
 
-The shared viewer has deterministic MAP, READ, and FULL thresholds. Renderers identify context and fine detail explicitly. Semantic intent can reveal exact matching detail even when the rest of the map stays quiet. Print and canonical export force full information. The cross-renderer contract is covered by [`archify/test/semantic-zoom.test.mjs`](../archify/test/semantic-zoom.test.mjs). A second zoom policy, density heuristic, or fisheye lens would compete with the existing detail state and risk moving or distorting deliberate geometry.
+The shared viewer has deterministic MAP, READ, and FULL thresholds. Renderers identify context and fine detail explicitly. Semantic intent can reveal exact matching detail even when the rest of the map stays quiet. Print and canonical export force full information. The cross-renderer contract is covered by [`test/semantic-zoom.test.mjs`](../test/semantic-zoom.test.mjs). A second zoom policy, density heuristic, or fisheye lens would compete with the existing detail state and risk moving or distorting deliberate geometry.
 
 ### Finder already covers node search
 
-Node Finder indexes node ID, label, semantic type, sublabel, context, tag, and visible node text. It also becomes a reachability-aware Route Probe endpoint picker. The current contract lives in [`archify/test/finder.test.mjs`](../archify/test/finder.test.mjs). Relationship-aware search remains a plausible later adaptation, especially now that Direct Relationship Pin exists, but another search surface is not the next highest-value interaction.
+Node Finder indexes node ID, label, semantic type, sublabel, context, tag, and visible node text. It also becomes a reachability-aware Route Probe endpoint picker. The current contract lives in [`test/finder.test.mjs`](../test/finder.test.mjs). Relationship-aware search remains a plausible later adaptation, especially now that Direct Relationship Pin exists, but another search surface is not the next highest-value interaction.
 
 ### Route Probe already contains the data needed for a journey
 
@@ -79,7 +79,7 @@ Route Probe reads exact compiled `data-edge-from` and `data-edge-to` semantics. 
 - a camera fit over all result nodes;
 - a stable `#route=<source>~<target>` link.
 
-Its current node chips are non-interactive `span` elements. That is the concrete unused affordance Round 35 should activate. The existing contract is covered by [`archify/test/route-probe.test.mjs`](../archify/test/route-probe.test.mjs).
+Its current node chips are non-interactive `span` elements. That is the concrete unused affordance Round 35 should activate. The existing contract is covered by [`test/route-probe.test.mjs`](../test/route-probe.test.mjs).
 
 ### Story Beats do not make Route Journey redundant
 

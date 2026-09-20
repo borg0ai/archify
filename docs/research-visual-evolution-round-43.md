@@ -63,9 +63,9 @@ that must reconstruct author intent from markup.
 
 ### The existing test suite proves the asymmetry
 
-`archify/test/layout-rules.test.mjs` has a focused negative fixture for a
+`test/layout-rules.test.mjs` has a focused negative fixture for a
 workflow edge crossing a non-endpoint node, and
-`archify/test/geometry.test.mjs` directly tests the segment/rectangle
+`test/geometry.test.mjs` directly tests the segment/rectangle
 primitive. There is no equivalent negative fixture for architecture,
 dataflow, or lifecycle, and no sequence-specific exemption fixture.
 

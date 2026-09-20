@@ -75,7 +75,7 @@ Semantic Radar derives a simplified map from stable semantic nodes, represents
 the viewport, supports node activation and panning, and remains outside the
 canonical SVG. It already covers the core overview/minimap pattern
 ([Semantic Radar implementation](../archify/assets/template.html),
-[Semantic Radar tests](../archify/test/semantic-radar.test.mjs)).
+[Semantic Radar tests](../test/semantic-radar.test.mjs)).
 
 The default SVG `viewBox` plus `width: 100%` already provides a complete cold-open
 overview. The camera's reset state is explicitly `{ scale: 1, x: 0, y: 0,
@@ -106,7 +106,7 @@ distinguishes exact forward, exact reverse, and grouped/no-direct-edge steps,
 and exposes each beat as a native control. Shareable Story Moment restores one
 exact `view + beat` semantic state. The missing operation is framing that exact
 state in the SVG viewport
-([Story Beat tests](../archify/test/story-beat-navigator.test.mjs),
+([Story Beat tests](../test/story-beat-navigator.test.mjs),
 [shareable moment research](research-visual-evolution-round-33.md)).
 
 ### The camera and cancellation substrate already exists
@@ -117,7 +117,7 @@ return a transaction receipt. Manual zoom, pan, mobile scroll, replacement, and
 other semantic owners can interrupt it. Route Journey already requests a
 bounded camera frame for an ordered path position
 ([camera implementation](../archify/assets/template.html),
-[Route Journey tests](../archify/test/route-journey.test.mjs)).
+[Route Journey tests](../test/route-journey.test.mjs)).
 
 The new slice therefore needs a new **request policy**, not a new camera.
 

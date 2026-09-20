@@ -222,9 +222,9 @@ All notable changes are documented here. Format loosely follows [Keep a Changelo
 - **Architecture renderer.** The default, highest-traffic mode now has a constrained renderer (`renderers/architecture/render-architecture.mjs`) and JSON Schema (`schemas/architecture.schema.json`), bringing it to validation parity with the four typed modes — without auto-layout. Claude still picks all coordinates (`pos`/`size`); the renderer handles the mechanical work: the two-rect `c-mask` pattern, arrows-before-boxes z-order, an auto-built legend, and an auto-fitted `viewBox`.
 - **Boundaries from `wraps`.** A `region` or `security-group` boundary lists the component ids it encloses; the renderer computes the box with correct 30/50 padding automatically, eliminating the hand-arithmetic that caused the v2.2.1 padding bug.
 - **Architecture example.** Added `archify/examples/web-app.architecture.json` rendered to `examples/web-app-rendered.html`, wired into the golden suite (5th entry).
-- **Geometry unit tests.** `archify/test/geometry.test.mjs` directly tests the pure helpers every renderer depends on (`rectsOverlap`, `anchor`, `roundedPath`, `labelPoint`, `chosenSide`, `textUnits`, …) — previously covered only transitively by golden byte-compares.
-- **Layout-rule coverage matrix.** `archify/test/layout-rules.test.mjs` drives one minimal-violation case per high-value layout rule across all five modes and asserts the error message carries its numeric threshold and remediation hint (the LLM-facing DX contract).
-- **Degraded-mode fuzz net.** `archify/test/degraded.test.mjs` asserts that type-wrong-but-JSON-legal input always fails friendly (non-zero exit, no `TypeError`, no `NaN`/`undefined` written) and that valid order-shuffles always render.
+- **Geometry unit tests.** `test/geometry.test.mjs` directly tests the pure helpers every renderer depends on (`rectsOverlap`, `anchor`, `roundedPath`, `labelPoint`, `chosenSide`, `textUnits`, …) — previously covered only transitively by golden byte-compares.
+- **Layout-rule coverage matrix.** `test/layout-rules.test.mjs` drives one minimal-violation case per high-value layout rule across all five modes and asserts the error message carries its numeric threshold and remediation hint (the LLM-facing DX contract).
+- **Degraded-mode fuzz net.** `test/degraded.test.mjs` asserts that type-wrong-but-JSON-legal input always fails friendly (non-zero exit, no `TypeError`, no `NaN`/`undefined` written) and that valid order-shuffles always render.
 
 ### Changed
 - `npm test` now runs the golden suite plus `node --test test/*.test.mjs` (geometry, layout-rules, degraded). The `architecture` schema is registered in `validator.mjs` and covered by `render:examples`.
@@ -254,8 +254,8 @@ All notable changes are documented here. Format loosely follows [Keep a Changelo
 - **Mermaid as an input dialect.** New `SKILL.md` section maps `flowchart` → workflow, `sequenceDiagram` → sequence, and `stateDiagram` → lifecycle so Claude can accept pasted Mermaid and lay out from scratch (prompt engineering, no parser) — closing roadmap item P2.
 - **Label collision detection.** New validation checks flag label-vs-node and label-vs-label collisions, plus node labels overflowing their boxes.
 - **CJK-aware text width estimation.** Full-width characters count as 2 units, and the template plus exported-SVG font stacks gained PingFang SC / Microsoft YaHei / Noto Sans CJK SC fallbacks.
-- **Golden test suite.** `archify/test/golden.mjs` byte-compares the four rendered examples, runs 6 negative validation cases (schema + layout), and checks `web-app.html` template freshness and version sync — wired to `npm test`.
-- **Example re-render script.** `archify/test/render-examples.mjs` re-renders every example in one shot via `npm run render:examples`.
+- **Golden test suite.** `test/golden.mjs` byte-compares the four rendered examples, runs 6 negative validation cases (schema + layout), and checks `web-app.html` template freshness and version sync — wired to `npm test`.
+- **Example re-render script.** `test/render-examples.mjs` re-renders every example in one shot via `npm run render:examples`.
 - **CI workflow.** `.github/workflows/ci.yml` runs the test suite on a Node 20/22 matrix and verifies `archify.zip` freshness by rebuilding and diffing.
 - **Release workflow.** `.github/workflows/release.yml` builds the zip on `v*` tags, verifies the tag matches `package.json`, and attaches the artifact to the GitHub Release.
 - **Zip build script.** `scripts/build-zip.sh` builds `archify.zip` from `archify/` (including `package.json`, the lockfile, and the newly bundled `archify/LICENSE`; excluding `node_modules`). `package.json` declares `engines.node >= 18`.

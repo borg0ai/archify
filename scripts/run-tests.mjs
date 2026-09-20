@@ -7,11 +7,11 @@ import { fileURLToPath } from 'node:url';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const skillRoot = path.join(repoRoot, 'archify');
-const testRoot = path.join(skillRoot, 'test');
+const testRoot = path.join(repoRoot, 'test');
 const testFiles = fs.readdirSync(testRoot)
   .filter((entry) => entry.endsWith('.test.mjs'))
   .sort()
-  .map((entry) => path.join('test', entry));
+  .map((entry) => path.join(testRoot, entry));
 
 const [major, minor] = process.versions.node.split('.').map(Number);
 const supportsConcurrencyFlag = major > 18 || (major === 18 && minor >= 19);
