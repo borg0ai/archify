@@ -9,9 +9,9 @@ import { fileURLToPath } from 'node:url';
 import { extractSvgs, parseXml } from './helpers/xml.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-cli-'));
-const cli = path.join(skillRoot, 'bin/archify.mjs');
+const cli = path.join(skillRoot, 'scripts/archify.mjs');
 
 function run(args, options = {}) {
   return spawnSync(process.execPath, [cli, ...args], {
@@ -103,11 +103,11 @@ test('cli: doctor reports a complete installation is ready', () => {
 
 test('cli: doctor identifies an incomplete installation', () => {
   const incompleteRoot = path.join(tmp, 'incomplete-skill');
-  const incompleteBin = path.join(incompleteRoot, 'bin');
-  fs.mkdirSync(incompleteBin, { recursive: true });
-  fs.copyFileSync(cli, path.join(incompleteBin, 'archify.mjs'));
+  const incompleteScripts = path.join(incompleteRoot, 'scripts');
+  fs.mkdirSync(incompleteScripts, { recursive: true });
+  fs.copyFileSync(cli, path.join(incompleteScripts, 'archify.mjs'));
 
-  const result = spawnSync(process.execPath, [path.join(incompleteBin, 'archify.mjs'), 'doctor'], {
+  const result = spawnSync(process.execPath, [path.join(incompleteScripts, 'archify.mjs'), 'doctor'], {
     cwd: incompleteRoot,
     encoding: 'utf8',
   });
@@ -124,7 +124,7 @@ test('cli: doctor rejects a corrupt standalone validator', () => {
   copyInstalledSkill(corruptRoot);
   fs.writeFileSync(path.join(corruptRoot, 'renderers/shared/generated-validators.mjs'), 'export const workflow = ;\n');
 
-  const result = spawnSync(process.execPath, [path.join(corruptRoot, 'bin/archify.mjs'), 'doctor'], {
+  const result = spawnSync(process.execPath, [path.join(corruptRoot, 'scripts/archify.mjs'), 'doctor'], {
     cwd: corruptRoot,
     encoding: 'utf8',
   });
@@ -138,7 +138,7 @@ test('cli: examples renders from an installed skill', () => {
   const installedRoot = path.join(tmp, 'installed-skill');
   copyInstalledSkill(installedRoot);
 
-  const result = spawnSync(process.execPath, [path.join(installedRoot, 'bin/archify.mjs'), 'examples'], {
+  const result = spawnSync(process.execPath, [path.join(installedRoot, 'scripts/archify.mjs'), 'examples'], {
     cwd: installedRoot,
     encoding: 'utf8',
   });
@@ -202,7 +202,7 @@ test('cli: guide detects Chinese and explains the recommendation boundary', () =
 test('cli: guide works from an installed skill without node_modules', () => {
   const installedRoot = path.join(tmp, 'installed-guide-skill');
   copyInstalledSkill(installedRoot);
-  const installedCli = path.join(installedRoot, 'bin/archify.mjs');
+  const installedCli = path.join(installedRoot, 'scripts/archify.mjs');
 
   const result = spawnSync(process.execPath, [installedCli, 'guide', 'incident-runbook', '--json'], {
     cwd: installedRoot,
@@ -389,8 +389,8 @@ test('cli: deliver failure never invokes the optional opener', {
 test('cli: a missing optional opener module preserves verified delivery with a fallback receipt', () => {
   const installedRoot = path.join(tmp, 'missing-open-module-skill');
   copyInstalledSkill(installedRoot);
-  const installedCli = path.join(installedRoot, 'bin/archify.mjs');
-  fs.rmSync(path.join(installedRoot, 'bin/open-artifact.mjs'));
+  const installedCli = path.join(installedRoot, 'scripts/archify.mjs');
+  fs.rmSync(path.join(installedRoot, 'scripts/open-artifact.mjs'));
   const input = path.join(installedRoot, 'examples/agent-tool-call.workflow.json');
   const out = path.join(tmp, 'missing-open-module-delivery.html');
 
@@ -430,7 +430,7 @@ test('cli: deliver preserves the renderer default output contract', () => {
 test('cli: deliver works from an installed skill without node_modules', () => {
   const installedRoot = path.join(tmp, 'installed-deliver-skill');
   copyInstalledSkill(installedRoot);
-  const installedCli = path.join(installedRoot, 'bin/archify.mjs');
+  const installedCli = path.join(installedRoot, 'scripts/archify.mjs');
   const cases = [
     ['architecture-boundaries', 'architecture', 'production-deployment.architecture.json'],
     ['architecture-issue-110', 'architecture', 'brand-aware-delivery.architecture.json'],
@@ -477,7 +477,7 @@ test('cli: deliver XML guard parses markup instead of scanning attribute-like te
 test('cli: preview runs from an installed skill without node_modules and exits cleanly', { timeout: 30000 }, async () => {
   const installedRoot = path.join(tmp, 'installed-preview-skill');
   copyInstalledSkill(installedRoot);
-  const installedCli = path.join(installedRoot, 'bin/archify.mjs');
+  const installedCli = path.join(installedRoot, 'scripts/archify.mjs');
   const input = path.join(installedRoot, 'examples/web-app.architecture.json');
   const output = path.join(tmp, 'installed-preview.html');
   const child = spawn(process.execPath, [installedCli, 'preview', 'architecture', input, output, '--quality', 'showcase', '--no-open'], {
@@ -521,7 +521,7 @@ test('cli: preview runs from an installed skill without node_modules and exits c
 test('cli: deliver preserves the previous artifact when the final check fails', () => {
   const installedRoot = path.join(tmp, 'broken-deliver-skill');
   copyInstalledSkill(installedRoot);
-  const installedCli = path.join(installedRoot, 'bin/archify.mjs');
+  const installedCli = path.join(installedRoot, 'scripts/archify.mjs');
   const templatePath = path.join(installedRoot, 'assets/template.html');
   const template = fs.readFileSync(templatePath, 'utf8');
   fs.writeFileSync(templatePath, template.replace('</body>', '<svg aria-label="accidental second svg"></svg>\n</body>'));

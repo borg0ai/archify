@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { SCENARIO_RECIPES } from '../archify/recipes/scenarios.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
 const repoRoot = path.resolve(skillRoot, '..');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-gallery-'));
 const generatedRoot = path.join(tmp, 'docs');
@@ -32,7 +32,7 @@ test('generated proof gallery matches its sources, receipts, and checked-in arti
   const manifestPath = path.join(generatedRoot, 'gallery', 'manifest.json');
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   assert.equal(manifest.schemaVersion, 1);
-  assert.equal(manifest.archifyVersion, JSON.parse(fs.readFileSync(path.join(skillRoot, 'package.json'))).version);
+  assert.equal(manifest.archifyVersion, JSON.parse(fs.readFileSync(path.join(repoRoot, 'package.json'), 'utf8')).version);
   assert.equal(manifest.entryCount, 11);
   assert.equal(manifest.checkCount, 99);
   assert.deepEqual(new Set(manifest.entries.map((entry) => entry.type)), new Set([

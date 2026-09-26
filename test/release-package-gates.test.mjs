@@ -36,14 +36,6 @@ function spawnBuildZip(outputPath, options = {}) {
   return spawnSync(script, [outputPath], { cwd, encoding: 'utf8', ...rest });
 }
 
-function workflowStep(workflow, name) {
-  const marker = `      - name: ${name}`;
-  const start = workflow.indexOf(marker);
-  assert.notEqual(start, -1, `workflow is missing the "${name}" step`);
-  const next = workflow.indexOf('\n      - ', start + marker.length);
-  return workflow.slice(start, next === -1 ? workflow.length : next);
-}
-
 function workflowJob(workflow, name) {
   const marker = `  ${name}:`;
   const start = workflow.indexOf(marker);
@@ -52,45 +44,13 @@ function workflowJob(workflow, name) {
   return workflow.slice(start, next === -1 ? workflow.length : start + marker.length + next);
 }
 
-test('release prevents manifest preannouncement and smokes the exact archive before upload', () => {
-  const workflow = fs.readFileSync(path.join(repoRoot, '.github', 'workflows', 'release.yml'), 'utf8');
-  const tagFetch = workflowStep(workflow, 'Fetch exact tag object');
-  const tagGate = workflowStep(workflow, 'Tag must match package.json version');
-  const annotatedTagGate = workflowStep(workflow, 'Stable release tag must be annotated');
-  const publicationOrder = workflowStep(workflow, 'Stable notifier manifest must remain on the previous release');
-  const build = workflowStep(workflow, 'Build skill archive');
-  const smoke = workflowStep(workflow, 'Validate the exact release archive without installing dependencies');
-  const freshness = workflowStep(workflow, 'Committed zip must match the build (same gate as CI)');
-  const upload = workflowStep(workflow, 'Create GitHub Release with the zip attached');
-  const followUp = workflowStep(workflow, 'Record stable notifier publication follow-up');
-
-  assert.ok(workflow.indexOf(tagFetch) < workflow.indexOf(tagGate), 'the real tag object must be fetched before release identity checks');
-  assert.ok(workflow.indexOf(tagGate) < workflow.indexOf(publicationOrder), 'tag/version gate must precede the publication-order gate');
-  assert.ok(workflow.indexOf(tagGate) < workflow.indexOf(annotatedTagGate), 'tag/version gate must precede the annotated-tag gate');
-  assert.ok(workflow.indexOf(annotatedTagGate) < workflow.indexOf(publicationOrder), 'annotated-tag gate must precede the publication-order gate');
-  assert.ok(workflow.indexOf(publicationOrder) < workflow.indexOf(build), 'manifest preannouncement must fail before the release build');
-  assert.ok(workflow.indexOf(build) < workflow.indexOf(smoke), 'release smoke must follow the archive build');
-  assert.ok(workflow.indexOf(smoke) < workflow.indexOf(freshness), 'release smoke must inspect the built archive before comparison');
-  assert.ok(workflow.indexOf(freshness) < workflow.indexOf(upload), 'freshness must pass before release upload');
-  assert.ok(workflow.indexOf(upload) < workflow.indexOf(followUp), 'manifest follow-up must be recorded only after Release creation');
-
-  assert.match(tagFetch, /git fetch --force --no-tags origin/);
-  assert.match(tagFetch, /refs\/tags\/\$\{GITHUB_REF_NAME\}:refs\/tags\/\$\{GITHUB_REF_NAME\}/);
-  assert.match(tagGate, /require\('\.\/archify\/package\.json'\)\.version/);
-  assert.match(tagGate, /GITHUB_REF_NAME#v/);
-  assert.match(annotatedTagGate, /steps\.release-kind\.outputs\.prerelease == 'false'/);
-  assert.match(annotatedTagGate, /git cat-file -t "refs\/tags\/\$\{GITHUB_REF_NAME\}"/);
-  assert.match(annotatedTagGate, /stable releases require an annotated tag/);
-  assert.match(publicationOrder, /compareSemver\(published\.version, releasing\) >= 0/);
-  assert.match(publicationOrder, /publish the manifest in a follow-up commit/);
-  assert.match(build, /run: scripts\/build-zip\.sh \/tmp\/archify-built\.zip/);
-  assert.match(smoke, /unzip -q \/tmp\/archify-built\.zip -d "\$package_root"/);
-  assert.match(smoke, /node scripts\/package-smoke\.mjs "\$package_root\/archify"/);
-  assert.doesNotMatch(smoke, /\bnpm\s+(?:ci|install)\b/);
-  assert.match(freshness, /cmp -s \/tmp\/archify-built\.zip archify\.zip/);
-  assert.match(upload, /uses: softprops\/action-gh-release@v3\s/);
-  assert.match(upload, /files: archify\.zip/);
-  assert.match(followUp, /docs\/skill-updates\/archify\/stable\.json/);
+test('repository does not publish a GitHub Release or commit a skill archive', () => {
+  assert.equal(fs.existsSync(path.join(repoRoot, '.github', 'workflows', 'release.yml')), false);
+  assert.equal(fs.existsSync(path.join(repoRoot, 'archify.zip')), false);
+  const workflow = fs.readFileSync(path.join(repoRoot, '.github', 'workflows', 'ci.yml'), 'utf8');
+  assert.doesNotMatch(workflow, /action-gh-release/);
+  assert.doesNotMatch(workflow, /zip-freshness/);
+  assert.doesNotMatch(workflow, /softprops\/action-gh-release/);
 });
 
 test('an exact tag fetch restores an annotated object after a SHA-only checkout', () => {
@@ -170,7 +130,7 @@ test('GitHub Pages deploys docs only after every repository gate succeeds', () =
   const workflow = fs.readFileSync(path.join(repoRoot, '.github', 'workflows', 'ci.yml'), 'utf8');
   const job = workflowJob(workflow, 'deploy-pages');
   assert.match(job, /if: github\.event_name == 'push' && github\.ref == 'refs\/heads\/main'/);
-  assert.match(job, /needs: \[test, webm-artifact, zip-freshness, published-update-manifest, package-smoke\]/);
+  assert.match(job, /needs: \[test, webm-artifact, published-update-manifest, package-smoke\]/);
   assert.match(job, /pages: write/);
   assert.match(job, /id-token: write/);
   assert.match(job, /repos\/\$\{GITHUB_REPOSITORY\}\/git\/ref\/heads\/main/);
@@ -184,29 +144,11 @@ test('GitHub Pages deploys docs only after every repository gate succeeds', () =
   assert.match(job, /actions\/deploy-pages@v5/);
 });
 
-test('release tags with a SemVer prerelease are marked prerelease and never become latest', () => {
-  const workflow = fs.readFileSync(path.join(repoRoot, '.github', 'workflows', 'release.yml'), 'utf8');
-  const classifier = workflowStep(workflow, 'Classify stable and prerelease tags');
-  const upload = workflowStep(workflow, 'Create GitHub Release with the zip attached');
-
-  assert.ok(workflow.indexOf(classifier) < workflow.indexOf(upload), 'release kind must be known before upload');
-  assert.match(classifier, /version="\$\{GITHUB_REF_NAME#v\}"/);
-  assert.match(classifier, /validateLocalRelease/);
-  assert.match(classifier, /update-contract\.mjs/);
-  assert.match(classifier, /release\.version !== process\.argv\[1\]/);
-  assert.match(classifier, /if \[\[ "\$channel" == "development" \]\]/);
-  assert.match(classifier, /echo "prerelease=true" >> "\$GITHUB_OUTPUT"/);
-  assert.match(classifier, /echo "make_latest=false" >> "\$GITHUB_OUTPUT"/);
-  assert.match(classifier, /echo "prerelease=false" >> "\$GITHUB_OUTPUT"/);
-  assert.match(classifier, /echo "make_latest=true" >> "\$GITHUB_OUTPUT"/);
-  assert.match(upload, /prerelease: \$\{\{ steps\.release-kind\.outputs\.prerelease \}\}/);
-  assert.match(upload, /make_latest: \$\{\{ steps\.release-kind\.outputs\.make_latest \}\}/);
-});
-
 test('package smoke rejects every dependency or repository-only artifact', () => {
   const packageSmoke = path.join(repoRoot, 'scripts', 'package-smoke.mjs');
   const forbidden = [
     { relative: 'node_modules', kind: 'directory' },
+    { relative: 'package.json', kind: 'file' },
     { relative: 'package-lock.json', kind: 'file' },
     { relative: path.join('scripts', 'generate-validators.mjs'), kind: 'file' },
     { relative: 'test', kind: 'directory' },
@@ -217,8 +159,8 @@ test('package smoke rejects every dependency or repository-only artifact', () =>
   for (const { relative, kind } of forbidden) {
     const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-package-gate-'));
     try {
-      fs.mkdirSync(path.join(fixture, 'bin'), { recursive: true });
-      fs.writeFileSync(path.join(fixture, 'bin', 'archify.mjs'), '');
+      fs.mkdirSync(path.join(fixture, 'scripts'), { recursive: true });
+      fs.writeFileSync(path.join(fixture, 'scripts', 'archify.mjs'), '');
       const target = path.join(fixture, relative);
       if (kind === 'directory') fs.mkdirSync(target, { recursive: true });
       else {
@@ -335,16 +277,13 @@ test('package smoke increments an arbitrary-precision SemVer patch without Numbe
   const skillRoot = path.join(scratch, 'archify');
   try {
     stageCleanSkill({ repoRoot, destination: skillRoot });
-    const packagePath = path.join(skillRoot, 'package.json');
     const releasePath = path.join(skillRoot, 'skill-release.json');
-    const packageJson = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
     const release = JSON.parse(fs.readFileSync(releasePath, 'utf8'));
     const version = '2.16.9007199254740993';
-    packageJson.version = version;
     release.version = version;
     release.channel = 'stable';
-    fs.writeFileSync(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`);
     fs.writeFileSync(releasePath, `${JSON.stringify(release, null, 2)}\n`);
+    assert.equal(fs.existsSync(path.join(skillRoot, 'package.json')), false);
 
     const smoke = spawnSync(process.execPath, [path.join(repoRoot, 'scripts/package-smoke.mjs'), skillRoot], {
       cwd: repoRoot,
@@ -370,7 +309,7 @@ test('archive build refuses to silently omit required release files', () => {
   assert.match(stageSource, /required repository input is not tracked by Git/);
 });
 
-canonicalZipTest('package smoke rejects every dependency metadata field in a built package', () => {
+canonicalZipTest('built skill archives omit npm manifests and reject a packaged package.json', () => {
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-built-package-gate-'));
   try {
     const archive = path.join(fixture, 'archify.zip');
@@ -382,29 +321,19 @@ canonicalZipTest('package smoke rejects every dependency metadata field in a bui
     const unzip = spawnSync('unzip', ['-q', archive, '-d', extracted], { encoding: 'utf8' });
     assert.equal(unzip.status, 0, `${unzip.stdout}\n${unzip.stderr}`);
     const builtPackage = path.join(extracted, 'archify');
-    const dependencyFields = {
+    assert.equal(fs.existsSync(path.join(builtPackage, 'package.json')), false);
+    assert.equal(fs.existsSync(path.join(builtPackage, 'package-lock.json')), false);
+    const caseRoot = path.join(fixture, 'with-package-json');
+    fs.cpSync(builtPackage, caseRoot, { recursive: true });
+    fs.writeFileSync(path.join(caseRoot, 'package.json'), `${JSON.stringify({
       dependencies: { runtime: '1.0.0' },
-      devDependencies: { build: '1.0.0' },
-      optionalDependencies: { optional: '1.0.0' },
-      peerDependencies: { peer: '1.0.0' },
-      bundledDependencies: ['bundled'],
-      bundleDependencies: ['bundle-alias'],
-    };
+    }, null, 2)}\n`);
 
-    for (const [field, value] of Object.entries(dependencyFields)) {
-      const caseRoot = path.join(fixture, field);
-      fs.cpSync(builtPackage, caseRoot, { recursive: true });
-      const packagePath = path.join(caseRoot, 'package.json');
-      const packageJson = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
-      packageJson[field] = value;
-      fs.writeFileSync(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`);
-
-      const result = spawnSync(process.execPath, [path.join(repoRoot, 'scripts', 'package-smoke.mjs'), caseRoot], {
-        encoding: 'utf8',
-      });
-      assert.notEqual(result.status, 0, `${field} must fail package smoke`);
-      assert.match(`${result.stdout}\n${result.stderr}`, new RegExp(`dependency metadata: ${field}\\b`));
-    }
+    const result = spawnSync(process.execPath, [path.join(repoRoot, 'scripts', 'package-smoke.mjs'), caseRoot], {
+      encoding: 'utf8',
+    });
+    assert.notEqual(result.status, 0, 'a skill package.json must fail package smoke');
+    assert.match(`${result.stdout}\n${result.stderr}`, /packaged skill must not contain package\.json/);
   } finally {
     fs.rmSync(fixture, { recursive: true, force: true });
   }
@@ -560,10 +489,6 @@ canonicalZipTest('archive build is byte-for-byte reproducible across caller time
       fs.readFileSync(utcArchive).equals(fs.readFileSync(honoluluArchive)),
       'identical tracked inputs must produce identical archive bytes',
     );
-    assert.ok(
-      fs.readFileSync(utcArchive).equals(fs.readFileSync(path.join(repoRoot, 'archify.zip'))),
-      'the canonical archive toolchain must reproduce the committed archive bytes',
-    );
     assert.deepEqual(
       fs.readdirSync(outputRoot).sort(),
       ['honolulu.zip', 'utc.zip'],
@@ -653,23 +578,23 @@ function stagedFixture(files) {
 
 test('archive writer records Git index modes from the manifest, not filesystem bits', () => {
   const { fixture, staged } = stagedFixture({
-    'bin/tool.mjs': { content: '#!/usr/bin/env node\n', mode: 0o644 },
+    'scripts/tool.mjs': { content: '#!/usr/bin/env node\n', mode: 0o644 },
     'docs/notes.txt': { content: 'notes\n', mode: 0o755 },
   });
   try {
     const manifest = path.join(fixture, 'modes.json');
-    fs.writeFileSync(manifest, JSON.stringify({ 'bin/tool.mjs': '100755', 'docs/notes.txt': '100644' }));
+    fs.writeFileSync(manifest, JSON.stringify({ 'scripts/tool.mjs': '100755', 'docs/notes.txt': '100644' }));
 
     const first = path.join(fixture, 'first.zip');
     const build = writeArchive(staged, first, manifest);
     assert.equal(build.status, 0, `${build.stdout}\n${build.stderr}`);
     assert.deepEqual(centralDirectoryModes(first), {
-      'archify/bin/tool.mjs': 0o755,
+      'archify/scripts/tool.mjs': 0o755,
       'archify/docs/notes.txt': 0o644,
     });
 
     // Flip the on-disk bits; the recorded modes must still decide the bytes.
-    fs.chmodSync(path.join(staged, 'bin', 'tool.mjs'), 0o755);
+    fs.chmodSync(path.join(staged, 'scripts', 'tool.mjs'), 0o755);
     fs.chmodSync(path.join(staged, 'docs', 'notes.txt'), 0o644);
     const second = path.join(fixture, 'second.zip');
     const rebuild = writeArchive(staged, second, manifest);
@@ -724,7 +649,7 @@ test('archive build hands the recorded Git index modes from the stager to the wr
 });
 
 test('CI tests the declared Node floor plus every maintained current lane', () => {
-  const packageJson = JSON.parse(fs.readFileSync(path.join(repoRoot, 'archify', 'package.json'), 'utf8'));
+  const packageJson = JSON.parse(fs.readFileSync(path.join(repoRoot, 'package.json'), 'utf8'));
   assert.equal(packageJson.engines?.node, '>=18');
 
   const workflow = fs.readFileSync(path.join(repoRoot, '.github', 'workflows', 'ci.yml'), 'utf8');

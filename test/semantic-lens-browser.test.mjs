@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { findChrome } from '../archify/bin/visual-check.mjs';
+import { findChrome } from '../archify/scripts/visual-check.mjs';
 import { desktopBrowser, desktopPointerCheck } from './helpers/desktop-browser.mjs';
 
 const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');

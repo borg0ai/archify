@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { textUnits } from '../archify/renderers/shared/utils.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
 
 function renderOutcome(doc) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-column-fit-'));

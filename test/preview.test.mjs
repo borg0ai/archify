@@ -9,7 +9,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 
-import { startPreview } from '../archify/bin/preview.mjs';
+import { startPreview } from '../archify/scripts/preview.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const skillRoot = path.resolve(here, '..');

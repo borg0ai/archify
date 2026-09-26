@@ -4,7 +4,7 @@ All notable changes are documented here. Format loosely follows [Keep a Changelo
 
 ## [Unreleased]
 
-> Development identity: `v2.17.0-dev.1`. Not a stable release.
+> Development identity: `v2.17.0-dev.2`. Not a stable release.
 
 ### Fixed
 - **Architecture Delta baseline arrowheads (#433).** Removed and rerouted baseline relationships retain their marker definitions in the composed Delta SVG, preserving their authored direction alongside current relationships.
@@ -191,7 +191,7 @@ All notable changes are documented here. Format loosely follows [Keep a Changelo
 ## [2.9.0] — 2026-07-05
 
 ### Added
-- **Unified CLI entrypoint.** Added `bin/archify.mjs` with `render`, `validate`, `check`, and `examples` commands so renderer-backed workflows have a single product-facing command surface.
+- **Unified CLI entrypoint.** Added `scripts/archify.mjs` with `render`, `validate`, `check`, and `examples` commands so renderer-backed workflows have a single product-facing command surface.
 - **Architecture examples.** Added self-diagram (`examples/archify-repo.*`) and a third-party sample (`examples/maka-architecture.*`) demonstrating clean main-path layout on real repos.
 
 ## [2.8.0] — 2026-07-03

@@ -20,8 +20,10 @@ const DEPENDENCY_FIELDS = [
 const LIFECYCLE_SCRIPTS = ['prepare', 'install', 'postinstall', 'preinstall'];
 
 test('adapter source lives only under integrations/deepseek-harness with no root workspace', () => {
-  assert.equal(fs.existsSync(path.join(repoRoot, 'package.json')), false);
-  assert.equal(fs.existsSync(path.join(repoRoot, 'package-lock.json')), false);
+  const rootPackage = JSON.parse(fs.readFileSync(path.join(repoRoot, 'package.json'), 'utf8'));
+  assert.equal(rootPackage.name, 'archify');
+  assert.equal(rootPackage.private, true);
+  assert.equal(rootPackage.workspaces, undefined);
   assert.equal(fs.existsSync(path.join(repoRoot, 'pnpm-workspace.yaml')), false);
   assert.equal(fs.existsSync(path.join(repoRoot, 'integrations/deepseek-harness/package.json')), true);
 });
@@ -84,13 +86,14 @@ test('distribution acceptance reserves stdout for its machine-readable JSON rece
   assert.equal([...source.matchAll(/process\.stdout\.write/g)].length, 2);
 });
 
-test('distribution receipt separates canonical ZIP bytes from cross-platform content checks', () => {
+test('distribution receipt smokes the staged Skill instead of a committed archive', () => {
   const source = fs.readFileSync(
     path.join(integrationRoot, 'scripts', 'distribution-acceptance.mjs'),
     'utf8',
   );
-  assert.match(source, /canonicalZipBytes/);
-  assert.match(source, /crossPlatformZipCheck:\s*'extracted-content'/);
-  assert.doesNotMatch(source, /zipContainerBytesReproducible/);
-  assert.doesNotMatch(source, /rsync\/zip are not on GitHub Windows runners/);
+  assert.match(source, /stage-clean-skill\.mjs/);
+  assert.match(source, /package-smoke\.mjs/);
+  assert.match(source, /hash-object', 'package\.json'/);
+  assert.doesNotMatch(source, /archify\.zip/);
+  assert.doesNotMatch(source, /canonicalZipBytes/);
 });

@@ -15,7 +15,7 @@ and legend previews, `route-probe.js` for directed paths and Route Journey,
 generated artifact, consumed unchanged by all five renderers and the installed
 Skill. These maintainer sources live outside the packaged `archify/` directory.
 
-From `archify/`, run `npm run generate:viewer` after editing any source.
+From the repository root, run `npm run generate:viewer` after editing any source.
 `npm run check:viewer` verifies freshness without writing; `npm test` includes
 that check. Assembly inserts each fragment verbatim at its fixed marker.
 Reader, Chrome Layout, Camera, Radar, Motion Governor, Finder, Intent Trace, Semantic Lens, Route Probe, Guided Views, Focus and Export

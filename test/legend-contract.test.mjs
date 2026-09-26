@@ -7,8 +7,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
-const cli = path.join(skillRoot, 'bin/archify.mjs');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
+const cli = path.join(skillRoot, 'scripts/archify.mjs');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-legend-contract-'));
 let sequence = 0;
 

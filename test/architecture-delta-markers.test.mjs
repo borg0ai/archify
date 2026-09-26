@@ -61,7 +61,7 @@ function compare(t, base, head) {
   });
   const output = path.join(root, 'delta.html');
   const result = spawnSync(process.execPath, [
-    path.join(skillRoot, 'bin/archify.mjs'), 'compare', 'architecture', ...inputs,
+    path.join(skillRoot, 'scripts/archify.mjs'), 'compare', 'architecture', ...inputs,
     output, '--quality', 'standard', '--json',
   ], { cwd: skillRoot, encoding: 'utf8', timeout: 30000 });
   assert.ifError(result.error);

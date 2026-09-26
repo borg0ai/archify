@@ -17,9 +17,9 @@ Archify 是一套基于 Node.js 的渲染与校验系统，并以 Agent Skill �
 
 ![License](https://img.shields.io/badge/license-MIT-22c55e?style=flat-square)
 ![Agent Skill](https://img.shields.io/badge/Agent-Skill-7C3AED?style=flat-square)
-![开发版本](https://img.shields.io/badge/version-2.17.0--dev.1-0891b2?style=flat-square)
+![开发版本](https://img.shields.io/badge/version-2.17.0--dev.2-0891b2?style=flat-square)
 
-**当前开发版本：** `v2.17.0-dev.1`。详见[版本历史](CHANGELOG.md#unreleased)。
+**当前开发版本：** `v2.17.0-dev.2`。详见[版本历史](CHANGELOG.md#unreleased)。
 
 **[在线项目页](https://tt-a1i.github.io/archify/)** · **[场景选图指南](https://tt-a1i.github.io/archify/guide.html)** · **[Proof Lab](https://tt-a1i.github.io/archify/gallery.html)**
 
@@ -148,15 +148,15 @@ DeepSeek Harness（社区集成、显式启用）：运行 `dsh plugin --profile
 
 做设计或 PR 评审时，Architecture Delta 生成已校验的 Before / Delta / After 和机器回执。精确选择任一作者变更，或播放一次有限 Review；全程只读，不推断影响、风险或合并安全。
 
-`node archify/bin/archify.mjs compare architecture base.json head.json architecture-delta.html --json`
+`node archify/scripts/archify.mjs compare architecture base.json head.json architecture-delta.html --json`
 
 [![Architecture Delta：展示作者明确写出的新增、删除、变化和移动](docs/assets/architecture-delta-proof.jpg)](examples/checkout-platform-delta.html)
 
 不知道选哪一种？打开[交互式场景指南](https://tt-a1i.github.io/archify/guide.html)，或直接询问零依赖 CLI：
 
 ```bash
-node archify/bin/archify.mjs guide "展示带 Redis 缓存未命中的 API 请求"
-node archify/bin/archify.mjs guide "梳理 Kafka Topic、消费者组、重放和死信队列" --json
+node archify/scripts/archify.mjs guide "展示带 Redis 缓存未命中的 API 请求"
+node archify/scripts/archify.mjs guide "梳理 Kafka Topic、消费者组、重放和死信队列" --json
 ```
 
 Workflow 用泳道保持主路径清晰：
@@ -204,12 +204,12 @@ Archify 不是通用绘图编辑器，也不是 Mermaid 主题；它负责把技
 
 ```bash
 cd archify
-node bin/archify.mjs doctor
-node bin/archify.mjs demo /tmp/archify-demo
-node bin/archify.mjs guide "展示 CI/CD 检查、审批、部署和回滚"
-node bin/archify.mjs validate workflow examples/agent-tool-call.workflow.json --quality showcase --json
-node bin/archify.mjs preview workflow examples/agent-tool-call.workflow.json /tmp/workflow.html --quality showcase
-node bin/archify.mjs deliver workflow examples/agent-tool-call.workflow.json /tmp/workflow.html --quality showcase --open --json
+node scripts/archify.mjs doctor
+node scripts/archify.mjs demo /tmp/archify-demo
+node scripts/archify.mjs guide "展示 CI/CD 检查、审批、部署和回滚"
+node scripts/archify.mjs validate workflow examples/agent-tool-call.workflow.json --quality showcase --json
+node scripts/archify.mjs preview workflow examples/agent-tool-call.workflow.json /tmp/workflow.html --quality showcase
+node scripts/archify.mjs deliver workflow examples/agent-tool-call.workflow.json /tmp/workflow.html --quality showcase --open --json
 ```
 
 `preview` 是显式启用的桌面创作模式，不是默认后台服务：它只在随机端口监听 `127.0.0.1`，只观察指定 JSON，失败时保留上一份验证输出，并通过 Ctrl-C 停止。测试或准备手动打开打印出的本地 URL 时可加 `--no-open`。生成的 HTML 不会携带 Preview Runtime。

@@ -8,7 +8,7 @@ import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
 const repoRoot = path.resolve(skillRoot, '..');
 
 test('guide page: checked-in HTML is reproducible from the shared recipe source', () => {
@@ -28,7 +28,7 @@ test('guide page: checked-in HTML is reproducible from the shared recipe source'
 test('guide page: ships bilingual recipes and syntactically valid interaction code', () => {
   const html = fs.readFileSync(path.join(repoRoot, 'docs/guide.html'), 'utf8');
   const packageVersion = JSON.parse(
-    fs.readFileSync(path.join(skillRoot, 'package.json'), 'utf8'),
+    fs.readFileSync(path.join(repoRoot, 'package.json'), 'utf8'),
   ).version;
   const releaseIdentity = packageVersion.includes('-') ? 'development' : 'stable';
   const staticVersionLabel = html.match(

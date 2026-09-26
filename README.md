@@ -21,9 +21,9 @@ Archify is a Node.js rendering and validation system for Cursor, Claude Code, Co
 
 ![License](https://img.shields.io/badge/license-MIT-22c55e?style=flat-square)
 ![Agent Skill](https://img.shields.io/badge/Agent-Skill-7C3AED?style=flat-square)
-![Development Version](https://img.shields.io/badge/version-2.17.0--dev.1-0891b2?style=flat-square)
+![Development Version](https://img.shields.io/badge/version-2.17.0--dev.2-0891b2?style=flat-square)
 
-**Current development version:** `v2.17.0-dev.1`. See [Changelog](CHANGELOG.md#unreleased).
+**Current development version:** `v2.17.0-dev.2`. See [Changelog](CHANGELOG.md#unreleased).
 
 **[Project page](https://tt-a1i.github.io/archify/)** · **[Scenario guide](https://tt-a1i.github.io/archify/guide.html)** · **[Proof Lab](https://tt-a1i.github.io/archify/gallery.html)**
 
@@ -152,15 +152,15 @@ Architecture's optional `deployment-ownership` profile fails closed when authore
 
 For design or PR review, Architecture Delta compares validated Before / Delta / After snapshots with a machine receipt. Select an authored change or play one finite, viewer-only Review; it infers no impact, risk, or merge safety.
 
-`node archify/bin/archify.mjs compare architecture base.json head.json architecture-delta.html --json`
+`node archify/scripts/archify.mjs compare architecture base.json head.json architecture-delta.html --json`
 
 [![Architecture Delta showing added, removed, changed, and moved authored facts](docs/assets/architecture-delta-proof.jpg)](examples/checkout-platform-delta.html)
 
 Not sure which one fits? Use the [interactive scenario guide](https://tt-a1i.github.io/archify/guide.html), or ask the zero-dependency CLI:
 
 ```bash
-node archify/bin/archify.mjs guide "Show an API request with Redis cache miss"
-node archify/bin/archify.mjs guide "Map Kafka topics, consumer groups, replay, and DLQ" --json
+node archify/scripts/archify.mjs guide "Show an API request with Redis cache miss"
+node archify/scripts/archify.mjs guide "Map Kafka topics, consumer groups, replay, and DLQ" --json
 ```
 
 Workflow keeps the happy path clear across lanes:
@@ -208,12 +208,12 @@ Useful repository commands:
 
 ```bash
 cd archify
-node bin/archify.mjs doctor
-node bin/archify.mjs demo /tmp/archify-demo
-node bin/archify.mjs guide "Show CI/CD checks, approval, deploy, and rollback"
-node bin/archify.mjs validate workflow examples/agent-tool-call.workflow.json --quality showcase --json
-node bin/archify.mjs preview workflow examples/agent-tool-call.workflow.json /tmp/workflow.html --quality showcase
-node bin/archify.mjs deliver workflow examples/agent-tool-call.workflow.json /tmp/workflow.html --quality showcase --open --json
+node scripts/archify.mjs doctor
+node scripts/archify.mjs demo /tmp/archify-demo
+node scripts/archify.mjs guide "Show CI/CD checks, approval, deploy, and rollback"
+node scripts/archify.mjs validate workflow examples/agent-tool-call.workflow.json --quality showcase --json
+node scripts/archify.mjs preview workflow examples/agent-tool-call.workflow.json /tmp/workflow.html --quality showcase
+node scripts/archify.mjs deliver workflow examples/agent-tool-call.workflow.json /tmp/workflow.html --quality showcase --open --json
 ```
 
 `preview` is an explicit loopback-only desktop mode: it watches one JSON file on a random `127.0.0.1` port, keeps the last verified output through failures, stops with Ctrl-C, and adds no generated-HTML runtime. Use `--no-open` for tests or manual URL opening.

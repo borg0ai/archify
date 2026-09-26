@@ -9,7 +9,7 @@ import { assertFontCss, assertOfflineArtifact, inspectDocuments } from './helper
 
 const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const repoRoot = path.resolve(skillRoot, '..');
-const cli = path.join(skillRoot, 'bin/archify.mjs');
+const cli = path.join(skillRoot, 'scripts/archify.mjs');
 const template = fs.readFileSync(path.join(skillRoot, 'assets/template.html'), 'utf8');
 const DIAGRAMS = [
   ['architecture', 'web-app.architecture.json', 'web-app-rendered.html'],

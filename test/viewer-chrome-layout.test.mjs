@@ -6,11 +6,11 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
-import { ChromeVisualBrowser, findChrome } from '../archify/bin/visual-check.mjs';
+import { ChromeVisualBrowser, findChrome } from '../archify/scripts/visual-check.mjs';
 import { MIN_PROJECTED_NODE_TEXT_PX } from '../archify/renderers/shared/desktop-readability.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-viewer-chrome-layout-'));
 const chromePath = process.env.ARCHIFY_CHROME ? findChrome() : null;
 
@@ -25,7 +25,7 @@ const CASES = {
 function render(mode, example) {
   const output = path.join(tmp, `${mode}.html`);
   execFileSync(process.execPath, [
-    path.join(skillRoot, 'bin', 'archify.mjs'),
+    path.join(skillRoot, 'scripts', 'archify.mjs'),
     'render',
     mode,
     path.join(skillRoot, 'examples', example),
@@ -44,7 +44,7 @@ function renderWithoutLegend() {
   const output = path.join(tmp, 'architecture-no-legend.html');
   fs.writeFileSync(input, `${JSON.stringify(source, null, 2)}\n`);
   execFileSync(process.execPath, [
-    path.join(skillRoot, 'bin', 'archify.mjs'),
+    path.join(skillRoot, 'scripts', 'archify.mjs'),
     'render',
     'architecture',
     input,
@@ -262,7 +262,7 @@ test('the public CLI gives all typed renderers one final Viewer contract', () =>
     assert.match(html, directChildSvg, `${mode} keeps the SVG as a direct child`);
     assert.doesNotMatch(html, /class="diagram-stage"/, `${mode} does not re-nest the exported SVG`);
     assert.doesNotMatch(canonicalSvg(html), /nav-safe-rail|archify-nav-reserve|viewerChromeLayout/, mode);
-    execFileSync(process.execPath, [path.join(skillRoot, 'bin', 'archify.mjs'), 'check', output]);
+    execFileSync(process.execPath, [path.join(skillRoot, 'scripts', 'archify.mjs'), 'check', output]);
   }
 });
 
@@ -371,7 +371,7 @@ test('Maka remains collision-free at the reported Retina-equivalent viewport', {
 }, async () => {
   const output = path.join(tmp, 'maka-architecture.html');
   execFileSync(process.execPath, [
-    path.join(skillRoot, 'bin', 'archify.mjs'),
+    path.join(skillRoot, 'scripts', 'archify.mjs'),
     'render',
     'architecture',
     path.resolve(skillRoot, '..', 'examples', 'maka-architecture.architecture.json'),

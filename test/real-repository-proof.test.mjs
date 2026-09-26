@@ -8,14 +8,14 @@ import { fileURLToPath } from 'node:url';
 import { verifyRepositoryEvidence } from '../archify/renderers/shared/repository-evidence.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
 const repoRoot = path.resolve(skillRoot, '..');
 const sourcePath = path.join(repoRoot, 'docs', 'cases', 'mco-runtime.architecture.json');
 const artifactPath = path.join(repoRoot, 'docs', 'cases', 'mco-runtime.architecture.html');
 const shareCardPath = path.join(repoRoot, 'docs', 'assets', 'mco-runtime-share-card.png');
 const experimentSourcePath = path.join(repoRoot, 'experiments', 'mco-showcase', 'mco-runtime.architecture.json');
 const experimentArtifactPath = path.join(repoRoot, 'experiments', 'mco-showcase', 'mco-runtime.html');
-const cli = path.join(skillRoot, 'bin', 'archify.mjs');
+const cli = path.join(skillRoot, 'scripts', 'archify.mjs');
 const pinnedSource = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
 const pinnedRepository = pinnedSource.meta.repository;
 

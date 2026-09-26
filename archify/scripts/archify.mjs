@@ -1358,14 +1358,14 @@ async function commandDoctor(args) {
     missing: fs.existsSync(examplesRenderer) ? 0 : 1,
   });
 
-  const previewRuntime = path.join(skillRoot, 'bin/preview.mjs');
+  const previewRuntime = path.join(skillRoot, 'scripts/preview.mjs');
   checks.push({
     label: 'Live preview runtime',
     ok: fs.existsSync(previewRuntime),
     missing: fs.existsSync(previewRuntime) ? 0 : 1,
   });
 
-  const visualCheckRuntime = path.join(skillRoot, 'bin/visual-check.mjs');
+  const visualCheckRuntime = path.join(skillRoot, 'scripts/visual-check.mjs');
   checks.push({
     label: 'Visual-check runtime',
     ok: fs.existsSync(visualCheckRuntime),

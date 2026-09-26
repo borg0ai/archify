@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { ChromeVisualBrowser, findChrome } from '../archify/bin/visual-check.mjs';
+import { ChromeVisualBrowser, findChrome } from '../archify/scripts/visual-check.mjs';
 
 const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const chrome = process.env.ARCHIFY_CHROME ? findChrome() : null;
@@ -70,7 +70,7 @@ test('valid identifiers preserve Viewer selection, chapters, routes and relation
       // Use the public CLI and final artifact: these IDs already satisfy the
       // schema and must retain the same meaning in every shared Viewer.
       const receipt = JSON.parse(execFileSync(process.execPath, [
-        path.join(skillRoot, 'bin/archify.mjs'), 'deliver', type, input, output, '--json',
+        path.join(skillRoot, 'scripts/archify.mjs'), 'deliver', type, input, output, '--json',
       ], { encoding: 'utf8' }));
       assert.equal(receipt.ok, true);
       const ordinary = diagram[nodeCollection].find(node => !['constructor', 'hasOwnProperty'].includes(node.id)).id;

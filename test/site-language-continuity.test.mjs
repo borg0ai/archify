@@ -8,7 +8,7 @@ import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 
-import { ChromeVisualBrowser, findChrome } from '../archify/bin/visual-check.mjs';
+import { ChromeVisualBrowser, findChrome } from '../archify/scripts/visual-check.mjs';
 import { DIAGRAM_TYPES, DIAGRAM_TYPE_LABELS } from '../scripts/site-copy.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

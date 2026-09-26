@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, '../..');
-const archifyCli = path.join(repoRoot, 'archify/bin/archify.mjs');
+const archifyCli = path.join(repoRoot, 'archify/scripts/archify.mjs');
 const COLLECTIONS = {
   architecture: { nodes: 'components', relationships: 'connections' },
   workflow: { nodes: 'nodes', relationships: 'edges' },

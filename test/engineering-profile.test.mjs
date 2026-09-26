@@ -13,8 +13,8 @@ import {
 } from '../archify/renderers/shared/engineering-profiles.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
-const cli = path.join(skillRoot, 'bin', 'archify.mjs');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
+const cli = path.join(skillRoot, 'scripts', 'archify.mjs');
 const examplePath = path.join(skillRoot, 'examples', 'production-deployment.architecture.json');
 const example = JSON.parse(fs.readFileSync(examplePath, 'utf8'));
 

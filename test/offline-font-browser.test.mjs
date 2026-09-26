@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { ChromeVisualBrowser, findChrome } from '../archify/bin/visual-check.mjs';
+import { ChromeVisualBrowser, findChrome } from '../archify/scripts/visual-check.mjs';
 import { assertFontCss, inspectDocuments } from './helpers/offline-fonts.mjs';
 
 const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -49,7 +49,7 @@ async function actualFonts(browser, selector) {
 }
 
 function render(input, output, quality = 'standard') {
-  execFileSync(process.execPath, [path.join(skillRoot, 'bin/archify.mjs'), 'render', 'architecture', input, output, '--quality', quality], { stdio: 'pipe' });
+  execFileSync(process.execPath, [path.join(skillRoot, 'scripts/archify.mjs'), 'render', 'architecture', input, output, '--quality', quality], { stdio: 'pipe' });
 }
 
 const exportCapture = `(() => {
@@ -91,7 +91,7 @@ test('fresh viewers use bundled fonts with local fonts disabled and identical of
     fs.writeFileSync(path.join(tmp, 'mixed.json'), JSON.stringify(mixed));
     render(path.join(tmp, 'mixed.json'), path.join(tmp, 'mixed.html'));
     const compare = path.join(tmp, 'compare.html');
-    execFileSync(process.execPath, [path.join(skillRoot, 'bin/archify.mjs'), 'compare', 'architecture', path.join(skillRoot, 'examples/checkout-platform.base.architecture.json'), path.join(skillRoot, 'examples/checkout-platform.head.architecture.json'), compare], { stdio: 'pipe' });
+    execFileSync(process.execPath, [path.join(skillRoot, 'scripts/archify.mjs'), 'compare', 'architecture', path.join(skillRoot, 'examples/checkout-platform.base.architecture.json'), path.join(skillRoot, 'examples/checkout-platform.head.architecture.json'), compare], { stdio: 'pipe' });
     const online = new Map();
     for (const blocked of [false, true]) {
       const browser = new ChromeVisualBrowser(chrome);

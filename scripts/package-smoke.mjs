@@ -17,7 +17,7 @@ const defaultPackageRoot = process.env.RUNNER_TEMP
   ? path.join(process.env.RUNNER_TEMP, 'archify-package', 'archify')
   : path.join(repoRoot, 'archify');
 const skillRoot = path.resolve(process.argv[2] || defaultPackageRoot);
-const cli = path.join(skillRoot, 'bin', 'archify.mjs');
+const cli = path.join(skillRoot, 'scripts', 'archify.mjs');
 const updateChecker = path.join(skillRoot, 'scripts', 'check-update.mjs');
 const updateContract = path.join(skillRoot, 'scripts', 'update-contract.mjs');
 const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-package-smoke-'));
@@ -57,6 +57,7 @@ function runExpectFailure(args, options = {}) {
 try {
   if (!fs.existsSync(cli)) throw new Error(`packaged CLI not found at ${cli}`);
   requireAbsent('node_modules');
+  requireAbsent('package.json');
   requireAbsent('package-lock.json');
   requireAbsent(path.join('scripts', 'generate-validators.mjs'));
   requireAbsent(path.join('scripts', 'generate-brand-marks.mjs'));
@@ -104,22 +105,6 @@ try {
     throw new Error(`packaged update contract not found at ${updateContract}`);
   }
 
-  const packageJson = JSON.parse(fs.readFileSync(path.join(skillRoot, 'package.json'), 'utf8'));
-  const dependencyFields = [
-    'dependencies',
-    'devDependencies',
-    'optionalDependencies',
-    'peerDependencies',
-    'bundledDependencies',
-    'bundleDependencies',
-  ];
-  const declaredDependencyField = dependencyFields.find((field) => (
-    Object.prototype.hasOwnProperty.call(packageJson, field)
-  ));
-  if (declaredDependencyField) {
-    throw new Error(`packaged skill must not declare dependency metadata: ${declaredDependencyField}`);
-  }
-
   const skillRelease = JSON.parse(fs.readFileSync(path.join(skillRoot, 'skill-release.json'), 'utf8'));
   const contract = await import(pathToFileURL(updateContract).href);
   let validatedRelease;
@@ -128,9 +113,7 @@ try {
   } catch {
     throw new Error('packaged skill-release.json violates the shared update contract');
   }
-  if (validatedRelease.version !== packageJson.version) {
-    throw new Error('packaged skill-release.json does not match the package release identity');
-  }
+  const version = validatedRelease.version;
 
   const updateCheck = spawnSync(process.execPath, [updateChecker], {
     cwd: skillRoot,
@@ -151,7 +134,7 @@ try {
   }
 
   const checker = await import(pathToFileURL(updateChecker).href);
-  const versionCore = /^(\d+)\.(\d+)\.(\d+)/.exec(packageJson.version);
+  const versionCore = /^(\d+)\.(\d+)\.(\d+)/.exec(version);
   if (!versionCore) throw new Error('package version cannot produce an update-check smoke candidate');
   const candidateVersion = `${versionCore[1]}.${versionCore[2]}.${BigInt(versionCore[3]) + 1n}`;
   const candidate = {

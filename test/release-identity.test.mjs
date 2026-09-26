@@ -58,8 +58,8 @@ function writeValidDevelopmentFixture(root, overrides = {}) {
     'Raven 使用 ZIP 手动安装：将 archify.zip 解压到 `~/.raven/workspace/skills`，解压后会得到 `~/.raven/workspace/skills/archify`；Raven 不属于 Agent 切换器目标。',
   ].join('\n');
   const files = {
-    'archify/package.json': JSON.stringify({ version }),
-    'archify/package-lock.json': JSON.stringify({ version, packages: { '': { version } } }),
+    'package.json': JSON.stringify({ version }),
+    'package-lock.json': JSON.stringify({ version, packages: { '': { version } } }),
     'archify/skill-release.json': JSON.stringify({
       schemaVersion: 1,
       skillId: 'archify',
@@ -116,8 +116,8 @@ function writeValidStableFixture(root, overrides = {}) {
     'Raven 使用 ZIP 手动安装：将 archify.zip 解压到 `~/.raven/workspace/skills`，解压后会得到 `~/.raven/workspace/skills/archify`；Raven 不属于 Agent 切换器目标。',
   ].join('\n');
   const files = {
-    'archify/package.json': JSON.stringify({ version }),
-    'archify/package-lock.json': JSON.stringify({ version, packages: { '': { version } } }),
+    'package.json': JSON.stringify({ version }),
+    'package-lock.json': JSON.stringify({ version, packages: { '': { version } } }),
     'archify/skill-release.json': JSON.stringify({
       schemaVersion: 1,
       skillId: 'archify',
@@ -257,7 +257,7 @@ test('package identities reject leading-zero core and prerelease identifiers', (
     const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-release-identity-'));
     try {
       writeValidDevelopmentFixture(fixture, {
-        'archify/package.json': JSON.stringify({ version }),
+        'package.json': JSON.stringify({ version }),
       });
       const result = runCheck(fixture);
       assert.notEqual(result.status, 0);
@@ -299,7 +299,7 @@ test('the newest stable release is selected by SemVer rather than changelog orde
 test('real Unreleased changes cannot reuse a stable published package identity', () => {
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-release-identity-'));
   try {
-    writeFile(fixture, 'archify/package.json', JSON.stringify({ version: '2.12.0' }));
+    writeFile(fixture, 'package.json', JSON.stringify({ version: '2.12.0' }));
     writeFile(fixture, 'CHANGELOG.md', [
       '# Changelog',
       '',
@@ -323,8 +323,8 @@ test('real Unreleased changes cannot reuse a stable published package identity',
 test('package, lockfile, Skill metadata, escaped Shields badge, and public docs share one development identity', () => {
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-release-identity-'));
   try {
-    writeFile(fixture, 'archify/package.json', JSON.stringify({ version: '2.13.0-dev.0' }));
-    writeFile(fixture, 'archify/package-lock.json', JSON.stringify({
+    writeFile(fixture, 'package.json', JSON.stringify({ version: '2.13.0-dev.0' }));
+    writeFile(fixture, 'package-lock.json', JSON.stringify({
       version: '2.12.0',
       packages: { '': { version: '2.12.0' } },
     }));

@@ -67,7 +67,7 @@ archify/schemas/workflow.schema.json
 Migrate an existing v1 source into a separate v2 file:
 
 ```bash
-node archify/bin/archify.mjs migrate workflow old.json new.json --to-schema 2 --json
+node archify/scripts/archify.mjs migrate workflow old.json new.json --to-schema 2 --json
 ```
 
 Running the command again with its schema-v2 output as the new source is an
@@ -83,7 +83,7 @@ checks pass. Ambiguous explicit pins fail without producing the destination.
 Inspect the stable author-facing v2 plan with:
 
 ```bash
-node archify/bin/archify.mjs validate workflow input.workflow.json --layout-json
+node archify/scripts/archify.mjs validate workflow input.workflow.json --layout-json
 ```
 
 The receipt reports the selected contract, measured `viewBox` and

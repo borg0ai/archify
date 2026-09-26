@@ -5,12 +5,12 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
-import { startPreview } from '../archify/bin/preview.mjs';
-import { ChromeVisualBrowser, findChrome } from '../archify/bin/visual-check.mjs';
+import { startPreview } from '../archify/scripts/preview.mjs';
+import { ChromeVisualBrowser, findChrome } from '../archify/scripts/visual-check.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const skillRoot = path.resolve(here, '..');
-const cli = path.join(skillRoot, 'bin', 'archify.mjs');
+const cli = path.join(skillRoot, 'scripts', 'archify.mjs');
 
 function git(repo, ...args) {
   return execFileSync('git', ['-C', repo, ...args], { encoding: 'utf8' }).trim();

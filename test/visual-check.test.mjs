@@ -14,10 +14,10 @@ import {
   chromeVisualBrowserArgs,
   runVisualCheck,
   sidecarPaths,
-} from '../archify/bin/visual-check.mjs';
+} from '../archify/scripts/visual-check.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-visual-check-'));
 const png = Buffer.from('89504e470d0a1a0a', 'hex');
 

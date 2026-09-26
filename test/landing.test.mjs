@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
 const repoRoot = path.resolve(skillRoot, '..');
 const docsRoot = path.join(repoRoot, 'docs');
 const landing = fs.readFileSync(path.join(docsRoot, 'index.html'), 'utf8');

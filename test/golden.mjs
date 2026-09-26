@@ -12,7 +12,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
 const repoRoot = path.resolve(skillRoot, '..');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-test-'));
 
@@ -166,12 +166,12 @@ for (const tag of ['style', 'script']) {
 // ---------------------------------------------------------------------------
 console.log('version sync');
 
-const pkg = JSON.parse(fs.readFileSync(path.join(skillRoot, 'package.json'), 'utf8'));
+const pkg = JSON.parse(fs.readFileSync(path.join(repoRoot, 'package.json'), 'utf8'));
 check('template generator meta matches package.json version',
   template.includes(`<meta name="generator" content="archify ${pkg.version}">`),
   `package.json says ${pkg.version}`);
 
-const lock = JSON.parse(fs.readFileSync(path.join(skillRoot, 'package-lock.json'), 'utf8'));
+const lock = JSON.parse(fs.readFileSync(path.join(repoRoot, 'package-lock.json'), 'utf8'));
 check('package-lock.json version matches package.json',
   lock.version === pkg.version && lock.packages?.['']?.version === pkg.version,
   `lockfile says ${lock.version} — run npm install and rebuild the zip`);

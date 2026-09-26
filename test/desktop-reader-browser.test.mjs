@@ -6,11 +6,11 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { findChrome, runVisualCheck } from '../archify/bin/visual-check.mjs';
+import { findChrome, runVisualCheck } from '../archify/scripts/visual-check.mjs';
 import { DESKTOP_READABILITY_VIEWPORT, MIN_PROJECTED_NODE_TEXT_PX } from '../archify/renderers/shared/desktop-readability.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
 const chromePath = process.env.ARCHIFY_CHROME ? findChrome() : null;
 const packagedHtmlExamples = fs.readdirSync(path.join(skillRoot, 'examples'))
   .filter((name) => name.endsWith('.html') && !name.endsWith('.visual-check.html'))
@@ -42,7 +42,7 @@ test('production showcase is readable in the real 1440 by 900 adaptive reader', 
   const artifact = path.join(tmp, 'production-deployment.html');
   try {
     execFileSync(process.execPath, [
-      path.join(skillRoot, 'bin', 'archify.mjs'),
+      path.join(skillRoot, 'scripts', 'archify.mjs'),
       'render',
       'architecture',
       path.join(skillRoot, 'examples', 'production-deployment.architecture.json'),

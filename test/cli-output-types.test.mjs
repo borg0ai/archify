@@ -5,10 +5,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { startPreview } from '../archify/bin/preview.mjs';
+import { startPreview } from '../archify/scripts/preview.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const cli = path.join(root, 'bin/archify.mjs');
+const cli = path.join(root, 'scripts/archify.mjs');
 const workflow = path.join(root, 'examples/agent-tool-call.workflow.json');
 const architecture = path.join(root, 'examples/web-app.architecture.json');
 const base = path.join(root, 'examples/checkout-platform.base.architecture.json');

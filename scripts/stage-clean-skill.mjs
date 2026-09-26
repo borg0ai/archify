@@ -17,6 +17,7 @@ const REQUIRED_INPUTS = new Set([
   'archify/skill-release.json',
 ]);
 const EXCLUDED_FILES = new Set([
+  'archify/package.json',
   'archify/package-lock.json',
   'archify/scripts/generate-brand-marks.mjs',
   'archify/scripts/generate-validators.mjs',
@@ -198,14 +199,6 @@ function canonicalizeExistingPrefix(target) {
   }
 }
 
-function cleanPackageManifest(destination) {
-  const packagePath = path.join(destination, 'package.json');
-  const packageJson = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
-  delete packageJson.scripts;
-  delete packageJson.devDependencies;
-  fs.writeFileSync(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`);
-}
-
 function validateThirdPartyNoticeInputs(repoRoot, packageEntries) {
   const packagedEntry = packageEntries.find((entry) => (
     entry.relative === 'archify/THIRD_PARTY_NOTICES.md'
@@ -313,7 +306,6 @@ export function stageCleanSkill({ repoRoot = scriptRoot, destination, modeManife
       else fs.chmodSync(target, 0o644);
       fileCount += 1;
     }
-    cleanPackageManifest(resolvedDestination);
     if (resolvedModeManifest !== null) {
       fs.writeFileSync(resolvedModeManifest, `${JSON.stringify(modes, null, 2)}\n`, { flag: 'wx' });
       manifestWritten = true;

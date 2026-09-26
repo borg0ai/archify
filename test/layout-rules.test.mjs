@@ -19,7 +19,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-rules-'));
 
 const EXAMPLES = {
@@ -56,7 +56,7 @@ function validateCli(mode, doc, quality = 'showcase') {
   fs.writeFileSync(input, JSON.stringify(doc));
   try {
     const stdout = execFileSync('node', [
-      path.join(skillRoot, 'bin', 'archify.mjs'),
+      path.join(skillRoot, 'scripts', 'archify.mjs'),
       'validate',
       mode,
       input,

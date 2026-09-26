@@ -1,13 +1,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
+import { stageCleanSkill } from '../scripts/stage-clean-skill.mjs';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
 const repoRoot = path.resolve(skillRoot, '..');
 const cursorCommand = 'npx -y skills add tt-a1i/archify --skill archify --agent cursor --global --copy --yes';
 
@@ -43,9 +44,9 @@ test('the zero-dependency archive works from the canonical Cursor-visible agent 
   const agentSkills = path.join(tmp, '.agents', 'skills');
   try {
     fs.mkdirSync(agentSkills, { recursive: true });
-    execFileSync('unzip', ['-q', path.join(repoRoot, 'archify.zip'), '-d', agentSkills]);
+    stageCleanSkill({ repoRoot, destination: path.join(agentSkills, 'archify') });
     const installed = path.join(agentSkills, 'archify');
-    const cli = path.join(installed, 'bin', 'archify.mjs');
+    const cli = path.join(installed, 'scripts', 'archify.mjs');
     const doctor = execFileSync(process.execPath, [cli, 'doctor'], { encoding: 'utf8' });
     assert.match(doctor, /Archify is ready\./);
 

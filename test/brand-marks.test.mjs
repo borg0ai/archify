@@ -16,7 +16,7 @@ import {
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const skillRoot = path.resolve(here, '..');
-const cli = path.join(skillRoot, 'bin', 'archify.mjs');
+const cli = path.join(skillRoot, 'scripts', 'archify.mjs');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-brand-marks-'));
 const cases = {
   architecture: ['web-app.architecture.json', 'components'],

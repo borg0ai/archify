@@ -9,7 +9,7 @@ The manual workflow below is a reference for integration, contribution, and trou
 Archify requires Node.js 18 or later. Run the doctor command before authoring a diagram:
 
 ```bash
-node bin/archify.mjs doctor
+node scripts/archify.mjs doctor
 ```
 
 If you are installing from npm-compatible skill tooling, the global install is:
@@ -33,7 +33,7 @@ Use the type that matches the question you want the reader to answer:
 When the type is unclear, ask the built-in scenario guide:
 
 ```bash
-node bin/archify.mjs guide "Show an API request with a Redis cache miss" --json
+node scripts/archify.mjs guide "Show an API request with a Redis cache miss" --json
 ```
 
 The guide recommends a type and returns a recipe. It does not create the diagram for you.
@@ -47,7 +47,7 @@ Every source needs a `schema_version`, a `diagram_type`, a `meta.title`, and the
 For a repository-backed Architecture diagram, add revision-pinned repository metadata and source ranges to the JSON, then pass the local repository path to the command:
 
 ```bash
-node bin/archify.mjs validate architecture path/to/diagram.json \
+node scripts/archify.mjs validate architecture path/to/diagram.json \
   --repo-root path/to/repository --quality showcase --json
 ```
 
@@ -58,7 +58,7 @@ Archify verifies the Git origin, commit, blobs, and requested lines. Do not add 
 Use `standard` while exploring and `showcase` for a polished artifact or checked-in proof:
 
 ```bash
-node bin/archify.mjs validate architecture examples/web-app.architecture.json \
+node scripts/archify.mjs validate architecture examples/web-app.architecture.json \
   --quality showcase --json
 ```
 
@@ -67,7 +67,7 @@ On success, the JSON receipt contains the artifact checks and composition summar
 For Architecture layout inspection, use the renderer's machine-readable layout output:
 
 ```bash
-node bin/archify.mjs inspect architecture path/to/diagram.json
+node scripts/archify.mjs inspect architecture path/to/diagram.json
 ```
 
 `inspect` is currently Architecture-only and is useful when a geometry diagnostic names a route or placement problem.
@@ -77,21 +77,21 @@ node bin/archify.mjs inspect architecture path/to/diagram.json
 `render` is useful for a quick local output. Use `deliver` when the file is a handoff, release artifact, or CI output:
 
 ```bash
-node bin/archify.mjs deliver architecture examples/web-app.architecture.json \
+node scripts/archify.mjs deliver architecture examples/web-app.architecture.json \
   web-app.html --quality showcase --json
 ```
 
 `deliver` freezes the input bytes, renders a same-directory candidate, runs the final artifact checks, and replaces the target only after every gate passes. Its receipt includes specification and artifact SHA-256 hashes. Add `--open` only for an interactive local handoff:
 
 ```bash
-node bin/archify.mjs deliver architecture examples/web-app.architecture.json \
+node scripts/archify.mjs deliver architecture examples/web-app.architecture.json \
   web-app.html --quality showcase --open --json
 ```
 
 To compare two Architecture snapshots, use `compare`. It writes the HTML and a sidecar receipt beside it:
 
 ```bash
-node bin/archify.mjs compare architecture base.json head.json \
+node scripts/archify.mjs compare architecture base.json head.json \
   architecture-delta.html --quality showcase --json
 ```
 
@@ -100,7 +100,7 @@ node bin/archify.mjs compare architecture base.json head.json \
 The deterministic checks do not exercise the Viewer in a browser. Collect automated browser evidence from the exact delivered HTML when Chrome or Chromium is available:
 
 ```bash
-node bin/archify.mjs visual-check web-app.html --json
+node scripts/archify.mjs visual-check web-app.html --json
 ```
 
 This receipt measures bounded runtime behavior; it does not approve perceptual polish. Inspect the HTML or generated screenshots separately. Follow the [delivery contract](../archify/references/delivery-contract.md) when recording supplementary manual browser work; an unconstrained glance supports only perceptual review.

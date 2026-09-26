@@ -9,7 +9,7 @@ Archify 首先是面向 Agent 的 Skill。普通用户只需向支持 Skill 的 
 Archify 要求 Node.js 18 或更高版本。开始编图前先运行 doctor：
 
 ```bash
-node bin/archify.mjs doctor
+node scripts/archify.mjs doctor
 ```
 
 如果通过兼容 npm 的 Skill 工具安装，可以执行：
@@ -33,7 +33,7 @@ npx skills add tt-a1i/archify -g
 不确定类型时，可以询问内置场景指南：
 
 ```bash
-node bin/archify.mjs guide "展示带 Redis 缓存未命中的 API 请求" --json --lang zh
+node scripts/archify.mjs guide "展示带 Redis 缓存未命中的 API 请求" --json --lang zh
 ```
 
 指南会推荐类型并返回配方，但不会替你创建图。
@@ -47,7 +47,7 @@ node bin/archify.mjs guide "展示带 Redis 缓存未命中的 API 请求" --jso
 如果要生成基于仓库证据的 Architecture 图，需要在 JSON 中加入固定版本的仓库元数据和源码范围，再把本地仓库路径传给命令：
 
 ```bash
-node bin/archify.mjs validate architecture path/to/diagram.json \
+node scripts/archify.mjs validate architecture path/to/diagram.json \
   --repo-root path/to/repository --quality showcase --json
 ```
 
@@ -58,7 +58,7 @@ Archify 会校验 Git 远端、commit、blob 和请求的代码行。无法验�
 探索阶段可以使用 `standard`，正式成品或仓库内证明建议使用 `showcase`：
 
 ```bash
-node bin/archify.mjs validate architecture examples/web-app.architecture.json \
+node scripts/archify.mjs validate architecture examples/web-app.architecture.json \
   --quality showcase --json
 ```
 
@@ -67,7 +67,7 @@ node bin/archify.mjs validate architecture examples/web-app.architecture.json \
 Architecture 图需要检查布局时，可以使用 Renderer 的机器可读布局输出：
 
 ```bash
-node bin/archify.mjs inspect architecture path/to/diagram.json
+node scripts/archify.mjs inspect architecture path/to/diagram.json
 ```
 
 `inspect` 当前只支持 Architecture，适合诊断信息指向线路或摆放问题时使用。
@@ -77,21 +77,21 @@ node bin/archify.mjs inspect architecture path/to/diagram.json
 `render` 适合快速本地输出；当文件要交给别人、用于发布或作为 CI 产物时，请使用 `deliver`：
 
 ```bash
-node bin/archify.mjs deliver architecture examples/web-app.architecture.json \
+node scripts/archify.mjs deliver architecture examples/web-app.architecture.json \
   web-app.html --quality showcase --json
 ```
 
 `deliver` 会冻结输入字节，在目标文件同目录生成候选文件，运行最终成品检查，并且只在全部门禁通过后替换目标。回执包含源文件和成品的 SHA-256 哈希。只有需要立即本地打开时才加 `--open`：
 
 ```bash
-node bin/archify.mjs deliver architecture examples/web-app.architecture.json \
+node scripts/archify.mjs deliver architecture examples/web-app.architecture.json \
   web-app.html --quality showcase --open --json
 ```
 
 要比较两份 Architecture 快照，请使用 `compare`。它会在 HTML 旁边写入 sidecar 回执：
 
 ```bash
-node bin/archify.mjs compare architecture base.json head.json \
+node scripts/archify.mjs compare architecture base.json head.json \
   architecture-delta.html --quality showcase --json
 ```
 
@@ -102,7 +102,7 @@ node bin/archify.mjs compare architecture base.json head.json \
 确定性校验不会在真实浏览器中运行 Viewer。如果环境有 Chrome 或 Chromium，请对刚刚交付的 HTML 收集自动化浏览器证据：
 
 ```bash
-node bin/archify.mjs visual-check web-app.html --json
+node scripts/archify.mjs visual-check web-app.html --json
 ```
 
 这份回执只证明有限范围内的运行时表现，并不批准视觉质量。仍需单独检查 HTML 或生成的截图。记录补充性的手工浏览器工作时必须遵循[交付契约](../archify/references/delivery-contract.md)；不受约束的目检只影响视觉复核结论。

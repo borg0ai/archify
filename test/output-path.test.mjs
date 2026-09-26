@@ -5,13 +5,13 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { startPreview } from '../archify/bin/preview.mjs';
+import { startPreview } from '../archify/scripts/preview.mjs';
 import { loadDiagram, writeDiagram } from '../archify/renderers/shared/cli.mjs';
 import { pathsAlias } from '../archify/renderers/shared/output-path.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const skillRoot = path.resolve(here, '..');
-const cli = path.join(skillRoot, 'bin/archify.mjs');
+const cli = path.join(skillRoot, 'scripts/archify.mjs');
 const workflowFixture = path.join(skillRoot, 'examples/agent-tool-call.workflow.json');
 const baseFixture = path.join(skillRoot, 'examples/checkout-platform.base.architecture.json');
 const headFixture = path.join(skillRoot, 'examples/checkout-platform.head.architecture.json');
@@ -263,15 +263,14 @@ test('deliver rejects a future-path alias of its JSON input with a structured di
 test('deliver rechecks aliases immediately before committing a verified candidate', { timeout: 10000 }, async () => {
   const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-output-deliver-race-'));
   const installedRoot = path.join(cwd, 'skill');
-  const installedBin = path.join(installedRoot, 'bin');
+  const installedScripts = path.join(installedRoot, 'scripts');
   const installedShared = path.join(installedRoot, 'renderers/shared');
   const installedRenderer = path.join(installedRoot, 'renderers/workflow');
-  const installedScripts = path.join(installedRoot, 'scripts');
-  fs.mkdirSync(installedBin, { recursive: true });
+  fs.mkdirSync(installedScripts, { recursive: true });
   fs.mkdirSync(installedShared, { recursive: true });
   fs.mkdirSync(installedRenderer, { recursive: true });
   fs.mkdirSync(installedScripts, { recursive: true });
-  fs.copyFileSync(cli, path.join(installedBin, 'archify.mjs'));
+  fs.copyFileSync(cli, path.join(installedScripts, 'archify.mjs'));
   fs.copyFileSync(
     path.join(skillRoot, 'renderers/shared/output-path.mjs'),
     path.join(installedShared, 'output-path.mjs'),
@@ -308,7 +307,7 @@ console.log(JSON.stringify({
   const marker = path.join(cwd, 'renderer-started');
 
   const child = spawn(process.execPath, [
-    path.join(installedBin, 'archify.mjs'),
+    path.join(installedScripts, 'archify.mjs'),
     'deliver', 'workflow', input, output, '--json',
   ], {
     cwd,
@@ -465,15 +464,14 @@ test('the shared renderer rechecks its guarded output immediately before writing
 test('compare rechecks every target immediately before committing the artifact pair', { timeout: 10000 }, async () => {
   const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-output-compare-race-'));
   const installedRoot = path.join(cwd, 'skill');
-  const installedBin = path.join(installedRoot, 'bin');
+  const installedScripts = path.join(installedRoot, 'scripts');
   const installedShared = path.join(installedRoot, 'renderers/shared');
   const installedRenderer = path.join(installedRoot, 'renderers/architecture');
-  const installedScripts = path.join(installedRoot, 'scripts');
   const installedDelta = path.join(installedRoot, 'delta');
-  for (const directory of [installedBin, installedShared, installedRenderer, installedScripts, installedDelta]) {
+  for (const directory of [installedScripts, installedShared, installedRenderer, installedDelta]) {
     fs.mkdirSync(directory, { recursive: true });
   }
-  fs.copyFileSync(cli, path.join(installedBin, 'archify.mjs'));
+  fs.copyFileSync(cli, path.join(installedScripts, 'archify.mjs'));
   fs.copyFileSync(
     path.join(skillRoot, 'renderers/shared/output-path.mjs'),
     path.join(installedShared, 'output-path.mjs'),
@@ -536,7 +534,7 @@ export const validateArchitectureDeltaHtml = () => ({ checksPassed: 1, checkCoun
   const marker = path.join(cwd, 'renderer-started');
 
   const child = spawn(process.execPath, [
-    path.join(installedBin, 'archify.mjs'),
+    path.join(installedScripts, 'archify.mjs'),
     'compare', 'architecture', base, head, output, '--json',
   ], {
     cwd,
@@ -577,7 +575,7 @@ test('doctor reports a missing output-path safety runtime in an installed skill'
   copyInstalledSkill(installedRoot);
   fs.rmSync(path.join(installedRoot, 'renderers/shared/output-path.mjs'));
 
-  const result = spawnSync(process.execPath, [path.join(installedRoot, 'bin/archify.mjs'), 'doctor'], {
+  const result = spawnSync(process.execPath, [path.join(installedRoot, 'scripts/archify.mjs'), 'doctor'], {
     cwd: installedRoot,
     encoding: 'utf8',
   });

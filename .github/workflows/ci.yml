@@ -17,13 +17,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
-          cache-dependency-path: archify/package-lock.json
+          cache-dependency-path: package-lock.json
       - name: Install renderer dependencies
         run: npm ci
-        working-directory: archify
       - name: Golden-file + schema tests
         run: npm test
-        working-directory: archify
 
   webm-artifact:
     runs-on: ubuntu-latest
@@ -42,63 +40,40 @@ jobs:
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y ffmpeg
       - name: Decode a real motion export and reject static frames
         run: npm run test:webm
-        working-directory: archify
         env:
           ARCHIFY_CHROME: ${{ steps.setup-chrome.outputs.chrome-path }}
       - name: Verify packaged examples and Reader Layout boundaries in a real browser
         run: node --test test/desktop-reader-browser.test.mjs test/reader-layout-browser.test.mjs
-        working-directory: archify
         env:
           ARCHIFY_CHROME: ${{ steps.setup-chrome.outputs.chrome-path }}
           ARCHIFY_CHROME_NO_SANDBOX: '1'
       - name: Verify SVG export cleanup and live state isolation
         run: node --test test/export-cleanup-browser.test.mjs
-        working-directory: archify
         env:
           ARCHIFY_CHROME: ${{ steps.setup-chrome.outputs.chrome-path }}
           ARCHIFY_CHROME_NO_SANDBOX: '1'
       - name: Install offline font test parser
         run: npm ci --ignore-scripts --no-audit --no-fund
-        working-directory: archify
       - name: Verify offline fonts and independent SVG/raster exports
         run: node --test test/offline-font-browser.test.mjs
-        working-directory: archify
         env:
           ARCHIFY_CHROME: ${{ steps.setup-chrome.outputs.chrome-path }}
           ARCHIFY_CHROME_NO_SANDBOX: '1'
       - name: Verify all five diagram modes localize Viewer interactions
         run: node --test test/i18n.test.mjs
-        working-directory: archify
         env:
           ARCHIFY_CHROME: ${{ steps.setup-chrome.outputs.chrome-path }}
           ARCHIFY_CHROME_NO_SANDBOX: '1'
       - name: Verify Semantic Radar collision and drag behavior
         run: node --test test/semantic-radar.test.mjs
-        working-directory: archify
         env:
           ARCHIFY_CHROME: ${{ steps.setup-chrome.outputs.chrome-path }}
           ARCHIFY_CHROME_NO_SANDBOX: '1'
       - name: Verify Viewer chrome, camera, motion and input interactions
         run: node --test --test-concurrency=2 test/viewer-chrome-layout.test.mjs test/viewer-camera-browser.test.mjs test/motion-governor-browser.test.mjs test/finder-browser.test.mjs test/intent-trace-browser.test.mjs test/semantic-lens-browser.test.mjs test/route-probe-browser.test.mjs test/guided-views-browser.test.mjs test/focus-browser.test.mjs test/export-browser.test.mjs test/viewer-identifiers-browser.test.mjs
-        working-directory: archify
         env:
           ARCHIFY_CHROME: ${{ steps.setup-chrome.outputs.chrome-path }}
           ARCHIFY_CHROME_NO_SANDBOX: '1'
-
-  zip-freshness:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 22
-      - name: Rebuild archify.zip and compare exact bytes
-        run: |
-          scripts/build-zip.sh /tmp/fresh.zip
-          if ! cmp -s /tmp/fresh.zip archify.zip; then
-            echo '::error::archify.zip is stale — run scripts/build-zip.sh and commit the result'
-            exit 1
-          fi
 
   published-update-manifest:
     runs-on: ubuntu-latest
@@ -167,27 +142,18 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Extract packaged skill
-        if: runner.os != 'Windows'
+      - name: Stage the skill and validate it without installing dependencies
+        shell: bash
         run: |
           set -euo pipefail
-          package_root="$RUNNER_TEMP/archify-package"
-          rm -rf "$package_root"
-          mkdir -p "$package_root"
-          unzip -q archify.zip -d "$package_root"
-      - name: Extract packaged skill
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          $packageRoot = Join-Path $env:RUNNER_TEMP 'archify-package'
-          if (Test-Path $packageRoot) { Remove-Item -Recurse -Force $packageRoot }
-          Expand-Archive -Path archify.zip -DestinationPath $packageRoot
-      - name: Validate packaged skill without installing dependencies
-        run: node scripts/package-smoke.mjs
+          package_root="${RUNNER_TEMP}/archify-package/archify"
+          rm -rf "${RUNNER_TEMP}/archify-package"
+          node scripts/stage-clean-skill.mjs --dest "$package_root"
+          node scripts/package-smoke.mjs "$package_root"
 
   deploy-pages:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [test, webm-artifact, zip-freshness, published-update-manifest, package-smoke]
+    needs: [test, webm-artifact, published-update-manifest, package-smoke]
     runs-on: ubuntu-latest
     concurrency:
       group: github-pages

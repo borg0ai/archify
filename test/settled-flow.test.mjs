@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { animateAttr } from '../archify/renderers/shared/cli.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
 const template = fs.readFileSync(path.join(skillRoot, 'assets', 'template.html'), 'utf8');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-settled-flow-'));
 

@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
 const skill = fs.readFileSync(path.join(skillRoot, 'SKILL.md'), 'utf8');
 const authoringContract = fs.readFileSync(
   path.join(skillRoot, 'references', 'authoring-contract.md'),

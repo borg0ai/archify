@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 
-import { openArtifact, openLoopbackUrl } from '../archify/bin/open-artifact.mjs';
+import { openArtifact, openLoopbackUrl } from '../archify/scripts/open-artifact.mjs';
 
 const target = path.resolve("/tmp/-复杂 path 'quoted'/diagram.html");
 

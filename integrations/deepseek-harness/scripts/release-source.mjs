@@ -84,8 +84,8 @@ export function releaseSnapshot(destination) {
       throw new Error(`unable to read DSH source ${release.sourceCommit}: ${result.stderr || result.error?.message}`);
     }
   }
-  const skill = JSON.parse(fs.readFileSync(path.join(destination, 'archify', 'package.json'), 'utf8'));
-  if (skill.version !== release.skillVersion) {
-    throw new Error(`DSH Skill version mismatch: ${skill.version} != ${release.skillVersion}`);
+  const skillRelease = JSON.parse(fs.readFileSync(path.join(destination, 'archify', 'skill-release.json'), 'utf8'));
+  if (skillRelease.version !== release.skillVersion) {
+    throw new Error(`DSH Skill version mismatch: ${skillRelease.version} != ${release.skillVersion}`);
   }
 }

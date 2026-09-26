@@ -14,7 +14,7 @@ if [[ "$out" != /* && ! "$out" =~ $windows_absolute ]]; then
   out="$(pwd)/$out"
 fi
 
-# Runtime consumers support every Node version declared by archify/package.json,
+# Runtime consumers support Node.js 18 and newer,
 # but canonical ZIP bytes depend on the Node/zlib toolchain. CI and releases use
 # Node 22, so fail clearly instead of publishing different bytes from another
 # Node major.
@@ -27,7 +27,7 @@ if [[ "$node_major" != "$canonical_node_major" ]]; then
 fi
 
 # The shared stager owns tracked-only selection, index modes, conflict and
-# symlink rejection, repository-only exclusions, and package.json cleanup for
+# symlink rejection and repository-only exclusions for
 # both the ZIP and DeepSeek Harness tarball.
 stage="$(mktemp -d)"
 trap 'rm -rf "$stage"' EXIT

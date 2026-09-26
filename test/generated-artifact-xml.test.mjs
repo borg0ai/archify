@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { extractSvgs, parseXml } from './helpers/xml.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
 const repoRoot = path.resolve(skillRoot, '..');
 const artifactRoots = [
   'archify/examples',

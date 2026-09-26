@@ -14,7 +14,7 @@ function renderBaseFixture(type, name) {
   const input = path.join(__dirname, 'fixtures', 'v1-baseline', name);
   const output = path.join(tmp, `${name}.html`);
   return spawnSync(process.execPath, [
-    path.join(skillRoot, 'bin', 'archify.mjs'),
+    path.join(skillRoot, 'scripts', 'archify.mjs'),
     'render',
     type,
     input,

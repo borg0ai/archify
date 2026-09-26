@@ -112,8 +112,13 @@ test('packed Skill payload remains byte-identical to the declared immutable sour
         `${packagedPath} differs from ${DSH_RELEASE_REF}`,
       );
     }
-    const skillPackage = JSON.parse(fs.readFileSync(path.join(skillRoot, 'package.json'), 'utf8'));
-    assert.equal(skillPackage.version, release.skillVersion);
+    assert.equal(
+      receipt.files.some((file) => file.path.replace(/^package\//, '') === 'skills/archify/package.json'),
+      false,
+      'the staged Skill must not carry the repository package manifest',
+    );
+    const skillRelease = JSON.parse(fs.readFileSync(path.join(skillRoot, 'skill-release.json'), 'utf8'));
+    assert.equal(skillRelease.version, release.skillVersion);
     assert.match(fs.readFileSync(path.join(skillRoot, 'SKILL.md'), 'utf8'), /## Update awareness/);
   } finally {
     fs.rmSync(scratch, { recursive: true, force: true });

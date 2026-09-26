@@ -18,8 +18,8 @@ import {
 import { compileWorkflow } from '../archify/renderers/workflow/workflow-compiler.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
-const cli = path.join(skillRoot, 'bin', 'archify.mjs');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
+const cli = path.join(skillRoot, 'scripts', 'archify.mjs');
 const fixture = path.join(
   __dirname,
   'fixtures',

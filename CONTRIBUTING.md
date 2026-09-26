@@ -50,10 +50,9 @@ Start with focused checks for the affected behavior. Use the full `npm test` sui
 
 ## Local setup and verification
 
-The renderer package is in `archify/`; its Node range and commands are defined in `archify/package.json`.
+The renderer package is the repository root `package.json`. Skill sources stay in `archify/`.
 
 ```sh
-cd archify
 npm ci
 npm test
 ```
@@ -67,7 +66,6 @@ A visual PR must provide enough evidence to evaluate whether the intended user v
 Static SVG/XML checks cannot establish browser layout, font settling, or interaction behavior. When the adaptive reader or Viewer layout changes, run the real browser test with Chrome available:
 
 ```sh
-cd archify
 ARCHIFY_CHROME="/path/to/chrome" node --test test/desktop-reader-browser.test.mjs
 ```
 
@@ -76,7 +74,7 @@ A browser test skipped because Chrome was unavailable is **skipped**, not passed
 ## Packages and generated artifacts
 
 Viewer maintenance starts in [`viewer/`](viewer/README.md). Edit its source
-files, then run `npm run generate:viewer` from `archify/`; the delivered template
+files, then run `npm run generate:viewer` from the repository root; the delivered template
 is generated and its freshness is checked by `npm test`.
 
 Published artifacts must be reproducible from tracked content. Use a tracked-only, symlink-safe staging path or explicit allowlist, with negative coverage for untracked files and external symlinks. Test the extracted package outside the repository on the affected advertised hosts.

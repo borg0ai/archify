@@ -25,7 +25,7 @@ const receipt = {
   dsh: { spec: DSH_SPEC },
   node: process.version,
   platform: process.platform,
-  zipContainerNote: 'Canonical Linux CI verifies ZIP container bytes; cross-platform DSH acceptance verifies extracted package content.',
+  zipContainerNote: 'The Skill is staged from Git. This acceptance run does not publish a GitHub Release or a committed archive.',
   stages: [],
 };
 
@@ -398,54 +398,22 @@ if (leftover.length > 0) {
 }
 pass('base-profile', { bundles: removedManifest.dsh?.profile?.bundles || [] });
 
-const zipBlob = run('git', ['hash-object', 'archify.zip'], { cwd: repoRoot });
-const pkgBlob = run('git', ['hash-object', 'archify/package.json'], { cwd: repoRoot });
-const skipFreshZipRebuild = process.platform === 'win32';
-const committedZip = path.join(repoRoot, 'archify.zip');
-let unzipContentsIdentical = 'not-asserted';
-let canonicalZipBytes = 'not-asserted';
-if (skipFreshZipRebuild) {
-  receipt.zipContainerNote = 'Windows extracts and smokes the committed ZIP; canonical rebuild and fresh-vs-committed equality are owned by Linux CI.';
-  const checkedDir = path.join(scratch, 'checked');
-  fs.mkdirSync(checkedDir);
-  fs.copyFileSync(committedZip, path.join(checkedDir, 'committed.zip'));
-  requireStatus('zero-regression', run('tar', ['-xf', 'committed.zip'], { cwd: checkedDir }));
-  const currentSmoke = run(process.execPath, [
-    path.join(repoRoot, 'scripts', 'package-smoke.mjs'),
-    path.join(checkedDir, 'archify'),
-  ], { cwd: repoRoot, timeout: 120_000 });
-  requireStatus('zero-regression', currentSmoke, { command: 'current package-smoke.mjs <committed-zip-skill-root>' });
-  unzipContentsIdentical = 'not-asserted-on-windows';
-} else {
-  const freshZip = path.join(scratch, 'fresh.zip');
-  const freshDir = path.join(scratch, 'fresh');
-  const checkedDir = path.join(scratch, 'checked');
-  requireStatus('zero-regression', run('bash', [path.join(repoRoot, 'scripts', 'build-zip.sh'), freshZip], { cwd: repoRoot }));
-  fs.mkdirSync(freshDir);
-  fs.mkdirSync(checkedDir);
-  requireStatus('zero-regression', run('unzip', ['-q', freshZip, '-d', freshDir]));
-  requireStatus('zero-regression', run('unzip', ['-q', committedZip, '-d', checkedDir]));
-  const unzipDiff = run('diff', ['-r', path.join(freshDir, 'archify'), path.join(checkedDir, 'archify')]);
-  if (unzipDiff.status !== 0) {
-    fail('zero-regression', 'fresh ZIP contents drifted from the committed ZIP', { diff: unzipDiff.stdout });
-  }
-  if (process.platform === 'linux') {
-    if (!fs.readFileSync(freshZip).equals(fs.readFileSync(committedZip))) {
-      fail('zero-regression', 'canonical Linux ZIP bytes drifted from the committed archive');
-    }
-    canonicalZipBytes = 'verified';
-  }
-  unzipContentsIdentical = true;
-}
+const pkgBlob = run('git', ['hash-object', 'package.json'], { cwd: repoRoot });
+const stagedSkill = path.join(scratch, 'staged-skill');
+requireStatus('zero-regression', run(process.execPath, [
+  path.join(repoRoot, 'scripts', 'stage-clean-skill.mjs'),
+  '--dest', stagedSkill,
+], { cwd: repoRoot }));
+const currentSmoke = run(process.execPath, [
+  path.join(repoRoot, 'scripts', 'package-smoke.mjs'),
+  stagedSkill,
+], { cwd: repoRoot, timeout: 120_000 });
+requireStatus('zero-regression', currentSmoke, { command: 'package-smoke.mjs <staged-skill>' });
 const skillsList = run('npx', ['-y', 'skills', 'add', repoRoot, '--list', '--full-depth'], { cwd: repoRoot, timeout: 120_000 });
 requireStatus('zero-regression', skillsList, { command: 'npx skills add --list --full-depth' });
 pass('zero-regression', {
-  archifyZipBlob: zipBlob.stdout.trim(),
-  archifyPackageBlob: pkgBlob.stdout.trim(),
-  unzipContentsIdentical,
-  canonicalZipBytes,
-  crossPlatformZipCheck: 'extracted-content',
-  ...(skipFreshZipRebuild ? { freshZipRebuildSkipped: true, checkoutTextEolNormalized: true } : {}),
+  packageBlob: pkgBlob.stdout.trim(),
+  stagedSkill,
   skillsCli: skillsList.stdout.trim().slice(0, 500),
 });
 

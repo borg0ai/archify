@@ -15,7 +15,7 @@ const outputRoot = path.resolve(process.argv[2] || path.join(repoRoot, 'docs'));
 const artifactsRoot = path.join(outputRoot, 'gallery', 'artifacts');
 const sourcesRoot = path.join(outputRoot, 'gallery', 'sources');
 const templatePath = path.join(__dirname, 'gallery-template.html');
-const packageJson = JSON.parse(fs.readFileSync(path.join(skillRoot, 'package.json'), 'utf8'));
+const release = JSON.parse(fs.readFileSync(path.join(skillRoot, 'skill-release.json'), 'utf8'));
 
 const CASES = [
   {
@@ -294,7 +294,7 @@ for (const item of CASES) {
 const manifest = {
   schemaVersion: 1,
   generator: 'scripts/build-gallery.mjs',
-  archifyVersion: packageJson.version,
+  archifyVersion: release.version,
   entryCount: entries.length,
   checkCount: entries.reduce((sum, entry) => sum + entry.checkCount, 0),
   entries: entries.map((entry) => ({
@@ -329,7 +329,7 @@ fs.writeFileSync(path.join(outputRoot, 'gallery', 'manifest.json'), `${manifestJ
 
 const replacements = {
   ...diagramTypeCopyReplacements(),
-  '[[ARCHIFY_VERSION]]': packageJson.version,
+  '[[ARCHIFY_VERSION]]': release.version,
   '[[ENTRY_COUNT]]': String(manifest.entryCount),
   '[[CHECK_COUNT]]': String(manifest.checkCount),
   '[[GALLERY_CARDS]]': entries.map(renderCard).join('\n'),

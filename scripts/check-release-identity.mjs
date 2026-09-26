@@ -170,7 +170,9 @@ function checkRoadmap(relativePath, source, version, isDevelopment) {
   }
 }
 
-const packageJson = readJson('archify/package.json');
+const PACKAGE_JSON = 'package.json';
+const PACKAGE_LOCK_JSON = 'package-lock.json';
+const packageJson = readJson(PACKAGE_JSON);
 const changelog = read('CHANGELOG.md');
 const unreleasedStart = changelog.search(/^## \[Unreleased\][^\n]*(?:\n|$)/m);
 const afterUnreleased = unreleasedStart === -1
@@ -227,16 +229,16 @@ if (hasSupportedVersion) {
     isDevelopment,
   );
 
-  const lock = readJson('archify/package-lock.json');
-  if (lock.version !== version || lock.packages?.['']?.version !== version) {
-    fail(`archify/package-lock.json must match ${version} at the root and packages[""].`);
-  }
-
   const skill = read('archify/SKILL.md');
   const skillVersion = skill.match(/^\s*version:\s*["']?([^"'\s]+)["']?\s*$/m)?.[1];
   const expectedSkillVersion = `${parsedVersion.core[0]}.${parsedVersion.core[1]}`;
   if (skillVersion !== expectedSkillVersion) {
     fail(`archify/SKILL.md metadata version ${skillVersion || '(missing)'} must map to package ${version} as ${expectedSkillVersion}.`);
+  }
+
+  const lock = readJson(PACKAGE_LOCK_JSON);
+  if (lock.version !== version || lock.packages?.['']?.version !== version) {
+    fail(`${PACKAGE_LOCK_JSON} must match ${version} at the root and packages[""].`);
   }
 
   const rendererTemplate = read('archify/assets/template.html');

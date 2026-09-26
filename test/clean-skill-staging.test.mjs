@@ -91,13 +91,13 @@ test('clean staging preserves index modes and strips repository-only package met
   const root = repositoryFixture();
   const destination = path.join(root, 'staged-skill');
   try {
-    write(root, 'archify/bin/executable.mjs', '#!/usr/bin/env node\n', 0o755);
+    write(root, 'archify/scripts/executable.mjs', '#!/usr/bin/env node\n', 0o755);
     write(root, 'archify/runtime/test/required.dat', 'runtime fixture\n');
     git(root, ['add', 'archify']);
 
     stageCleanSkill({ repoRoot: root, destination });
 
-    assert.equal(fs.statSync(path.join(destination, 'bin', 'executable.mjs')).mode & 0o777, 0o755);
+    assert.equal(fs.statSync(path.join(destination, 'scripts', 'executable.mjs')).mode & 0o777, 0o755);
     assert.equal(fs.existsSync(path.join(destination, 'test')), false);
     assert.equal(
       fs.readFileSync(path.join(destination, 'runtime', 'test', 'required.dat'), 'utf8'),
@@ -105,9 +105,7 @@ test('clean staging preserves index modes and strips repository-only package met
       'only the repository-root test tree is excluded',
     );
     assert.equal(fs.existsSync(path.join(destination, 'package-lock.json')), false);
-    const packageJson = JSON.parse(fs.readFileSync(path.join(destination, 'package.json'), 'utf8'));
-    assert.equal(Object.hasOwn(packageJson, 'scripts'), false);
-    assert.equal(Object.hasOwn(packageJson, 'devDependencies'), false);
+    assert.equal(fs.existsSync(path.join(destination, 'package.json')), false);
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }
@@ -118,18 +116,18 @@ test('clean staging records Git index modes in a manifest outside the staged tre
   const destination = path.join(root, 'staged-skill');
   const manifest = path.join(root, 'staged-modes.json');
   try {
-    write(root, 'archify/bin/executable.mjs', '#!/usr/bin/env node\n');
+    write(root, 'archify/scripts/executable.mjs', '#!/usr/bin/env node\n');
     write(root, 'archify/renderers/shared/plain.mjs', 'export {};\n');
     git(root, ['add', 'archify']);
     // Set the index modes explicitly so the expectation does not depend on
     // whether this checkout can represent executable bits (core.fileMode).
-    git(root, ['update-index', '--chmod=+x', 'archify/bin/executable.mjs']);
+    git(root, ['update-index', '--chmod=+x', 'archify/scripts/executable.mjs']);
     git(root, ['update-index', '--chmod=-x', 'archify/renderers/shared/plain.mjs']);
 
     const result = stageCleanSkill({ repoRoot: root, destination, modeManifest: manifest });
 
     const recorded = JSON.parse(fs.readFileSync(manifest, 'utf8'));
-    assert.equal(recorded['bin/executable.mjs'], '100755');
+    assert.equal(recorded['scripts/executable.mjs'], '100755');
     assert.equal(recorded['renderers/shared/plain.mjs'], '100644');
     assert.deepEqual(result.modes, recorded);
     assert.deepEqual(Object.keys(recorded), [...Object.keys(recorded)].sort(), 'manifest keys are sorted');

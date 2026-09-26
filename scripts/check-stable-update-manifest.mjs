@@ -42,10 +42,10 @@ if (sourceRef !== 'HEAD' && sourceRef !== tag) {
   fail(`--source-ref must be HEAD or the exact release tag ${JSON.stringify(tag)}; found ${JSON.stringify(sourceRef)}.`);
 }
 
-const packageJson = readJson('archify/package.json');
+const release = readJson('archify/skill-release.json');
 const manifest = readJson('docs/skill-updates/archify/stable.json');
-if (version && sourceRef === 'HEAD' && packageJson?.version !== version) {
-  fail(`archify/package.json ${packageJson?.version || '(missing)'} does not match ${tag}.`);
+if (version && sourceRef === 'HEAD' && release?.version !== version) {
+  fail(`archify/skill-release.json ${release?.version || '(missing)'} does not match ${tag}.`);
 }
 
 if (version) {

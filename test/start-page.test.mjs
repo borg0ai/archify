@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { SCENARIO_RECIPES, startPromptsFor } from '../archify/recipes/scenarios.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
 const repoRoot = path.resolve(skillRoot, '..');
 
 class FakeElement {

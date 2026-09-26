@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
-import { ChromeVisualBrowser, findChrome } from '../archify/bin/visual-check.mjs';
+import { ChromeVisualBrowser, findChrome } from '../archify/scripts/visual-check.mjs';
 
 import {
   SUPPORTED_LOCALES,
@@ -16,8 +16,8 @@ import {
 } from '../archify/renderers/shared/i18n.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
-const cli = path.join(skillRoot, 'bin/archify.mjs');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
+const cli = path.join(skillRoot, 'scripts/archify.mjs');
 const templatePath = path.join(skillRoot, 'assets/template.html');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-i18n-'));
 const chromePath = process.env.ARCHIFY_CHROME ? findChrome() : null;

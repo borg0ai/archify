@@ -8,7 +8,7 @@ import path from 'node:path';
 import { pathToFileURL, fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(__dirname, '..');
+const skillRoot = path.resolve(__dirname, '..', 'archify');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-webm-artifact-'));
 const externalReachSource = process.env.ARCHIFY_REACH_CARD_SOURCE
   ? path.resolve(process.env.ARCHIFY_REACH_CARD_SOURCE)

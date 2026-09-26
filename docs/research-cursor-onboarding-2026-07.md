@@ -76,7 +76,7 @@ npx -y skills@1.5.20 add tt-a1i/archify \
 Observed evidence:
 
 1. `npx -y skills@1.5.20 list --agent cursor --json` reported one project-scoped `Cursor` installation at `.agents/skills/archify`.
-2. `node .agents/skills/archify/bin/archify.mjs doctor` exited 0.
+2. `node .agents/skills/archify/scripts/archify.mjs doctor` exited 0.
 3. Showcase validation of the installed architecture example exited 0 with nine checks and zero errors/warnings.
 4. `deliver` exited 0 and produced a checked, self-contained HTML artifact with a SHA-256 receipt.
 

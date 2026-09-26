@@ -37,7 +37,7 @@ for (const autocrlf of ['true', 'input', 'false']) {
       const files = new Map([
         ['.gitattributes', fs.readFileSync(path.join(repoRoot, '.gitattributes'))],
         ['README.md', Buffer.from('# Checkout proof\n文本 stays LF.\n')],
-        ['archify/bin/example.mjs', Buffer.from('export const value = 1;\n')],
+        ['archify/scripts/example.mjs', Buffer.from('export const value = 1;\n')],
         ['examples/proof.html', Buffer.from('<!doctype html>\n<p>diagram</p>\n')],
         ['scripts/proof.sh', Buffer.from('#!/bin/sh\nprintf "proof"\n')],
         // NUL identifies binary data; embedded CRLF must remain byte-for-byte intact.
