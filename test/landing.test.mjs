@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const skillRoot = path.resolve(__dirname, '..', 'archify');
 const repoRoot = path.resolve(skillRoot, '..');
-const docsRoot = path.join(repoRoot, 'docs');
+const docsRoot = path.join(repoRoot, 'apps/site');
 const landing = fs.readFileSync(path.join(docsRoot, 'index.html'), 'utf8');
 const manifest = JSON.parse(fs.readFileSync(path.join(docsRoot, 'gallery', 'manifest.json'), 'utf8'));
 

@@ -10,7 +10,7 @@ import { loadDiagram, writeDiagram } from '../archify/renderers/shared/cli.mjs';
 import { pathsAlias } from '../archify/renderers/shared/output-path.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(here, '..');
+const skillRoot = path.resolve(here, '..', 'archify');
 const cli = path.join(skillRoot, 'scripts/archify.mjs');
 const workflowFixture = path.join(skillRoot, 'examples/agent-tool-call.workflow.json');
 const baseFixture = path.join(skillRoot, 'examples/checkout-platform.base.architecture.json');

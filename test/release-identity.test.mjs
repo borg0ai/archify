@@ -5,10 +5,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import assert from 'node:assert/strict';
+const WORKSPACE_IMPORTERS = ['.', 'apps/viewer', 'toolings/archify-dev'];
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, '..');
-const checker = path.join(repoRoot, 'scripts', 'check-release-identity.mjs');
+const checker = path.join(repoRoot, 'toolings/archify-dev/src/commands/check-release-identity.mjs');
 
 function writeFile(root, relativePath, content) {
   const target = path.join(root, relativePath);
@@ -20,6 +21,11 @@ function runCheck(root) {
   return spawnSync(process.execPath, [checker, '--root', root], {
     encoding: 'utf8',
   });
+}
+
+function workspaceLockfile() {
+  const importers = WORKSPACE_IMPORTERS.map((importer) => `  ${importer}:`).join('\n\n');
+  return `lockfileVersion: '9.0'\n\nimporters:\n\n${importers}\n`;
 }
 
 function stableUpdateManifest(version) {
@@ -59,7 +65,7 @@ function writeValidDevelopmentFixture(root, overrides = {}) {
   ].join('\n');
   const files = {
     'package.json': JSON.stringify({ version }),
-    'package-lock.json': JSON.stringify({ version, packages: { '': { version } } }),
+    'pnpm-lock.yaml': workspaceLockfile(),
     'archify/skill-release.json': JSON.stringify({
       schemaVersion: 1,
       skillId: 'archify',
@@ -68,7 +74,7 @@ function writeValidDevelopmentFixture(root, overrides = {}) {
       source: { repository: 'https://github.com/tt-a1i/archify' },
       updateManifestUrl: 'https://tt-a1i.github.io/archify/skill-updates/archify/stable.json',
     }),
-    'docs/skill-updates/archify/stable.json': stableUpdateManifest('2.12.0'),
+    'apps/site/skill-updates/archify/stable.json': stableUpdateManifest('2.12.0'),
     'archify/SKILL.md': '---\nmetadata:\n  version: "2.13"\n---\n',
     'archify/assets/template.html': '<meta name="generator" content="archify 2.13.0-dev.0">',
     'CHANGELOG.md': [
@@ -87,11 +93,11 @@ function writeValidDevelopmentFixture(root, overrides = {}) {
     'README.md': english,
     'README_EN.md': english,
     'README_ZH.md': chinese,
-    'scripts/start-template.html': 'development · 开发版 · [[ARCHIFY_VERSION]]',
-    'scripts/guide-template.html': 'development · 开发版 · [[ARCHIFY_VERSION]]',
-    'scripts/gallery-template.html': 'development · 开发版 · [[ARCHIFY_VERSION]]',
-    'docs/index.html': `<span>development · v${version} · 开发版 · 9/9 checks</span><p>Raven manual ZIP / ZIP 手动安装: extract archify.zip into ~/.raven/workspace/skills, which yields ~/.raven/workspace/skills/archify; 将 archify.zip 解压到 ~/.raven/workspace/skills，解压后会得到 ~/.raven/workspace/skills/archify; not an agent-switcher target.</p>`,
-    'docs/start.html': `<span>development · v${version} · 开发版</span><p>Raven manual ZIP / ZIP 手动安装: extract archify.zip into ~/.raven/workspace/skills, which yields ~/.raven/workspace/skills/archify; 将 archify.zip 解压到 ~/.raven/workspace/skills，解压后会得到 ~/.raven/workspace/skills/archify; not an agent-switcher target.</p>`,
+    'apps/site/scripts/start-template.html': 'development · 开发版 · [[ARCHIFY_VERSION]]',
+    'apps/site/scripts/guide-template.html': 'development · 开发版 · [[ARCHIFY_VERSION]]',
+    'apps/site/scripts/gallery-template.html': 'development · 开发版 · [[ARCHIFY_VERSION]]',
+    'apps/site/index.html': `<span>development · v${version} · 开发版 · 9/9 checks</span><p>Raven manual ZIP / ZIP 手动安装: extract archify.zip into ~/.raven/workspace/skills, which yields ~/.raven/workspace/skills/archify; 将 archify.zip 解压到 ~/.raven/workspace/skills，解压后会得到 ~/.raven/workspace/skills/archify; not an agent-switcher target.</p>`,
+    'apps/site/start.html': `<span>development · v${version} · 开发版</span><p>Raven manual ZIP / ZIP 手动安装: extract archify.zip into ~/.raven/workspace/skills, which yields ~/.raven/workspace/skills/archify; 将 archify.zip 解压到 ~/.raven/workspace/skills，解压后会得到 ~/.raven/workspace/skills/archify; not an agent-switcher target.</p>`,
     'ROADMAP.md': `The current development line is \`v${version}\`; it contains the work under Changelog Unreleased and is not a stable release.`,
   };
   for (const [relativePath, content] of Object.entries({ ...files, ...overrides })) {
@@ -117,7 +123,7 @@ function writeValidStableFixture(root, overrides = {}) {
   ].join('\n');
   const files = {
     'package.json': JSON.stringify({ version }),
-    'package-lock.json': JSON.stringify({ version, packages: { '': { version } } }),
+    'pnpm-lock.yaml': workspaceLockfile(),
     'archify/skill-release.json': JSON.stringify({
       schemaVersion: 1,
       skillId: 'archify',
@@ -126,7 +132,7 @@ function writeValidStableFixture(root, overrides = {}) {
       source: { repository: 'https://github.com/tt-a1i/archify' },
       updateManifestUrl: 'https://tt-a1i.github.io/archify/skill-updates/archify/stable.json',
     }),
-    'docs/skill-updates/archify/stable.json': stableUpdateManifest(version),
+    'apps/site/skill-updates/archify/stable.json': stableUpdateManifest(version),
     'archify/SKILL.md': '---\nmetadata:\n  version: "2.13"\n---\n',
     'archify/assets/template.html': '<meta name="generator" content="archify 2.13.0">',
     'CHANGELOG.md': [
@@ -141,11 +147,11 @@ function writeValidStableFixture(root, overrides = {}) {
     'README.md': english,
     'README_EN.md': english,
     'README_ZH.md': chinese,
-    'scripts/start-template.html': 'stable · 稳定版 · [[ARCHIFY_VERSION]]',
-    'scripts/guide-template.html': 'stable · 稳定版 · [[ARCHIFY_VERSION]]',
-    'scripts/gallery-template.html': 'stable · 稳定版 · [[ARCHIFY_VERSION]]',
-    'docs/index.html': `<span>stable · v${version} · 稳定版 · 9/9 checks</span><p>Raven manual ZIP / ZIP 手动安装: extract archify.zip into ~/.raven/workspace/skills, which yields ~/.raven/workspace/skills/archify; 将 archify.zip 解压到 ~/.raven/workspace/skills，解压后会得到 ~/.raven/workspace/skills/archify; not an agent-switcher target.</p>`,
-    'docs/start.html': `<span>stable · v${version} · 稳定版</span><p>Raven manual ZIP / ZIP 手动安装: extract archify.zip into ~/.raven/workspace/skills, which yields ~/.raven/workspace/skills/archify; 将 archify.zip 解压到 ~/.raven/workspace/skills，解压后会得到 ~/.raven/workspace/skills/archify; not an agent-switcher target.</p>`,
+    'apps/site/scripts/start-template.html': 'stable · 稳定版 · [[ARCHIFY_VERSION]]',
+    'apps/site/scripts/guide-template.html': 'stable · 稳定版 · [[ARCHIFY_VERSION]]',
+    'apps/site/scripts/gallery-template.html': 'stable · 稳定版 · [[ARCHIFY_VERSION]]',
+    'apps/site/index.html': `<span>stable · v${version} · 稳定版 · 9/9 checks</span><p>Raven manual ZIP / ZIP 手动安装: extract archify.zip into ~/.raven/workspace/skills, which yields ~/.raven/workspace/skills/archify; 将 archify.zip 解压到 ~/.raven/workspace/skills，解压后会得到 ~/.raven/workspace/skills/archify; not an agent-switcher target.</p>`,
+    'apps/site/start.html': `<span>stable · v${version} · 稳定版</span><p>Raven manual ZIP / ZIP 手动安装: extract archify.zip into ~/.raven/workspace/skills, which yields ~/.raven/workspace/skills/archify; 将 archify.zip 解压到 ~/.raven/workspace/skills，解压后会得到 ~/.raven/workspace/skills/archify; not an agent-switcher target.</p>`,
     'ROADMAP.md': `The current stable version is \`v${version}\`.`,
   };
   for (const [relativePath, content] of Object.entries({ ...files, ...overrides })) {
@@ -183,13 +189,13 @@ test('stable release preparation allows only the immediate prior public manifest
     ].join('\n');
     writeValidStableFixture(fixture, {
       'CHANGELOG.md': changelog,
-      'docs/skill-updates/archify/stable.json': stableUpdateManifest('2.12.0'),
+      'apps/site/skill-updates/archify/stable.json': stableUpdateManifest('2.12.0'),
     });
 
     const prior = runCheck(fixture);
     assert.equal(prior.status, 0, prior.stderr);
 
-    writeFile(fixture, 'docs/skill-updates/archify/stable.json', stableUpdateManifest('2.11.0'));
+    writeFile(fixture, 'apps/site/skill-updates/archify/stable.json', stableUpdateManifest('2.11.0'));
     const stale = runCheck(fixture);
     assert.notEqual(stale.status, 0);
     assert.match(stale.stderr, /immediate prior v2\.12\.0/);
@@ -224,7 +230,7 @@ test('the published update manifest must track the newest stable changelog relea
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-release-identity-'));
   try {
     writeValidDevelopmentFixture(fixture, {
-      'docs/skill-updates/archify/stable.json': stableUpdateManifest('2.11.0'),
+      'apps/site/skill-updates/archify/stable.json': stableUpdateManifest('2.11.0'),
     });
 
     const result = runCheck(fixture);
@@ -241,7 +247,7 @@ test('the published update manifest must use a canonical UTC timestamp', () => {
     const manifest = JSON.parse(stableUpdateManifest('2.12.0'));
     manifest.publishedAt = '2026-07-29T08:00:00+08:00';
     writeValidDevelopmentFixture(fixture, {
-      'docs/skill-updates/archify/stable.json': JSON.stringify(manifest),
+      'apps/site/skill-updates/archify/stable.json': JSON.stringify(manifest),
     });
 
     const result = runCheck(fixture);
@@ -324,10 +330,7 @@ test('package, lockfile, Skill metadata, escaped Shields badge, and public docs 
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-release-identity-'));
   try {
     writeFile(fixture, 'package.json', JSON.stringify({ version: '2.13.0-dev.0' }));
-    writeFile(fixture, 'package-lock.json', JSON.stringify({
-      version: '2.12.0',
-      packages: { '': { version: '2.12.0' } },
-    }));
+    writeFile(fixture, 'pnpm-lock.yaml', workspaceLockfile().replace('  .:\n\n', ''));
     writeFile(fixture, 'archify/SKILL.md', '---\nmetadata:\n  version: "2.12"\n---\n');
     writeFile(fixture, 'CHANGELOG.md', [
       '# Changelog',
@@ -348,16 +351,16 @@ test('package, lockfile, Skill metadata, escaped Shields badge, and public docs 
     writeFile(fixture, 'README.md', staleEnglish);
     writeFile(fixture, 'README_EN.md', staleEnglish);
     writeFile(fixture, 'README_ZH.md', '![Version](https://img.shields.io/badge/version-2.13.0-blue)\n\nArchify 2.12 包含未发布能力。\n');
-    writeFile(fixture, 'docs/index.html', '<span>Agent Skill · v2.12.0</span>');
-    writeFile(fixture, 'docs/start.html', '<span>Archify v2.12.0</span>');
+    writeFile(fixture, 'apps/site/index.html', '<span>Agent Skill · v2.12.0</span>');
+    writeFile(fixture, 'apps/site/start.html', '<span>Archify v2.12.0</span>');
 
     const result = runCheck(fixture);
     assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /package-lock\.json must match 2\.13\.0-dev\.0/);
+    assert.match(result.stderr, /pnpm-lock\.yaml must list workspace importer \./);
     assert.match(result.stderr, /SKILL\.md metadata version 2\.12 must map to package 2\.13\.0-dev\.0/);
     assert.match(result.stderr, /README\.md must advertise development identity v2\.13\.0-dev\.0/);
-    assert.match(result.stderr, /docs\/index\.html must advertise development identity v2\.13\.0-dev\.0/);
-    assert.match(result.stderr, /docs\/start\.html must advertise development identity v2\.13\.0-dev\.0/);
+    assert.match(result.stderr, /apps\/site\/index\.html must advertise development identity v2\.13\.0-dev\.0/);
+    assert.match(result.stderr, /apps\/site\/start\.html must advertise development identity v2\.13\.0-dev\.0/);
   } finally {
     fs.rmSync(fixture, { recursive: true, force: true });
   }
@@ -367,12 +370,12 @@ test('landing proof receipt matches the current nine-check artifact contract', (
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-release-identity-'));
   try {
     writeValidDevelopmentFixture(fixture, {
-      'docs/index.html': '<span>development · v2.13.0-dev.0 · 开发版 · 8/8 checks</span><p>Raven manual ZIP / ZIP 手动安装: extract archify.zip into ~/.raven/workspace/skills, which yields ~/.raven/workspace/skills/archify; 将 archify.zip 解压到 ~/.raven/workspace/skills，解压后会得到 ~/.raven/workspace/skills/archify; not an agent-switcher target.</p>',
+      'apps/site/index.html': '<span>development · v2.13.0-dev.0 · 开发版 · 8/8 checks</span><p>Raven manual ZIP / ZIP 手动安装: extract archify.zip into ~/.raven/workspace/skills, which yields ~/.raven/workspace/skills/archify; 将 archify.zip 解压到 ~/.raven/workspace/skills，解压后会得到 ~/.raven/workspace/skills/archify; not an agent-switcher target.</p>',
     });
 
     const result = runCheck(fixture);
     assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /docs\/index\.html proof receipt must say 9\/9/);
+    assert.match(result.stderr, /apps\/site\/index\.html proof receipt must say 9\/9/);
   } finally {
     fs.rmSync(fixture, { recursive: true, force: true });
   }
@@ -382,7 +385,7 @@ test('landing rejects every stale N/N contract count even when 9/9 is also prese
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-release-identity-'));
   try {
     writeValidDevelopmentFixture(fixture, {
-      'docs/index.html': [
+      'apps/site/index.html': [
         '<span>development · v2.13.0-dev.0 · 开发版 · 9/9 checks</span>',
         '<span>legacy receipt · 7/7 checks</span>',
         '<p>Raven manual ZIP / ZIP 手动安装: extract archify.zip into ~/.raven/workspace/skills, which yields ~/.raven/workspace/skills/archify; 将 archify.zip 解压到 ~/.raven/workspace/skills，解压后会得到 ~/.raven/workspace/skills/archify; not an agent-switcher target.</p>',
@@ -401,7 +404,7 @@ test('Raven stays a truthful manual ZIP install and never becomes a generated ag
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-release-identity-'));
   try {
     writeValidDevelopmentFixture(fixture, {
-      'docs/start.html': [
+      'apps/site/start.html': [
         '<span>development · v2.13.0-dev.0 · 开发版</span>',
         '<button data-agent="raven">Raven</button>',
         '<pre>npx skills add tt-a1i/archify --agent raven</pre>',
@@ -473,12 +476,12 @@ test('generated public-page templates keep a development marker and version plac
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-release-identity-'));
   try {
     writeValidDevelopmentFixture(fixture, {
-      'scripts/gallery-template.html': 'Proof Lab / 2.12.0',
+      'apps/site/scripts/gallery-template.html': 'Proof Lab / 2.12.0',
     });
 
     const result = runCheck(fixture);
     assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /scripts\/gallery-template\.html must use \[\[ARCHIFY_VERSION\]\] with development and 开发版 labels/);
+    assert.match(result.stderr, /apps\/site\/scripts\/gallery-template\.html must use \[\[ARCHIFY_VERSION\]\] with development and 开发版 labels/);
   } finally {
     fs.rmSync(fixture, { recursive: true, force: true });
   }
@@ -488,7 +491,7 @@ test('stable public-page templates reject development labels on version-bearing 
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-release-identity-'));
   try {
     writeValidStableFixture(fixture, {
-      'scripts/guide-template.html': [
+      'apps/site/scripts/guide-template.html': [
         '<span data-i18n="versionLabel">Scenario guide / development / v[[ARCHIFY_VERSION]]</span>',
         "versionLabel:'Scenario guide / stable / v[[ARCHIFY_VERSION]]'",
         "versionLabel:'场景指南 / 稳定版 / v[[ARCHIFY_VERSION]]'",
@@ -497,7 +500,7 @@ test('stable public-page templates reject development labels on version-bearing 
 
     const result = runCheck(fixture);
     assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /scripts\/guide-template\.html must not label \[\[ARCHIFY_VERSION\]\] as development or 开发版/);
+    assert.match(result.stderr, /apps\/site\/scripts\/guide-template\.html must not label \[\[ARCHIFY_VERSION\]\] as development or 开发版/);
   } finally {
     fs.rmSync(fixture, { recursive: true, force: true });
   }

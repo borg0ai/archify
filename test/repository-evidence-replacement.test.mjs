@@ -6,7 +6,7 @@ import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
-const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'archify');
 const cli = path.join(skillRoot, 'scripts', 'archify.mjs');
 const repositoryUrl = 'https://github.com/example/evidence-replacement';
 const shortFile = 'first\n';

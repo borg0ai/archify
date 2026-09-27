@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const landing = fs.readFileSync(path.resolve(__dirname, '..', 'docs', 'index.html'), 'utf8');
+const landing = fs.readFileSync(path.resolve(__dirname, '..', 'apps/site', 'index.html'), 'utf8');
 
 function cssRule(selector) {
   const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

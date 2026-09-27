@@ -3,13 +3,19 @@
 // development and packaged example HTML aside from platform checkout line endings. Also covers schema enforcement (negative cases),
 // template freshness of the architecture-mode example, and version sync.
 //
-// Run from the skill folder: npm test
+// Run from the repository root: pnpm test
 
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  expectedLockImporters,
+  missingWorkspaceImporters,
+  PNPM_LOCKFILE,
+  PNPM_WORKSPACE,
+} from '../toolings/archify-dev/src/commands/pnpm-workspace-lock.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const skillRoot = path.resolve(__dirname, '..', 'archify');
@@ -171,10 +177,12 @@ check('template generator meta matches package.json version',
   template.includes(`<meta name="generator" content="archify ${pkg.version}">`),
   `package.json says ${pkg.version}`);
 
-const lock = JSON.parse(fs.readFileSync(path.join(repoRoot, 'package-lock.json'), 'utf8'));
-check('package-lock.json version matches package.json',
-  lock.version === pkg.version && lock.packages?.['']?.version === pkg.version,
-  `lockfile says ${lock.version} — run npm install and rebuild the zip`);
+const lock = fs.readFileSync(path.join(repoRoot, PNPM_LOCKFILE), 'utf8');
+const workspace = fs.readFileSync(path.join(repoRoot, PNPM_WORKSPACE), 'utf8');
+const missingImporters = missingWorkspaceImporters(lock, expectedLockImporters(repoRoot, workspace));
+check('pnpm-lock.yaml lists every workspace importer',
+  missingImporters.length === 0,
+  `missing ${missingImporters.join(', ') || PNPM_LOCKFILE} — run pnpm install`);
 
 const skillMd = fs.readFileSync(path.join(skillRoot, 'SKILL.md'), 'utf8');
 const skillVersion = (skillMd.match(/^\s*version:\s*"([^"]+)"/m) || [])[1];
@@ -191,7 +199,7 @@ for (const readmeName of ['README.md', 'README_EN.md', 'README_ZH.md']) {
     `${readmeName} badge says ${[...new Set(badgeVersions)].join(', ') || '(missing)'} instead of ${pkg.version}`);
 }
 
-const landingPage = fs.readFileSync(path.join(repoRoot, 'docs/index.html'), 'utf8');
+const landingPage = fs.readFileSync(path.join(repoRoot, 'apps/site/index.html'), 'utf8');
 const landingVersions = [...landingPage.matchAll(/\bv\d+\.\d+\.\d+(?:-[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?\b/g)]
   .map((match) => match[0]);
 check('GitHub Pages version labels match package.json',

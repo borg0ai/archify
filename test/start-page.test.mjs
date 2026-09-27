@@ -114,10 +114,10 @@ test('start page: checked-in HTML is reproducible from canonical scenario recipe
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-start-page-'));
   const generated = path.join(tmp, 'start.html');
   try {
-    execFileSync(process.execPath, [path.join(repoRoot, 'scripts/build-start.mjs'), generated]);
+    execFileSync(process.execPath, [path.join(repoRoot, 'apps/site/scripts/build-start.mjs'), generated]);
     assert.equal(
       fs.readFileSync(generated, 'utf8'),
-      fs.readFileSync(path.join(repoRoot, 'docs/start.html'), 'utf8'),
+      fs.readFileSync(path.join(repoRoot, 'apps/site/start.html'), 'utf8'),
     );
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
@@ -125,7 +125,7 @@ test('start page: checked-in HTML is reproducible from canonical scenario recipe
 });
 
 test('start page: offers five bounded bilingual starts without ingesting source content', () => {
-  const html = fs.readFileSync(path.join(repoRoot, 'docs/start.html'), 'utf8');
+  const html = fs.readFileSync(path.join(repoRoot, 'apps/site/start.html'), 'utf8');
   assert.doesNotMatch(html, /\[\[[A-Z0-9_]+\]\]/);
   assert.match(html, /npx -y skills add tt-a1i\/archify --skill archify --agent codex --global --copy --yes/);
   assert.match(html, /npx -y skills add tt-a1i\/archify --skill archify --agent codex --copy --yes/);
@@ -192,7 +192,7 @@ test('start page: canonical recipes own description and repository prompt varian
 });
 
 test('start page: input mode drives rendered prompt, copy, keyboard, and URL without changing event schema', async () => {
-  const html = fs.readFileSync(path.join(repoRoot, 'docs/start.html'), 'utf8');
+  const html = fs.readFileSync(path.join(repoRoot, 'apps/site/start.html'), 'utf8');
   const page = executeStartPage(html);
   const descriptionPrompt = page.data.architecture.en.descriptionPrompt;
   const repositoryPrompt = page.data.architecture.en.repositoryPrompt;

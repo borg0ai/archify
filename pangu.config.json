@@ -1,0 +1,18 @@
+{
+  "projectName": "archify",
+  "packageManager": "pnpm",
+  "demos": [
+    {
+      "name": "Viewer",
+      "value": "viewer",
+      "description": "Desktop app. Start with pnpm dev viewer.",
+      "package": "archify-viewer"
+    },
+    {
+      "name": "Site",
+      "value": "site",
+      "description": "Public site. Start with pnpm dev site.",
+      "package": "archify-site"
+    }
+  ]
+}

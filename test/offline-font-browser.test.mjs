@@ -8,7 +8,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { ChromeVisualBrowser, findChrome } from '../archify/scripts/visual-check.mjs';
 import { assertFontCss, inspectDocuments } from './helpers/offline-fonts.mjs';
 
-const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'archify');
 const chrome = process.env.ARCHIFY_CHROME ? findChrome() : null;
 const options = { skip: chrome ? false : 'Set ARCHIFY_CHROME for offline font and export browser acceptance.' };
 

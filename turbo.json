@@ -1,0 +1,28 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build:viewer": {
+      "cache": false
+    },
+    "generate:viewer": {
+      "cache": false
+    },
+    "check:viewer": {
+      "cache": false
+    },
+    "test:skill": {
+      "cache": false
+    },
+    "test": {
+      "cache": false
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

@@ -24,7 +24,7 @@ function normalize(text) {
 
 test('generated proof gallery matches its sources, receipts, and checked-in artifacts', () => {
   const output = execFileSync(process.execPath, [
-    path.join(repoRoot, 'scripts', 'build-gallery.mjs'),
+    path.join(repoRoot, 'apps/site/scripts/build-gallery.mjs'),
     generatedRoot,
   ], { encoding: 'utf8' });
   assert.match(output, /gallery 11 artifacts \/ 99 checks/);
@@ -120,10 +120,10 @@ test('generated proof gallery matches its sources, receipts, and checked-in arti
     ...manifest.entries.flatMap((entry) => [entry.artifact, entry.input]),
   ]) {
     const fresh = path.join(generatedRoot, relative);
-    const checked = path.join(repoRoot, 'docs', relative);
+    const checked = path.join(repoRoot, 'apps/site', relative);
     assert.ok(fs.existsSync(checked), `${relative}: checked-in gallery output missing`);
     assert.equal(normalize(fs.readFileSync(fresh, 'utf8')), normalize(fs.readFileSync(checked, 'utf8')),
-      `${relative}: checked-in gallery output is stale; run node scripts/build-gallery.mjs`);
+      `${relative}: checked-in gallery output is stale; run node apps/site/scripts/build-gallery.mjs`);
   }
 });
 

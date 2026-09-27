@@ -83,7 +83,7 @@ test('contributor and pull-request guides keep proof changes reproducible and st
     '.github/ISSUE_TEMPLATE/showcase.yml',
     '.github/ISSUE_TEMPLATE/bug-report.yml',
     'npm test',
-    'node scripts/build-gallery.mjs docs',
+    'node apps/site/scripts/build-gallery.mjs apps/site',
     'Do not include secrets',
     'Agent-first',
     'diagnostics[]',
@@ -93,15 +93,17 @@ test('contributor and pull-request guides keep proof changes reproducible and st
   ]) {
     assert.match(contributing, new RegExp(required.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), required);
   }
+  // RFC 0002: the archive builder is the archify-dev CLI, not scripts/build-zip.sh.
+  const archiveCommand = 'pnpm --filter archify-dev run package:zip -- /tmp/archify-contrib.zip';
   assert.match(
     contributing,
-    /(?:^|\n)scripts\/build-zip\.sh \/tmp\/archify-contrib\.zip(?:\n|$)/,
-    'the archive builder must be documented as an executable shell script',
+    new RegExp(`(?:^|\\n)${archiveCommand.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:\\n|$)`),
+    'the archive builder must be documented as the archify-dev package command',
   );
   assert.doesNotMatch(
     contributing,
-    /\bnode\s+scripts\/build-zip\.sh\b/,
-    'the shell archive builder must not be documented as a Node.js command',
+    /(?:^|\n)scripts\/build-zip\.sh\b/,
+    'the shell archive builder must not remain the documented command',
   );
   for (const required of [
     'Stability impact',

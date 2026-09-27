@@ -11,6 +11,7 @@ const skillRoot = path.resolve(__dirname, '..', 'archify');
 const repoRoot = path.resolve(skillRoot, '..');
 const artifactRoots = [
   'archify/examples',
+  'apps/site',
   'docs',
   'examples',
   'experiments',

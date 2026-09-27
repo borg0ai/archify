@@ -9,7 +9,7 @@ import { startPreview } from '../archify/scripts/preview.mjs';
 import { ChromeVisualBrowser, findChrome } from '../archify/scripts/visual-check.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(here, '..');
+const skillRoot = path.resolve(here, '..', 'archify');
 const cli = path.join(skillRoot, 'scripts', 'archify.mjs');
 
 function git(repo, ...args) {

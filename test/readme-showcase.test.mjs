@@ -10,8 +10,8 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const skillRoot = path.resolve(__dirname, '..', 'archify');
 const repoRoot = path.resolve(skillRoot, '..');
-const assetPath = path.join(repoRoot, 'docs', 'assets', 'archify-live-proof.gif');
-const receiptPath = path.join(repoRoot, 'docs', 'assets', 'archify-live-proof.json');
+const assetPath = path.join(repoRoot, 'apps/site', 'assets', 'archify-live-proof.gif');
+const receiptPath = path.join(repoRoot, 'apps/site', 'assets', 'archify-live-proof.json');
 
 function sha256(file) {
   return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
@@ -89,7 +89,7 @@ function inspectGif(buffer) {
 }
 
 test('README motion proof is compact, looping, and backed by current gallery artifacts', () => {
-  const builder = fs.readFileSync(path.join(repoRoot, 'scripts', 'build-readme-showcase.mjs'), 'utf8');
+  const builder = fs.readFileSync(path.join(repoRoot, 'apps/site/scripts/build-readme-showcase.mjs'), 'utf8');
   assert.match(builder, /\?embed=1&play=1&theme=dark#view=/);
   const buffer = fs.readFileSync(assetPath);
   const receipt = JSON.parse(fs.readFileSync(receiptPath, 'utf8'));
@@ -99,8 +99,8 @@ test('README motion proof is compact, looping, and backed by current gallery art
   assert.ok(buffer.includes(Buffer.from('NETSCAPE2.0')), 'GIF must loop continuously');
   assert.ok(buffer.byteLength <= 3 * 1024 * 1024, `README GIF is too large: ${buffer.byteLength} bytes`);
   assert.equal(receipt.schemaVersion, 1);
-  assert.equal(receipt.generator, 'scripts/build-readme-showcase.mjs');
-  assert.equal(receipt.output, 'docs/assets/archify-live-proof.gif');
+  assert.equal(receipt.generator, 'apps/site/scripts/build-readme-showcase.mjs');
+  assert.equal(receipt.output, 'apps/site/assets/archify-live-proof.gif');
   assert.equal(receipt.width, inspected.width);
   assert.equal(receipt.height, inspected.height);
   assert.equal(receipt.frameCount, inspected.frameCount);
@@ -119,13 +119,13 @@ test('README motion proof is compact, looping, and backed by current gallery art
 test('all README languages keep the product hero and retain the verified animated proof', () => {
   for (const filename of ['README.md', 'README_EN.md', 'README_ZH.md']) {
     const readme = fs.readFileSync(path.join(repoRoot, filename), 'utf8');
-    const heroIndex = readme.indexOf('docs/assets/archify-readme-hero.png');
+    const heroIndex = readme.indexOf('apps/site/assets/archify-readme-hero.png');
     const titleIndex = readme.indexOf('# Archify');
-    const proofIndex = readme.indexOf('docs/assets/archify-live-proof.gif');
+    const proofIndex = readme.indexOf('apps/site/assets/archify-live-proof.gif');
     const demosIndex = Math.max(readme.indexOf('## See Archify in action'), readme.indexOf('## 看看 Archify 能做什么'));
     assert.ok(heroIndex >= 0 && heroIndex < titleIndex, `${filename}: product hero is not above the title`);
     assert.ok(proofIndex > demosIndex, `${filename}: animated proof must live in the demo section`);
-    assert.match(readme, /docs\/assets\/archify-live-proof\.gif/);
+    assert.match(readme, /apps\/site\/assets\/archify-live-proof\.gif/);
     assert.match(readme, /https:\/\/tt-a1i\.github\.io\/archify\/gallery\.html/);
   }
   assert.equal(
@@ -133,27 +133,6 @@ test('all README languages keep the product hero and retain the verified animate
     fs.readFileSync(path.join(repoRoot, 'README_EN.md'), 'utf8'),
     'README.md and README_EN.md must stay synchronized',
   );
-});
-
-test('README installation tables contain a complete DeepSeek Harness row', () => {
-  for (const filename of ['README.md', 'README_EN.md', 'README_ZH.md']) {
-    const readme = fs.readFileSync(path.join(repoRoot, filename), 'utf8');
-    const row = readme.split('\n').find((line) => line.startsWith('| **DeepSeek Harness** |'));
-    assert.ok(row, `${filename}: DeepSeek Harness must be an installation table row`);
-    assert.equal(
-      (row.match(/(?<!\\)\|/g) || []).length,
-      4,
-      `${filename}: DeepSeek Harness must have exactly three table cells`,
-    );
-    assert.ok(
-      row.includes('Node `^22.19.0 \\|\\| >=24.0.0`'),
-      `${filename}: Node version pipes must be escaped inside the table row`,
-    );
-    assert.ok(
-      readme.includes(`${row}\n\n`),
-      `${filename}: installation table must end after the DeepSeek Harness row`,
-    );
-  }
 });
 
 test('README demos use checked-in captures and live deep links below the existing hero', () => {
@@ -173,7 +152,7 @@ test('README demos use checked-in captures and live deep links below the existin
   ];
 
   for (const demo of demos) {
-    const buffer = fs.readFileSync(path.join(repoRoot, 'docs', 'assets', demo.asset));
+    const buffer = fs.readFileSync(path.join(repoRoot, 'apps/site', 'assets', demo.asset));
     assert.equal(buffer.subarray(1, 4).toString('ascii'), 'PNG', `${demo.asset}: invalid PNG signature`);
     assert.equal(buffer.readUInt32BE(16), 1280, `${demo.asset}: unexpected width`);
     assert.equal(buffer.readUInt32BE(20), 720, `${demo.asset}: unexpected height`);
@@ -182,8 +161,8 @@ test('README demos use checked-in captures and live deep links below the existin
 
   for (const filename of ['README.md', 'README_EN.md', 'README_ZH.md']) {
     const readme = fs.readFileSync(path.join(repoRoot, filename), 'utf8');
-    const heroIndex = readme.indexOf('docs/assets/archify-readme-hero.png');
-    const proofIndex = readme.indexOf('docs/assets/archify-live-proof.gif');
+    const heroIndex = readme.indexOf('apps/site/assets/archify-readme-hero.png');
+    const proofIndex = readme.indexOf('apps/site/assets/archify-live-proof.gif');
     const previewIndex = Math.max(readme.indexOf('## Preview'), readme.indexOf('## 预览'));
     const demosIndex = Math.max(readme.indexOf('## See Archify in action'), readme.indexOf('## 看看 Archify 能做什么'));
     const quickStartIndex = Math.max(readme.indexOf('## Quick start'), readme.indexOf('## 快速开始'));
@@ -191,7 +170,7 @@ test('README demos use checked-in captures and live deep links below the existin
     assert.ok(demosIndex < previewIndex && previewIndex < quickStartIndex, `${filename}: demo section is misplaced`);
     assert.ok(demosIndex < proofIndex && proofIndex < previewIndex, `${filename}: animated proof is outside the demo section`);
     for (const demo of demos) {
-      assert.match(readme, new RegExp(`docs/assets/${demo.asset.replaceAll('.', '\\.')}`));
+      assert.match(readme, new RegExp(`apps/site/assets/${demo.asset.replaceAll('.', '\\.')}`));
       assert.ok(readme.includes(demo.link), `${filename}: missing ${demo.link}`);
     }
   }
@@ -218,11 +197,11 @@ test('README stays scannable without deleting the visual proof set', () => {
     const readme = fs.readFileSync(path.join(repoRoot, filename), 'utf8');
     assert.ok(readme.split('\n').length <= 295, `${filename}: README grew beyond the scannable line budget`);
     const supercode = readme.indexOf('https://supercode.sh/?utm_source=archify');
-    const evermind = readme.indexOf('docs/assets/sponsors/evermind-archify-raven.png');
+    const evermind = readme.indexOf('apps/site/assets/sponsors/evermind-archify-raven.png');
     assert.ok(supercode >= 0 && evermind > supercode, `${filename}: EverMind must follow Supercode`);
     assert.match(readme, filename === 'README_ZH.md' ? /不需要绑定代码库/ : /No repository is required/);
     for (const asset of commonAssets) {
-      assert.ok(readme.includes(`docs/assets/${asset}`), `${filename}: visual proof ${asset} was removed`);
+      assert.ok(readme.includes(`apps/site/assets/${asset}`), `${filename}: visual proof ${asset} was removed`);
     }
   }
 
@@ -235,7 +214,7 @@ test('README stays scannable without deleting the visual proof set', () => {
   assert.ok(introBullets.length <= 8, `README.md has too many top-level capability bullets (${introBullets.length})`);
 
   const chinese = fs.readFileSync(path.join(repoRoot, 'README_ZH.md'), 'utf8');
-  assert.ok(chinese.includes('docs/assets/claude-skills-settings.png'), 'README_ZH.md lost the Claude Skills setup image');
+  assert.ok(chinese.includes('apps/site/assets/claude-skills-settings.png'), 'README_ZH.md lost the Claude Skills setup image');
 });
 
 test('all README languages end with the self-hosted star history chart', () => {

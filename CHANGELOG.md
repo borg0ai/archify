@@ -6,13 +6,15 @@ All notable changes are documented here. Format loosely follows [Keep a Changelo
 
 > Development identity: `v2.17.0-dev.2`. Not a stable release.
 
+### Removed
+- **DeepSeek Harness support.** The `@tt-a1i/archify-dsh` adapter, its packaging scripts, tests, and the `dsh.yml` CI workflow are removed; DSH is no longer a supported install surface. The canonical Archify Skill is unaffected.
+
 ### Fixed
 - **Architecture Delta baseline arrowheads (#433).** Removed and rerouted baseline relationships retain their marker definitions in the composed Delta SVG, preserving their authored direction alongside current relationships.
 - **Compare rollback recovery (#438).** If restoring a previous output fails, compare preserves its recovery directory and reports backup-to-target paths instead of deleting the remaining backups during cleanup.
 - **固定提交的来源校验 (#420)。** 校验忽略本地 Git replacement refs，始终读取指定提交的原始对象，避免替换后的文件或行范围造成误接受或误拒绝；保留原有来源链接、诊断与用户 Git 配置。
 - **导出的独立 SVG 声明 UTF-8 编码。** 架构图「下载 SVG」和架构对比（compare）导出的 SVG 文档现在以 `<?xml version="1.0" encoding="UTF-8"?>` 声明开头；缺少声明时，部分消费方不按 XML 规范默认 UTF-8 而猜测编码，导致中文等非 ASCII 文本乱码。
 - **Compare 输入快照一致性 (#400)。** 原始输入校验使用首次读取的字节快照，使其与回执哈希和差异计算保持一致；读取后原文件发生变化不会影响本次比较，非法原始字段仍会被拒绝。
-- **DSH plugin refresh.** Adapter 0.2.0 pins the current Archify development snapshot, includes the newer runtime and CLI fixes, and targets DSH 0.1.2-rc.1. Release metadata replaces the frozen 0.1.0 packaging source; the tarball uses the canonical clean-Skill stager and documents independent plugin upgrades.
 - **Machine-readable CLI argument failures (#330).** `validate --json` and `deliver --json` now keep invalid or missing option values, unknown options and diagram types, unsupported option combinations, and usage errors inside one versioned failure receipt on stdout. These failures use the `arguments` stage, stable diagnostic codes, and exit status 2, while human-mode stderr behavior remains unchanged.
 - **Complete artifact-check receipts (#311).** The checker now lets stdout drain before exiting, so large JSON receipts remain complete through pipes. Validation, delivery, and architecture comparison retain their original success/failure status without truncated-JSON errors.
 - **CLI output file types (#124).** Render, deliver, preview, and compare reject non-HTML artifact targets and compare rejects non-JSON receipt targets, including through symbolic links. Explicit absolute and parent-directory outputs remain supported; internal validation and inspection continue to work.
@@ -258,7 +260,7 @@ All notable changes are documented here. Format loosely follows [Keep a Changelo
 - **Example re-render script.** `test/render-examples.mjs` re-renders every example in one shot via `npm run render:examples`.
 - **CI workflow.** `.github/workflows/ci.yml` runs the test suite on a Node 20/22 matrix and verifies `archify.zip` freshness by rebuilding and diffing.
 - **Release workflow.** `.github/workflows/release.yml` builds the zip on `v*` tags, verifies the tag matches `package.json`, and attaches the artifact to the GitHub Release.
-- **Zip build script.** `scripts/build-zip.sh` builds `archify.zip` from `archify/` (including `package.json`, the lockfile, and the newly bundled `archify/LICENSE`; excluding `node_modules`). `package.json` declares `engines.node >= 18`.
+- **Zip build command.** `archify-dev package zip` builds `archify.zip` from the tracked `archify/` Skill tree.
 - **Workflow preview image.** Added `docs/assets/archify-workflow.png` (4× dark export) — workflow was the only diagram type without a preview screenshot.
 - **Generator metadata & accessibility.** Generated HTML carries `<meta name="generator" content="archify 2.5.0">`; the SVG root gets `role="img"` + `aria-label`, toasts get `role="status"`, and the export menu fixes focus return to the trigger, ArrowDown-to-open, and separator ARIA.
 - **Async Google Fonts loading.** The `media="print"` onload trick plus preconnect and a noscript fallback mean an offline or slow network no longer blocks first paint.

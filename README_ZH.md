@@ -2,7 +2,7 @@
   <a href="./README.md">English</a> · <strong>简体中文</strong>
 </p>
 
-![Archify 主视觉](docs/assets/archify-readme-hero.png)
+![Archify 主视觉](apps/site/assets/archify-readme-hero.png)
 
 # Archify
 
@@ -37,7 +37,7 @@ npx skills add tt-a1i/archify -g
   <td align="center" width="240"><a href="https://supercode.sh/?utm_source=archify"><img src="https://cdn.supercode.sh/sponsors/supercode-logo.png" alt="Supercode" width="200"/></a><br/><strong><a href="https://supercode.sh/?utm_source=archify">supercode.sh</a></strong></td>
   <td><a href="https://supercode.sh/?utm_source=archify">Supercode</a> 赞助 Archify，通过 Token 优化、精选 Skills 和规范驱动开发增强 Codex 与 Cursor。Archify 已入选 <a href="https://supercode.sh/en/skills/tt-a1i/archify/archify">Supercode Editor’s Choice</a> 技能。<br/><br/><a href="https://supercode.sh/en/skills/tt-a1i/archify/archify"><img src="https://supercode.sh/badges/editors-choice.svg" alt="Supercode Editor’s Choice — Archify" width="240" height="55"/></a></td>
 </tr>
-<tr><td align="center" width="240"><a href="https://github.com/EverMind-AI/Raven"><img src="docs/assets/sponsors/evermind-archify-raven.png" alt="Archify × Raven" width="200" /></a><br/><strong><a href="https://github.com/EverMind-AI">EverMind</a> · <a href="https://github.com/EverMind-AI/Raven">Raven</a></strong></td><td>感谢 EverMind 赞助 Archify。EverMind 专注 Agent 记忆基础设施，旗下 <a href="https://github.com/EverMind-AI/Raven"><strong>Raven</strong></a> 已支持 Archify Skill，让 Raven 工作流可以直接生成经过验证的交互式系统地图。</td></tr>
+<tr><td align="center" width="240"><a href="https://github.com/EverMind-AI/Raven"><img src="apps/site/assets/sponsors/evermind-archify-raven.png" alt="Archify × Raven" width="200" /></a><br/><strong><a href="https://github.com/EverMind-AI">EverMind</a> · <a href="https://github.com/EverMind-AI/Raven">Raven</a></strong></td><td>感谢 EverMind 赞助 Archify。EverMind 专注 Agent 记忆基础设施，旗下 <a href="https://github.com/EverMind-AI/Raven"><strong>Raven</strong></a> 已支持 Archify Skill，让 Raven 工作流可以直接生成经过验证的交互式系统地图。</td></tr>
 </table>
 
 > 想赞助 Archify？[欢迎通过邮件联系我们。](mailto:2801884530@qq.com)
@@ -47,23 +47,23 @@ npx skills add tt-a1i/archify -g
 下面都是真实生成的 Archify 成品，不是产品效果图。点击画面即可打开对应的可分享交互状态。
 
 <p align="center">
-  <a href="https://tt-a1i.github.io/archify/gallery.html"><img src="docs/assets/archify-live-proof.gif" alt="三个经过验证的 Archify 成品依次展示 Signal Flow、Blueprint 和 Classic 预设" width="960"/></a>
+  <a href="https://tt-a1i.github.io/archify/gallery.html"><img src="apps/site/assets/archify-live-proof.gif" alt="三个经过验证的 Archify 成品依次展示 Signal Flow、Blueprint 和 Classic 预设" width="960"/></a>
   <br/>
   <sub><strong>三个真实生成、校验通过的成品。</strong> Signal Flow · Blueprint · Classic · <a href="https://tt-a1i.github.io/archify/gallery.html">打开可交互验证作品集 ↗</a></sub>
 </p>
 
 | 引导故事 | 路径探查 | 语义角色对比 |
 |---|---|---|
-| [![Agent 工作流正在播放一个作者章节](docs/assets/archify-demo-story.png)](https://tt-a1i.github.io/archify/gallery/artifacts/agent-tool-call.workflow.html?theme=dark&present=1&play=1#view=happy-path) | [![缓存未命中时从 Web App 到 Postgres 的路径](docs/assets/archify-demo-route.png)](https://tt-a1i.github.io/archify/gallery/artifacts/cache-miss.sequence.html?theme=dark&present=1#route=web~db) | [![生产架构中后端与数据库角色的真实关系](docs/assets/archify-demo-lens.png)](https://tt-a1i.github.io/archify/gallery/artifacts/production-deployment.architecture.html?theme=dark&present=1#lens=backend~database) |
+| [![Agent 工作流正在播放一个作者章节](apps/site/assets/archify-demo-story.png)](https://tt-a1i.github.io/archify/gallery/artifacts/agent-tool-call.workflow.html?theme=dark&present=1&play=1#view=happy-path) | [![缓存未命中时从 Web App 到 Postgres 的路径](apps/site/assets/archify-demo-route.png)](https://tt-a1i.github.io/archify/gallery/artifacts/cache-miss.sequence.html?theme=dark&present=1#route=web~db) | [![生产架构中后端与数据库角色的真实关系](apps/site/assets/archify-demo-lens.png)](https://tt-a1i.github.io/archify/gallery/artifacts/production-deployment.architecture.html?theme=dark&present=1#lens=backend~database) |
 | 播放一次有限的命名章节。 | 检查最短的作者有向路径。 | 对比语义角色之间的真实流量。 |
 
 [Proof Lab](https://tt-a1i.github.io/archify/gallery.html) 收录全部 11 个仓库内场景、JSON 源、命名视图和校验回执。
 
 ### 从真实仓库读出来，不是只靠 Prompt 画出来
 
-[![根据公开仓库 mco-org/mco 生成的 MCO 运行时架构图](docs/assets/mco-runtime-share-card.png)](https://tt-a1i.github.io/archify/cases/mco-runtime.architecture.html?theme=dark&present=1#view=dispatch-path)
+[![根据公开仓库 mco-org/mco 生成的 MCO 运行时架构图](apps/site/assets/mco-runtime-share-card.png)](https://tt-a1i.github.io/archify/cases/mco-runtime.architecture.html?theme=dark&present=1#view=dispatch-path)
 
-Archify 追踪 [`mco-org/mco`](https://github.com/mco-org/mco) 的 `9f1a1cf` 版本并生成这张校验地图。**[打开成品 ↗](https://tt-a1i.github.io/archify/cases/mco-runtime.architecture.html?theme=dark&present=1#view=dispatch-path)** · [追踪下游 ↗](https://tt-a1i.github.io/archify/cases/mco-runtime.architecture.html?theme=dark#focus=router&reach=downstream) · [Typed Source](docs/cases/mco-runtime.architecture.json)
+Archify 追踪 [`mco-org/mco`](https://github.com/mco-org/mco) 的 `9f1a1cf` 版本并生成这张校验地图。**[打开成品 ↗](https://tt-a1i.github.io/archify/cases/mco-runtime.architecture.html?theme=dark&present=1#view=dispatch-path)** · [追踪下游 ↗](https://tt-a1i.github.io/archify/cases/mco-runtime.architecture.html?theme=dark#focus=router&reach=downstream) · [Typed Source](apps/site/cases/mco-runtime.architecture.json)
 
 ## 预览
 
@@ -71,21 +71,21 @@ Archify 追踪 [`mco-org/mco`](https://github.com/mco-org/mco) 的 `9f1a1cf` 版
 
 | 深色 | 浅色 |
 |---|---|
-| ![深色主题](docs/assets/archify-dark.png) | ![浅色主题](docs/assets/archify-light.png) |
+| ![深色主题](apps/site/assets/archify-dark.png) | ![浅色主题](apps/site/assets/archify-light.png) |
 
 Export 菜单支持复制 PNG，并下载静态或动态格式：
 
-![导出菜单](docs/assets/archify-menu.png)
+![导出菜单](apps/site/assets/archify-menu.png)
 
 需要用于 README、Release 或社交平台的标准 1200×630 图片时，使用 **Copy Share Card**。
 
 路径解析后，**Export → Route Share Card** 会把真实路径下载为 1200×630 PNG，并保留完整拓扑上下文。
 
-![Route Share Card：突出 Users 到 API Server 的精确路径，同时保留完整架构作为上下文](docs/assets/archify-route-share-card.png)
+![Route Share Card：突出 Users 到 API Server 的精确路径，同时保留完整架构作为上下文](apps/site/assets/archify-route-share-card.png)
 
 完成 authored `Upstream` 或 `Downstream` reach 后，**Export → Reach Share Card** 会捕获这次阅读结果，但不冒充运行时影响分析。
 
-![MCO downstream Reach Share Card：展示从 Command Router 出发的已创作关系](docs/assets/mco-runtime-reach-share-card.png)
+![MCO downstream Reach Share Card：展示从 Command Router 出发的已创作关系](apps/site/assets/mco-runtime-reach-share-card.png)
 
 在本地打开 [`examples/web-app.html`](examples/web-app.html)，即可体验完整 Viewer。
 
@@ -109,7 +109,7 @@ npx -y skills add tt-a1i/archify --skill archify --agent cursor --global --copy 
 npx skills use tt-a1i/archify@archify --agent codex
 ```
 
-DeepSeek Harness（社区集成、显式启用）：运行 `dsh plugin --profile web add @tt-a1i/archify-dsh@0.1.0`；参见[兼容范围、限制与安全说明](integrations/deepseek-harness/README.md)。[Agent 切换器](https://tt-a1i.github.io/archify/start.html?agent=cursor&type=architecture)只为 `cursor`、`codex`、`claude-code` 和 `opencode` 生成命令。Raven 仅支持 ZIP 手动安装：将 [`archify.zip`](archify.zip) 解压到 `~/.raven/workspace/skills`，解压后会得到 `~/.raven/workspace/skills/archify`；Raven 不属于切换器目标。
+[Agent 切换器](https://tt-a1i.github.io/archify/start.html?agent=cursor&type=architecture)只为 `cursor`、`codex`、`claude-code` 和 `opencode` 生成命令。Raven 仅支持 ZIP 手动安装：将 [`archify.zip`](archify.zip) 解压到 `~/.raven/workspace/skills`，解压后会得到 `~/.raven/workspace/skills/archify`；Raven 不属于切换器目标。
 
 安装后的 Skill 包含一个低频、失败静默的发布检查，它最多只显示可选更新提醒，绝不会自行下载或安装更新。一次成功检查后，下次网络请求通常约在 72 小时（±20%）后发出；检查失败后，活跃使用可能在首次 6 小时、后续 24 小时退避到期时重试。请求只访问 `https://tt-a1i.github.io/archify/skill-updates/archify/stable.json`。服务端会自然获得 IP、请求时间和常规 HTTP 元数据；检查器不会发送本地版本、Agent、项目数据、用户输入、账户/设备标识，也不会保存或回传 ETag。是否更新以及何时更新始终由你决定。如需完全关闭检查（包括网络请求和提醒状态写入），请在 Agent 环境中设置 `ARCHIFY_UPDATE_CHECK_DISABLED=1`。
 
@@ -150,7 +150,7 @@ DeepSeek Harness（社区集成、显式启用）：运行 `dsh plugin --profile
 
 `node archify/scripts/archify.mjs compare architecture base.json head.json architecture-delta.html --json`
 
-[![Architecture Delta：展示作者明确写出的新增、删除、变化和移动](docs/assets/architecture-delta-proof.jpg)](examples/checkout-platform-delta.html)
+[![Architecture Delta：展示作者明确写出的新增、删除、变化和移动](apps/site/assets/architecture-delta-proof.jpg)](examples/checkout-platform-delta.html)
 
 不知道选哪一种？打开[交互式场景指南](https://tt-a1i.github.io/archify/guide.html)，或直接询问零依赖 CLI：
 
@@ -161,19 +161,19 @@ node archify/scripts/archify.mjs guide "梳理 Kafka Topic、消费者组、重�
 
 Workflow 用泳道保持主路径清晰：
 
-![Workflow 示例](docs/assets/archify-workflow.png)
+![Workflow 示例](apps/site/assets/archify-workflow.png)
 
 Sequence 解释一次交互随时间如何推进：
 
-![Sequence 示例](docs/assets/archify-sequence.png)
+![Sequence 示例](apps/site/assets/archify-sequence.png)
 
 Data Flow 突出数据移动和敏感边界：
 
-![Data Flow 示例](docs/assets/archify-dataflow.png)
+![Data Flow 示例](apps/site/assets/archify-dataflow.png)
 
 Lifecycle 区分正常进展、等待、重试和终态：
 
-![Lifecycle 示例](docs/assets/archify-lifecycle.png)
+![Lifecycle 示例](apps/site/assets/archify-lifecycle.png)
 
 Architecture 示例：[`Web App`](examples/web-app.html) · [`Archify Pipeline`](examples/archify-repo.html) · [`Grid 布局`](examples/archify-repo-grid.html) · [`桌面 Agent`](examples/maka-architecture.html)
 
@@ -261,11 +261,10 @@ node scripts/archify.mjs deliver workflow examples/agent-tool-call.workflow.json
 | **opencode** | `~/.config/opencode/skills/`、`.opencode/skills/` 或 `.agents/skills/` | 完整 Renderer + Validation 工作流 |
 | **Claude.ai** | Settings → Capabilities → Skills 中上传 `archify.zip` | 取决于沙箱是否提供 Node.js |
 | **Project Knowledge** | 把 `archify.zip` 上传到项目 | Prompt 驱动的 Architecture Fallback |
-| **DeepSeek Harness** | 显式启用：`dsh plugin --profile web add @tt-a1i/archify-dsh@0.1.0`；调用：`Use the archify skill to map this repository's runtime architecture.`；卸载：`dsh plugin --profile web remove @tt-a1i/archify-dsh`。 | 面向开发者预览版 `@deepseek-ai/dsh@0.1.0-rc.6` 的社区集成；Node `^22.19.0 \|\| >=24.0.0`；不是 DeepSeek 官方产品。没有遥测；shell 文件不会自动进入 Web Produced Files，请返回精确工作区路径。[详情](integrations/deepseek-harness/README.md)。 |
 
 Claude.ai 中的上传入口：
 
-![Claude Skills 设置](docs/assets/claude-skills-settings.png)
+![Claude Skills 设置](apps/site/assets/claude-skills-settings.png)
 
 ## 参考与边界
 

@@ -7,7 +7,8 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(here, '..');
+const __dirname = here;
+const skillRoot = path.resolve(here, '..', 'archify');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-base-input-compatibility-'));
 
 function renderBaseFixture(type, name) {

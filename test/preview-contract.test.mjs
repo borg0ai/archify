@@ -5,7 +5,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(here, '..');
+const skillRoot = path.resolve(here, '..', 'archify');
 const repoRoot = path.resolve(skillRoot, '..');
 const skill = fs.readFileSync(path.join(skillRoot, 'SKILL.md'), 'utf8');
 const delivery = fs.readFileSync(path.join(skillRoot, 'references', 'delivery-contract.md'), 'utf8');
@@ -25,11 +25,11 @@ test('preview contract: the skill keeps live preview explicit, desktop-only, and
 test('preview contract: all README languages document the same optional command without changing the hero', () => {
   assert.equal(readme, english);
   for (const text of [readme, chinese]) {
-    assert.match(text, /bin\/archify\.mjs preview workflow/);
+    assert.match(text, /scripts\/archify\.mjs preview workflow/);
     assert.match(text, /--no-open/);
     assert.match(text, /127\.0\.0\.1/);
     assert.match(text, /Ctrl-C/);
-    assert.match(text, /docs\/assets\/archify-readme-hero\.png/);
+    assert.match(text, /apps\/site\/assets\/archify-readme-hero\.png/);
   }
 });
 

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "nuwa": {
+      "type": "stdio",
+      "command": "nuwa",
+      "args": [
+        "mcp"
+      ],
+      "env": {
+        "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}"
+      }
+    }
+  }
+}

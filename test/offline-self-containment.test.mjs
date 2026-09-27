@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assertFontCss, assertOfflineArtifact, inspectDocuments } from './helpers/offline-fonts.mjs';
 
-const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'archify');
 const repoRoot = path.resolve(skillRoot, '..');
 const cli = path.join(skillRoot, 'scripts/archify.mjs');
 const template = fs.readFileSync(path.join(skillRoot, 'assets/template.html'), 'utf8');
@@ -69,7 +69,7 @@ test('a freshly delivered artifact of every type reaches no external origin', ()
 
 test('every checked-in viewer artifact carries its font and reaches no external origin', () => {
   // Delivery-chain roots only; frozen experiments are not maintained viewers.
-  const tracked = spawnSync('git', ['ls-files', '-z', '--', 'archify/examples', 'docs', 'examples'], { cwd: repoRoot, encoding: 'utf8' });
+  const tracked = spawnSync('git', ['ls-files', '-z', '--', 'archify/examples', 'apps/site', 'examples'], { cwd: repoRoot, encoding: 'utf8' });
   assert.equal(tracked.status, 0, tracked.stderr);
   const artifacts = tracked.stdout.split('\0').filter((entry) => entry.endsWith('.html'))
     .filter((entry) => /Archify\.readerLayout/.test(fs.readFileSync(path.join(repoRoot, entry), 'utf8')));

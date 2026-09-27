@@ -7,13 +7,13 @@ import * as simpleIcons from 'simple-icons';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..');
+// pnpm install links devDependencies at the repository root, not inside the Skill tree.
+const repoRoot = path.resolve(root, '..');
+const SIMPLE_ICONS_PACKAGE_JSON = path.join(repoRoot, 'node_modules', 'simple-icons', 'package.json');
 const catalogPath = path.join(root, 'brand-marks', 'catalog.json');
 const outputPath = path.join(root, 'renderers', 'shared', 'generated-brand-marks.mjs');
 const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
-const simpleIconsVersion = JSON.parse(fs.readFileSync(
-  path.join(root, 'node_modules', 'simple-icons', 'package.json'),
-  'utf8',
-)).version;
+const simpleIconsVersion = JSON.parse(fs.readFileSync(SIMPLE_ICONS_PACKAGE_JSON, 'utf8')).version;
 const simpleBySlug = new Map(Object.values(simpleIcons)
   .filter((icon) => icon && typeof icon === 'object' && icon.slug && icon.path)
   .map((icon) => [icon.slug, icon]));

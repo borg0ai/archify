@@ -1,0 +1,36 @@
+{
+  "name": "archify-dev",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Repository commands that assemble Archify development artifacts.",
+  "bin": {
+    "archify-dev": "./dist/archify-dev.js"
+  },
+  "exports": {
+    ".": "./dist/archify-dev.js",
+    "./stage-clean-skill": "./src/commands/stage-clean-skill.mjs"
+  },
+  "scripts": {
+    "build": "tsc --noEmit && vite build",
+    "build:viewer": "node ./dist/archify-dev.js viewer generate",
+    "generate:viewer": "node ./dist/archify-dev.js viewer generate",
+    "check:viewer": "node ./dist/archify-dev.js viewer check",
+    "check:release-identity": "node ./dist/archify-dev.js release check-identity",
+    "check:stable-manifest": "node ./dist/archify-dev.js release check-stable-manifest",
+    "package:stage": "node ./dist/archify-dev.js package stage",
+    "package:smoke": "node ./dist/archify-dev.js package smoke",
+    "package:zip": "node ./dist/archify-dev.js package zip",
+    "test:skill": "node ./dist/archify-dev.js test skill",
+    "test": "pnpm run build && vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "typescript": "~6.0.3",
+    "vite": "^8.0.16",
+    "vitest": "^5.0.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

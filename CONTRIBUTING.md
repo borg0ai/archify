@@ -50,12 +50,14 @@ Start with focused checks for the affected behavior. Use the full `npm test` sui
 
 ## Local setup and verification
 
-The renderer package is the repository root `package.json`. Skill sources stay in `archify/`.
+The workspace root is `package.json` (`archify-monorepo`). pnpm and Turborepo run the packages under `apps/`, `toolings/`, and `integrations/`. Skill sources stay in `archify/`.
 
 ```sh
-npm ci
-npm test
+pnpm install --frozen-lockfile
+pnpm test
 ```
+
+`pnpm install` runs the root `postinstall` script. That builds `archify-dev`, then runs `pnpm build:viewer` to assemble `templates/viewer` into `archify/assets/template.html`.
 
 Test through public behavior such as `render`, `validate`, `deliver`, `visual-check`, or final SVG/HTML. Behavioral fixes should include a regression that demonstrates the original failure. Private helper checks can supplement that evidence.
 
@@ -73,20 +75,21 @@ A browser test skipped because Chrome was unavailable is **skipped**, not passed
 
 ## Packages and generated artifacts
 
-Viewer maintenance starts in [`viewer/`](viewer/README.md). Edit its source
-files, then run `npm run generate:viewer` from the repository root; the delivered template
-is generated and its freshness is checked by `npm test`.
+Edit skill HTML template fragments in [`templates/viewer/`](templates/viewer).
+[`toolings/archify-dev`](toolings/archify-dev) assembles them. That tree is not part of the desktop
+app in `apps/viewer/`. `pnpm build:viewer` assembles the delivered template from the repository
+root, and `pnpm test` checks that it is fresh.
 
 Published artifacts must be reproducible from tracked content. Use a tracked-only, symlink-safe staging path or explicit allowlist, with negative coverage for untracked files and external symlinks. Test the extracted package outside the repository on the affected advertised hosts.
 
 Review source and focused tests before regenerating artifacts. Regenerate only outputs whose authoritative inputs changed, from the final combined source:
 
 ```sh
-node scripts/build-gallery.mjs docs
-node scripts/build-guide.mjs docs/guide.html
-node scripts/build-start.mjs docs/start.html
-node scripts/build-readme-showcase.mjs
-scripts/build-zip.sh /tmp/archify-contrib.zip
+node apps/site/scripts/build-gallery.mjs apps/site
+node apps/site/scripts/build-guide.mjs apps/site/guide.html
+node apps/site/scripts/build-start.mjs apps/site/start.html
+node apps/site/scripts/build-readme-showcase.mjs
+pnpm --filter archify-dev run package:zip -- /tmp/archify-contrib.zip
 ```
 
 Canonical ZIP bytes require Node 22; the builder rejects other majors to avoid different zlib representations. Skill runtime, schema, renderer, and published Skill-instruction changes require checking ZIP freshness. Bundled example or Viewer changes normally require a Gallery rebuild.

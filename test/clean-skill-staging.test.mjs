@@ -6,9 +6,9 @@ import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
-import { stageCleanSkill } from '../scripts/stage-clean-skill.mjs';
+import { stageCleanSkill } from '../toolings/archify-dev/src/commands/stage-clean-skill.mjs';
 
-const stagerPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../scripts/stage-clean-skill.mjs');
+const stagerPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../toolings/archify-dev/src/commands/stage-clean-skill.mjs');
 const canonicalNotices = fs.readFileSync(
   path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../THIRD_PARTY_NOTICES.md'),
   'utf8',
@@ -25,6 +25,22 @@ function write(root, relative, content, mode = null) {
   fs.writeFileSync(target, content);
   if (mode !== null) fs.chmodSync(target, mode);
   return target;
+}
+
+function directorySymlinkSupported(t, root, external) {
+  const probe = path.join(root, 'symlink-probe');
+  try {
+    fs.symlinkSync(external, probe, process.platform === 'win32' ? 'junction' : 'dir');
+    // Remove the symlink inode. rmSync without recursive reports EISDIR for a directory symlink.
+    fs.unlinkSync(probe);
+    return true;
+  } catch (error) {
+    if (['EPERM', 'EACCES', 'ENOTSUP'].includes(error?.code)) {
+      t.skip(`symlinks unavailable: ${error.code}`);
+      return false;
+    }
+    throw error;
+  }
 }
 
 function repositoryFixture() {
@@ -297,17 +313,7 @@ test('clean staging snapshots unstaged tracked bytes before a source ancestor ca
     git(root, ['add', 'archify']);
     fs.writeFileSync(payload, 'unstaged working-tree fixture\n');
 
-    const probe = path.join(root, 'symlink-probe');
-    try {
-      fs.symlinkSync(external, probe, process.platform === 'win32' ? 'junction' : 'dir');
-      fs.rmSync(probe, { force: true });
-    } catch (error) {
-      if (['EPERM', 'EACCES', 'ENOTSUP'].includes(error?.code)) {
-        t.skip(`symlinks unavailable: ${error.code}`);
-        return;
-      }
-      throw error;
-    }
+    if (!directorySymlinkSupported(t, root, external)) return;
 
     fs.mkdirSync = function swapSourceAfterSnapshot(target, ...args) {
       const result = originalMkdirSync.call(fs, target, ...args);
@@ -346,17 +352,7 @@ test('clean staging rejects a source ancestor swapped during preflight traversal
     git(root, ['add', 'archify']);
     const canonicalRuntime = path.join(fs.realpathSync(root), 'archify', 'runtime');
 
-    const probe = path.join(root, 'symlink-probe');
-    try {
-      fs.symlinkSync(external, probe, process.platform === 'win32' ? 'junction' : 'dir');
-      fs.rmSync(probe, { force: true });
-    } catch (error) {
-      if (['EPERM', 'EACCES', 'ENOTSUP'].includes(error?.code)) {
-        t.skip(`symlinks unavailable: ${error.code}`);
-        return;
-      }
-      throw error;
-    }
+    if (!directorySymlinkSupported(t, root, external)) return;
 
     fs.lstatSync = function swapSourceBetweenAncestorAndLeaf(target, ...args) {
       const metadata = originalLstatSync.call(fs, target, ...args);

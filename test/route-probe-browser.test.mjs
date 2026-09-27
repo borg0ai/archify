@@ -8,7 +8,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { ChromeVisualBrowser, findChrome } from '../archify/scripts/visual-check.mjs';
 import { createViewerClick } from './helpers/viewer-click.mjs';
 
-const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'archify');
 const chrome = process.env.ARCHIFY_CHROME ? findChrome() : null;
 
 test('Route Probe preserves directed paths, Journey and export contracts', {

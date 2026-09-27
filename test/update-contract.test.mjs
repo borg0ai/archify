@@ -12,7 +12,7 @@ import {
   validateCanonicalUtcTimestamp,
   validateLocalRelease,
   validateStableUpdateManifest,
-} from '../scripts/update-contract.mjs';
+} from '../archify/scripts/update-contract.mjs';
 
 function localRelease(overrides = {}) {
   return {

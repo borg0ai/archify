@@ -132,15 +132,15 @@ test('Skill, product docs, and READMEs keep the optional truthful boundary expli
   for (const readme of ['README.md', 'README_EN.md', 'README_ZH.md']) {
     const text = fs.readFileSync(path.join(repoRoot, readme), 'utf8');
     assert.match(text, /Reach Share Card/, readme);
-    assert.match(text, /docs\/assets\/mco-runtime-reach-share-card\.png/, readme);
+    assert.match(text, /apps\/site\/assets\/mco-runtime-reach-share-card\.png/, readme);
   }
-  const png = fs.readFileSync(path.join(repoRoot, 'docs/assets/mco-runtime-reach-share-card.png'));
+  const png = fs.readFileSync(path.join(repoRoot, 'apps/site/assets/mco-runtime-reach-share-card.png'));
   assert.equal(png.subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
   assert.equal(png.readUInt32BE(16), 1200);
   assert.equal(png.readUInt32BE(20), 630);
 
   const product = fs.readFileSync(path.join(repoRoot, 'PRODUCT.md'), 'utf8');
-  const design = fs.readFileSync(path.join(repoRoot, 'DESIGN.md'), 'utf8');
+  const design = fs.readFileSync(path.join(repoRoot, 'docs/DESIGN.md'), 'utf8');
   assert.match(product, /Reach Share Card/);
   assert.match(design, /Reach Share Card/);
   assert.match(design, /not (?:runtime )?(?:impact|causality|breakage)/i);

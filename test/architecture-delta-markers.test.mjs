@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse, serializeOuter } from 'parse5';
 
-const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'archify');
 const variants = ['default', 'emphasis', 'security', 'dashed'];
 const attr = (node, name) => node.attrs?.find((entry) => entry.name === name)?.value;
 function descendants(node) {

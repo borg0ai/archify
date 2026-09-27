@@ -7,7 +7,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(here, '..');
+const skillRoot = path.resolve(here, '..', 'archify');
 const repoRoot = path.resolve(skillRoot, '..');
 const benchmark = path.join(repoRoot, 'benchmarks/ordinary-model-floor/benchmark.mjs');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-ordinary-model-floor-'));

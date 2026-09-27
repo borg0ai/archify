@@ -12,7 +12,7 @@ import vm from 'node:vm';
 import { startPreview } from '../archify/scripts/preview.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(here, '..');
+const skillRoot = path.resolve(here, '..', 'archify');
 
 function sha256(file) {
   return createHash('sha256').update(fs.readFileSync(file)).digest('hex');

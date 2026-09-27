@@ -176,7 +176,7 @@
 4. **五 renderer 语义保护**：现有 workflow / architecture / dataflow / lifecycle Clean Flow fixtures 全绿；sequence lifeline、activation、segment 与各种 container 仍保持 intentional pass-through。
 5. **交付契约测试**：锁定 SKILL 中 deterministic-first、最终像素检查、最多 2 轮、每轮重跑、`passed` / `skipped`、真实 correction count，以及“vision 不得覆盖 deterministic failure”。
 6. 在 `archify/` 运行 `npm test`。
-7. 因 `SKILL.md` 是发布物，运行 `scripts/build-zip.sh /tmp/fresh.zip`，将解压内容与 `archify.zip` 比较；准备发布时重建并提交 archive，不能只改源码树。
+7. 因 `SKILL.md` 是发布物，运行 `pnpm --filter archify-dev run package:zip -- /tmp/fresh.zip`，将解压内容与 `archify.zip` 比较；准备发布时重建并提交 archive，不能只改源码树。
 
 ### 必须人工 / agent 视觉验收
 

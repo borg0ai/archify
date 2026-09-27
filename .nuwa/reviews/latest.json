@@ -1,0 +1,79 @@
+{
+  "reviewedAt": "2026-09-27T03:18:59.101Z",
+  "scope": "unstaged",
+  "target": "unstaged",
+  "personas": {
+    "fred-brooks": {
+      "critical": 0,
+      "high": 2,
+      "medium": 2,
+      "low": 1,
+      "info": 2,
+      "total": 7
+    },
+    "guillermo-rauch": {
+      "critical": 0,
+      "high": 2,
+      "medium": 2,
+      "low": 2,
+      "info": 1,
+      "total": 7
+    },
+    "jon-postel": {
+      "critical": 0,
+      "high": 1,
+      "medium": 2,
+      "low": 1,
+      "info": 2,
+      "total": 6
+    },
+    "jrr-tolkien": {
+      "critical": 0,
+      "high": 2,
+      "medium": 2,
+      "low": 2,
+      "info": 2,
+      "total": 8
+    },
+    "kent-beck": {
+      "critical": 0,
+      "high": 2,
+      "medium": 3,
+      "low": 1,
+      "info": 1,
+      "total": 7
+    },
+    "linus-torvalds": {
+      "critical": 0,
+      "high": 1,
+      "medium": 2,
+      "low": 1,
+      "info": 1,
+      "total": 5
+    },
+    "margaret-hamilton": {
+      "critical": 1,
+      "high": 2,
+      "medium": 3,
+      "low": 1,
+      "info": 2,
+      "total": 9
+    },
+    "martin-fowler": {
+      "critical": 0,
+      "high": 2,
+      "medium": 3,
+      "low": 2,
+      "info": 1,
+      "total": 8
+    }
+  },
+  "aggregate": {
+    "critical": 1,
+    "high": 7,
+    "medium": 0,
+    "low": 0,
+    "info": 0,
+    "total": 8
+  }
+}

@@ -5,8 +5,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const skill = readFileSync(path.join(here, '..', 'SKILL.md'), 'utf8');
-const delivery = readFileSync(path.join(here, '..', 'references', 'delivery-contract.md'), 'utf8');
+const skillRoot = path.join(here, '..', 'archify');
+const skill = readFileSync(path.join(skillRoot, 'SKILL.md'), 'utf8');
+const delivery = readFileSync(path.join(skillRoot, 'references', 'delivery-contract.md'), 'utf8');
 
 test('skill requires a bounded and truthful perceptual delivery receipt', () => {
   assert.match(delivery, /browser_evidence: passed\|failed\|skipped/);

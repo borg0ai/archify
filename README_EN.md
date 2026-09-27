@@ -6,7 +6,7 @@
   <a href="https://trendshift.io/repositories/31352?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-31352" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/31352" alt="Archify on Trendshift" width="250" height="55"/></a>
 </p>
 
-![Archify product preview](docs/assets/archify-readme-hero.png)
+![Archify product preview](apps/site/assets/archify-readme-hero.png)
 
 # Archify
 
@@ -42,7 +42,7 @@ Using Cursor? Open the [agent-aware quick start](https://tt-a1i.github.io/archif
   <td align="center" width="240"><a href="https://supercode.sh/?utm_source=archify"><img src="https://cdn.supercode.sh/sponsors/supercode-logo.png" alt="Supercode" width="200"/></a><br/><strong><a href="https://supercode.sh/?utm_source=archify">supercode.sh</a></strong></td>
 <td><a href="https://supercode.sh/?utm_source=archify">Supercode</a> sponsors Archify and enhances Codex and Cursor with token optimization, curated Skills, and spec-driven development. Archify is featured as a <a href="https://supercode.sh/en/skills/tt-a1i/archify/archify">Supercode Editor’s Choice</a> skill.<br/><br/><a href="https://supercode.sh/en/skills/tt-a1i/archify/archify"><img src="https://supercode.sh/badges/editors-choice.svg" alt="Supercode Editor’s Choice — Archify" width="240" height="55"/></a></td>
 </tr>
-<tr><td align="center" width="240"><a href="https://github.com/EverMind-AI/Raven"><img src="docs/assets/sponsors/evermind-archify-raven.png" alt="Archify × Raven" width="200" /></a><br/><strong><a href="https://github.com/EverMind-AI">EverMind</a> · <a href="https://github.com/EverMind-AI/Raven">Raven</a></strong></td><td>EverMind sponsors Archify and builds memory infrastructure for agents. Its <a href="https://github.com/EverMind-AI/Raven"><strong>Raven</strong></a> harness supports Archify as a Skill for verified, interactive system maps.</td></tr>
+<tr><td align="center" width="240"><a href="https://github.com/EverMind-AI/Raven"><img src="apps/site/assets/sponsors/evermind-archify-raven.png" alt="Archify × Raven" width="200" /></a><br/><strong><a href="https://github.com/EverMind-AI">EverMind</a> · <a href="https://github.com/EverMind-AI/Raven">Raven</a></strong></td><td>EverMind sponsors Archify and builds memory infrastructure for agents. Its <a href="https://github.com/EverMind-AI/Raven"><strong>Raven</strong></a> harness supports Archify as a Skill for verified, interactive system maps.</td></tr>
 </table>
 
 > Want to sponsor Archify? [Contact us by email.](mailto:2801884530@qq.com)
@@ -52,23 +52,23 @@ Using Cursor? Open the [agent-aware quick start](https://tt-a1i.github.io/archif
 These are generated Archify artifacts, not product mockups. Click a frame to open its live, shareable state.
 
 <p align="center">
-  <a href="https://tt-a1i.github.io/archify/gallery.html"><img src="docs/assets/archify-live-proof.gif" alt="Three verified Archify artifacts moving through Signal Flow, Blueprint, and Classic presets" width="960"/></a>
+  <a href="https://tt-a1i.github.io/archify/gallery.html"><img src="apps/site/assets/archify-live-proof.gif" alt="Three verified Archify artifacts moving through Signal Flow, Blueprint, and Classic presets" width="960"/></a>
   <br/>
   <sub><strong>Three real generated artifacts.</strong> Signal Flow · Blueprint · Classic · <a href="https://tt-a1i.github.io/archify/gallery.html">open the interactive Proof Lab ↗</a></sub>
 </p>
 
 | Guided story | Route probe | Semantic lens |
 |---|---|---|
-| [![Agent workflow playing one authored chapter](docs/assets/archify-demo-story.png)](https://tt-a1i.github.io/archify/gallery/artifacts/agent-tool-call.workflow.html?theme=dark&present=1&play=1#view=happy-path) | [![Cache-miss sequence showing the Web App to Postgres route](docs/assets/archify-demo-route.png)](https://tt-a1i.github.io/archify/gallery/artifacts/cache-miss.sequence.html?theme=dark&present=1#route=web~db) | [![Production architecture comparing backend and database roles](docs/assets/archify-demo-lens.png)](https://tt-a1i.github.io/archify/gallery/artifacts/production-deployment.architecture.html?theme=dark&present=1#lens=backend~database) |
+| [![Agent workflow playing one authored chapter](apps/site/assets/archify-demo-story.png)](https://tt-a1i.github.io/archify/gallery/artifacts/agent-tool-call.workflow.html?theme=dark&present=1&play=1#view=happy-path) | [![Cache-miss sequence showing the Web App to Postgres route](apps/site/assets/archify-demo-route.png)](https://tt-a1i.github.io/archify/gallery/artifacts/cache-miss.sequence.html?theme=dark&present=1#route=web~db) | [![Production architecture comparing backend and database roles](apps/site/assets/archify-demo-lens.png)](https://tt-a1i.github.io/archify/gallery/artifacts/production-deployment.architecture.html?theme=dark&present=1#lens=backend~database) |
 | Play one finite named chapter. | Inspect the shortest authored directed path. | Compare real traffic between semantic roles. |
 
 The [Proof Lab](https://tt-a1i.github.io/archify/gallery.html) contains all 11 checked-in scenarios, their JSON sources, named views, and validation receipts.
 
 ### A real repository, mapped from source
 
-[![MCO runtime architecture generated from the public mco-org/mco repository](docs/assets/mco-runtime-share-card.png)](https://tt-a1i.github.io/archify/cases/mco-runtime.architecture.html?theme=dark&present=1#view=dispatch-path)
+[![MCO runtime architecture generated from the public mco-org/mco repository](apps/site/assets/mco-runtime-share-card.png)](https://tt-a1i.github.io/archify/cases/mco-runtime.architecture.html?theme=dark&present=1#view=dispatch-path)
 
-Archify traced [`mco-org/mco`](https://github.com/mco-org/mco) at `9f1a1cf` and produced this checked map. **[Open it ↗](https://tt-a1i.github.io/archify/cases/mco-runtime.architecture.html?theme=dark&present=1#view=dispatch-path)** · [trace reach ↗](https://tt-a1i.github.io/archify/cases/mco-runtime.architecture.html?theme=dark#focus=router&reach=downstream) · [typed source](docs/cases/mco-runtime.architecture.json)
+Archify traced [`mco-org/mco`](https://github.com/mco-org/mco) at `9f1a1cf` and produced this checked map. **[Open it ↗](https://tt-a1i.github.io/archify/cases/mco-runtime.architecture.html?theme=dark&present=1#view=dispatch-path)** · [trace reach ↗](https://tt-a1i.github.io/archify/cases/mco-runtime.architecture.html?theme=dark#focus=router&reach=downstream) · [typed source](apps/site/cases/mco-runtime.architecture.json)
 
 ## Preview
 
@@ -76,21 +76,21 @@ Same diagram, two themes, one click to switch:
 
 | Dark | Light |
 |---|---|
-| ![Dark theme](docs/assets/archify-dark.png) | ![Light theme](docs/assets/archify-light.png) |
+| ![Dark theme](apps/site/assets/archify-dark.png) | ![Light theme](apps/site/assets/archify-light.png) |
 
 The Export menu copies PNG to the clipboard and downloads static or motion formats:
 
-![Export menu](docs/assets/archify-menu.png)
+![Export menu](apps/site/assets/archify-menu.png)
 
 Use **Copy Share Card** when you want a canonical 1200×630 image for a README, release, or social post.
 
 After tracing a route, **Export → Route Share Card** downloads that authored path as a 1200×630 PNG with the full diagram retained for context.
 
-![Route Share Card showing the exact Users to API Server path with the full architecture retained as context](docs/assets/archify-route-share-card.png)
+![Route Share Card showing the exact Users to API Server path with the full architecture retained as context](apps/site/assets/archify-route-share-card.png)
 
 After tracing authored `Upstream` or `Downstream` reach, **Export → Reach Share Card** captures that exact reading without claiming runtime impact.
 
-![MCO downstream Reach Share Card showing authored relationships from Command Router](docs/assets/mco-runtime-reach-share-card.png)
+![MCO downstream Reach Share Card showing authored relationships from Command Router](apps/site/assets/mco-runtime-reach-share-card.png)
 
 Open [`examples/web-app.html`](examples/web-app.html) locally to try the complete viewer.
 
@@ -113,8 +113,6 @@ To try without installing:
 ```bash
 npx skills use tt-a1i/archify@archify --agent codex
 ```
-
-[DSH community opt-in](integrations/deepseek-harness/README.md): `dsh plugin --profile web add @tt-a1i/archify-dsh@0.1.0`
 
 The [agent switcher](https://tt-a1i.github.io/archify/start.html?agent=cursor&type=architecture) covers `cursor`, `codex`, `claude-code`, and `opencode`. For Raven's manual ZIP install, extract [`archify.zip`](archify.zip) into `~/.raven/workspace/skills`; it yields `~/.raven/workspace/skills/archify`. Raven is not a switcher target.
 
@@ -154,7 +152,7 @@ For design or PR review, Architecture Delta compares validated Before / Delta / 
 
 `node archify/scripts/archify.mjs compare architecture base.json head.json architecture-delta.html --json`
 
-[![Architecture Delta showing added, removed, changed, and moved authored facts](docs/assets/architecture-delta-proof.jpg)](examples/checkout-platform-delta.html)
+[![Architecture Delta showing added, removed, changed, and moved authored facts](apps/site/assets/architecture-delta-proof.jpg)](examples/checkout-platform-delta.html)
 
 Not sure which one fits? Use the [interactive scenario guide](https://tt-a1i.github.io/archify/guide.html), or ask the zero-dependency CLI:
 
@@ -165,19 +163,19 @@ node archify/scripts/archify.mjs guide "Map Kafka topics, consumer groups, repla
 
 Workflow keeps the happy path clear across lanes:
 
-![Workflow example](docs/assets/archify-workflow.png)
+![Workflow example](apps/site/assets/archify-workflow.png)
 
 Sequence explains one interaction over time:
 
-![Sequence example](docs/assets/archify-sequence.png)
+![Sequence example](apps/site/assets/archify-sequence.png)
 
 Data Flow makes movement and sensitivity boundaries explicit:
 
-![Data Flow example](docs/assets/archify-dataflow.png)
+![Data Flow example](apps/site/assets/archify-dataflow.png)
 
 Lifecycle separates progress, waits, retries, and terminal outcomes:
 
-![Lifecycle example](docs/assets/archify-lifecycle.png)
+![Lifecycle example](apps/site/assets/archify-lifecycle.png)
 
 Architecture examples: [`web-app`](examples/web-app.html) · [`Archify pipeline`](examples/archify-repo.html) · [`grid placement`](examples/archify-repo-grid.html) · [`desktop agent`](examples/maka-architecture.html)
 
@@ -265,7 +263,6 @@ The complete generation and viewer contract lives in [`archify/SKILL.md`](archif
 | **opencode** | `~/.config/opencode/skills/`, `.opencode/skills/`, or `.agents/skills/` | Full renderer + validation workflow |
 | **Claude.ai** | Upload `archify.zip` under Settings → Capabilities → Skills | Depends on Node.js access in the sandbox |
 | **Project Knowledge** | Upload `archify.zip` to the project | Prompt-driven architecture fallback |
-| **DeepSeek Harness** | Opt-in: `dsh plugin --profile web add @tt-a1i/archify-dsh@0.1.0`. Invoke: `Use the archify skill to map this repository's runtime architecture.` Remove: `dsh plugin --profile web remove @tt-a1i/archify-dsh`. | Community integration for developer-preview `@deepseek-ai/dsh@0.1.0-rc.6`; Node `^22.19.0 \|\| >=24.0.0`; not an official DeepSeek product. No telemetry. Shell files need exact workspace paths, not Web Produced Files. [Details](integrations/deepseek-harness/README.md). |
 
 ## Reference and scope
 

@@ -1,5 +1,5 @@
 {
-  "name": "archify",
+  "name": "archify-monorepo",
   "version": "2.17.0-dev.2",
   "private": true,
   "type": "module",
@@ -8,32 +8,46 @@
   "bin": {
     "archify": "./archify/scripts/archify.mjs"
   },
+  "packageManager": "pnpm@10.27.0",
   "engines": {
     "node": ">=18"
   },
   "scripts": {
-    "generate:viewer": "node scripts/generate-viewer.mjs",
-    "check:viewer": "node scripts/generate-viewer.mjs --check",
+    "postinstall": "pnpm --filter archify-dev run build && pnpm build:viewer",
+    "build:viewer": "turbo run build:viewer",
+    "generate:viewer": "turbo run generate:viewer",
+    "check:viewer": "turbo run check:viewer",
     "generate:brand-marks": "node archify/scripts/generate-brand-marks.mjs",
     "check:brand-marks": "node archify/scripts/generate-brand-marks.mjs --check",
     "generate:validators": "node archify/scripts/generate-validators.mjs",
     "check:validators": "node archify/scripts/generate-validators.mjs --check",
-    "check:release-identity": "node scripts/check-release-identity.mjs",
-    "build:gallery": "node scripts/build-gallery.mjs docs",
-    "build:guide": "node scripts/build-guide.mjs docs/guide.html",
-    "build:start": "node scripts/build-start.mjs docs/start.html",
-    "build:readme-showcase": "node scripts/build-readme-showcase.mjs",
+    "check:release-identity": "pnpm --filter archify-dev run check:release-identity",
+    "build:gallery": "node apps/site/scripts/build-gallery.mjs apps/site",
+    "build:guide": "node apps/site/scripts/build-guide.mjs apps/site/guide.html",
+    "build:start": "node apps/site/scripts/build-start.mjs apps/site/start.html",
+    "build:readme-showcase": "node apps/site/scripts/build-readme-showcase.mjs",
     "test:webm": "node test/webm-artifact.smoke.mjs && node --test test/site-language-integration.mjs",
-    "test": "npm run check:viewer && npm run check:brand-marks && npm run check:validators && npm run check:release-identity && node test/golden.mjs && node scripts/run-tests.mjs",
+    "test:skill": "pnpm --filter archify-dev run check:viewer && pnpm run check:brand-marks && pnpm run check:validators && pnpm run check:release-identity && node test/golden.mjs && pnpm --filter archify-dev run test:skill",
+    "test": "pnpm --filter archify-dev test && pnpm run test:skill",
+    "dev": "pangu",
+    "release": "qingniao",
+    "build": "turbo run build",
     "render:examples": "node archify/scripts/render-examples.mjs examples"
   },
   "devDependencies": {
+    "archify-dev": "workspace:*",
+    "@changesets/cli": "^3.0.3",
+    "@systembug/pangu": "^0.1.15",
+    "@systembug/qingniao": "^0.1.15",
     "ajv": "^8.17.1",
     "parse5": "7.3.0",
     "saxes": "6.0.0",
-    "simple-icons": "16.28.0"
+    "simple-icons": "16.28.0",
+    "turbo": "^2.5.8"
   },
-  "overrides": {
-    "fast-uri": "^3.1.7"
+  "pnpm": {
+    "overrides": {
+      "fast-uri": "^3.1.7"
+    }
   }
 }

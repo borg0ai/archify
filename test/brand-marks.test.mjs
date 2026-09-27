@@ -12,10 +12,10 @@ import { isPrivateBrandAddress, prepareDiagramBrandMarks } from '../archify/rend
 import {
   THIRD_PARTY_NOTICE_DISCLOSURE_COUNT,
   validateThirdPartyNotices,
-} from '../scripts/third-party-notices-contract.mjs';
+} from '../toolings/archify-dev/src/commands/third-party-notices-contract.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(here, '..');
+const skillRoot = path.resolve(here, '..', 'archify');
 const cli = path.join(skillRoot, 'scripts', 'archify.mjs');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-brand-marks-'));
 const cases = {

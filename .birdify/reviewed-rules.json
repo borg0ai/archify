@@ -1,0 +1,183 @@
+{
+  "revision": "c7f785014ad6f6c0d3723a1f3f5529f6c1b25e30",
+  "scope": "本轮审查已提交的贡献、技能、评审、安全、创作契约、交付契约和 PR 模板中的核心义务。viewer/README.md、workflow 渲染器说明、brand-marks、viewer-runtime 和 archify-review 技能尚未逐条审查。工作区 CONTRIBUTING.md 相对该提交有未提交修改，规则锚点以提交快照为准。",
+  "architectureBinding": {
+    "mapId": "archify-repository",
+    "mapRevision": 4,
+    "sourceRevision": "c7f785014ad6f6c0d3723a1f3f5529f6c1b25e30"
+  },
+  "groups": [
+    {
+      "sourcePath": "CONTRIBUTING.md",
+      "category": "security",
+      "topic": { "id": "secrets", "name": "秘密与样本" },
+      "rules": [
+        {
+          "id": "rule-no-secrets",
+          "name": "样本不得含秘密",
+          "anchor": "Do not include secrets, access tokens, credentials",
+          "condition": "提交夹具、日志、截图、产物或包测试时",
+          "explanation": "秘密、令牌、私有仓库内容和个人数据不能进入这些材料。",
+          "verification": "检查待提交内容是否包含凭据或私有数据。",
+          "applicability": "applicable",
+          "targetRole": "security",
+          "roleReason": "原文限制凭据和私有数据进入仓库材料。"
+        }
+      ]
+    },
+    {
+      "sourcePath": "CONTRIBUTING.md",
+      "category": "interfaces",
+      "topic": { "id": "compatibility", "name": "契约兼容" },
+      "rules": [
+        {
+          "id": "rule-schema-v1",
+          "name": "既有 schema v1 保持有效",
+          "anchor": "Existing schema-v1 typed JSON remains valid",
+          "condition": "修改图表契约时",
+          "explanation": "已有 schema v1 文档继续有效，除非经过审查的变更明确给出破坏性规则和迁移路径。",
+          "verification": "用现有 v1 样例跑校验，并核对是否写明迁移。",
+          "applicability": "applicable"
+        }
+      ]
+    },
+    {
+      "sourcePath": "CONTRIBUTING.md",
+      "category": "delivery",
+      "topic": { "id": "versions", "name": "版本不可变" },
+      "rules": [
+        {
+          "id": "rule-immutable-versions",
+          "name": "已发布版本不可变",
+          "anchor": "Treat published versions as immutable",
+          "condition": "普通功能改动时",
+          "explanation": "功能 PR 不改版本、标签或分发身份，除非本次范围明确包含发布。",
+          "verification": "核对 package 版本、标签和发布身份是否被无关改动。",
+          "applicability": "applicable"
+        }
+      ]
+    },
+    {
+      "sourcePath": "archify/SKILL.md",
+      "category": "delivery",
+      "topic": { "id": "authoring", "name": "创作与交付" },
+      "rules": [
+        {
+          "id": "rule-static-default",
+          "name": "默认输出静态图",
+          "anchor": "Static output is the default",
+          "condition": "生成图表时",
+          "explanation": "只有用户要求演示或展示时才打开运动。",
+          "verification": "检查候选是否在未要求时省略 animation。",
+          "applicability": "conditional"
+        },
+        {
+          "id": "rule-artifact-first",
+          "name": "先写候选再看渲染器",
+          "anchor": "Write the candidate before inspecting renderer internals",
+          "condition": "普通图表生成时",
+          "explanation": "下一步应写出候选，不要先读渲染器内部或在正文里规划精确坐标。",
+          "verification": "核对创作顺序：候选文件先于渲染器阅读。",
+          "applicability": "conditional"
+        },
+        {
+          "id": "rule-nonzero-failure",
+          "name": "非零退出不是成功",
+          "anchor": "A non-zero exit can never be described as success",
+          "condition": "交付 HTML 时",
+          "explanation": "deliver 非零退出不能说成成功。失败会保留上一份输出，不能对那条路径做 visual-check。",
+          "verification": "记录 deliver 退出码；失败时不要把旧产物当成新候选。",
+          "applicability": "applicable",
+          "targetRole": "backend",
+          "roleReason": "原文约束 CLI 交付命令的成功判定。"
+        }
+      ]
+    },
+    {
+      "sourcePath": "archify/references/authoring-contract.md",
+      "category": "interfaces",
+      "topic": { "id": "schema", "name": "字段契约" },
+      "rules": [
+        {
+          "id": "rule-no-invented-fields",
+          "name": "不得发明字段",
+          "anchor": "Do not invent fields",
+          "condition": "编写 typed JSON 时",
+          "explanation": "用最近的样例确定结构，然后写新的 ID、措辞、事实和布局。",
+          "verification": "对照模式 schema 校验候选，确认没有未知字段。",
+          "applicability": "applicable"
+        }
+      ]
+    },
+    {
+      "sourcePath": "archify/references/delivery-contract.md",
+      "category": "delivery",
+      "topic": { "id": "claims", "name": "交付声明" },
+      "rules": [
+        {
+          "id": "rule-preserve-artifact",
+          "name": "失败保留上一份可信产物",
+          "anchor": "preserves the previous trusted artifact",
+          "condition": "deliver 未通过时",
+          "explanation": "渲染、检查或回执失败时退出非零，并保留上一份可信产物，不打开文件。",
+          "verification": "让 deliver 失败，确认旧 HTML 仍在且没有被打开。",
+          "applicability": "applicable",
+          "targetRole": "backend",
+          "roleReason": "原文约束交付命令失败时的产物处理。"
+        }
+      ]
+    },
+    {
+      "sourcePath": "REVIEWING.md",
+      "category": "testing",
+      "topic": { "id": "evidence", "name": "审查证据" },
+      "rules": [
+        {
+          "id": "rule-policy-no-screenshots",
+          "name": "纯政策改动不做版面截图",
+          "anchor": "Repository-only policy changes need consistency checks",
+          "condition": "只改仓库政策文本时",
+          "explanation": "这类改动做一致性检查，不要求布局截图。",
+          "verification": "按改动面核对文档与模板是否一致。",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "SECURITY.md",
+      "category": "security",
+      "topic": { "id": "reporting", "name": "漏洞报告" },
+      "rules": [
+        {
+          "id": "rule-private-report",
+          "name": "漏洞私下报告",
+          "anchor": "report suspected",
+          "condition": "发现疑似安全漏洞时",
+          "explanation": "先私下报告，让维护者调查并协调修复，再公开披露。",
+          "verification": "确认报告走私下渠道，公开材料不含利用细节。",
+          "applicability": "applicable",
+          "targetRole": "security",
+          "roleReason": "原文要求漏洞在公开前私下报告。"
+        }
+      ]
+    },
+    {
+      "sourcePath": ".github/PULL_REQUEST_TEMPLATE.md",
+      "category": "testing",
+      "topic": { "id": "visual", "name": "视觉证据" },
+      "rules": [
+        {
+          "id": "rule-separate-visual-claims",
+          "name": "自动检查与观感分开写",
+          "anchor": "Report automated or browser evidence separately from perceptual review",
+          "condition": "提交可见界面改动时",
+          "explanation": "浏览器或自动化结果与观感审查是两项声明，不能混写成一次通过。",
+          "verification": "PR 里分别填写自动化检查和观感审查。",
+          "applicability": "conditional",
+          "targetRole": "frontend",
+          "roleReason": "原文区分浏览器证据和人对界面的观感判断。"
+        }
+      ]
+    }
+  ]
+}

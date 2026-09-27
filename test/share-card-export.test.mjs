@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(here, '..');
+const skillRoot = path.resolve(here, '..', 'archify');
 const repoRoot = path.resolve(skillRoot, '..');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-share-card-'));
 

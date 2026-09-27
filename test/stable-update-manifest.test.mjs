@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, '..');
-const checker = path.join(repoRoot, 'scripts', 'check-stable-update-manifest.mjs');
+const checker = path.join(repoRoot, 'toolings/archify-dev/src/commands/check-stable-update-manifest.mjs');
 
 function git(root, args) {
   return spawnSync('git', args, { cwd: root, encoding: 'utf8' });
@@ -48,6 +48,14 @@ test('stable release gate binds manifest tag, tree, and final archive digest', (
   try {
     writeJson(path.join(fixture, 'archify', 'package.json'), { version: '3.0.0' });
     fs.writeFileSync(path.join(fixture, 'archify', 'SKILL.md'), 'stable fixture\n');
+    writeJson(path.join(fixture, 'archify', 'skill-release.json'), {
+      schemaVersion: 1,
+      skillId: 'archify',
+      channel: 'stable',
+      version: '3.0.0',
+      source: { repository: 'https://github.com/tt-a1i/archify' },
+      updateManifestUrl: 'https://tt-a1i.github.io/archify/skill-updates/archify/stable.json',
+    });
     assert.equal(git(fixture, ['init']).status, 0);
     assert.equal(git(fixture, ['add', 'archify']).status, 0);
     assert.equal(git(fixture, [
@@ -68,7 +76,7 @@ test('stable release gate binds manifest tag, tree, and final archive digest', (
     const archiveBytes = Buffer.from('deterministic stable archive fixture');
     fs.writeFileSync(archive, archiveBytes);
     const artifactSha = crypto.createHash('sha256').update(archiveBytes).digest('hex');
-    const manifestPath = path.join(fixture, 'docs', 'skill-updates', 'archify', 'stable.json');
+    const manifestPath = path.join(fixture, 'apps/site', 'skill-updates', 'archify', 'stable.json');
     const manifest = {
       schemaVersion: 1,
       skillId: 'archify',

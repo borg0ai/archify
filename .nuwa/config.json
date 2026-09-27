@@ -1,0 +1,26 @@
+{
+  "version": "1",
+  "projectRoot": "/Volumes/ORICO/ws/prj/skills/archify",
+  "stacks": [
+    "node",
+    "monorepo"
+  ],
+  "personas": [
+    "fred-brooks",
+    "guillermo-rauch",
+    "jon-postel",
+    "jrr-tolkien",
+    "kent-beck",
+    "linus-torvalds",
+    "margaret-hamilton",
+    "martin-fowler"
+  ],
+  "review": {
+    "model": "claude-sonnet-4-6",
+    "maxTurns": 20,
+    "continueOnError": true,
+    "maxDiffChars": 80000
+  },
+  "createdAt": "2026-09-27T03:12:29.824Z",
+  "updatedAt": "2026-09-27T03:12:29.824Z"
+}

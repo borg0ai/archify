@@ -8,7 +8,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { findChrome } from '../archify/scripts/visual-check.mjs';
 import { desktopBrowser, desktopPointerCheck } from './helpers/desktop-browser.mjs';
 
-const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'archify');
 const chrome = process.env.ARCHIFY_CHROME ? findChrome() : null;
 
 test('Focus preserves semantic selection, relationships, reachability and shared flow tokens', {

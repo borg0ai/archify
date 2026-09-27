@@ -7,7 +7,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { ChromeVisualBrowser, findChrome } from '../archify/scripts/visual-check.mjs';
 
-const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'archify');
 const chromePath = process.env.ARCHIFY_CHROME ? findChrome() : null;
 const cases = {
   architecture: 'web-app.architecture.json',

@@ -7,7 +7,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(here, '..');
+const skillRoot = path.resolve(here, '..', 'archify');
 const cli = path.join(skillRoot, 'scripts/archify.mjs');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-repair-receipt-'));
 

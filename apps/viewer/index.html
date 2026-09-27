@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#111416" />
+    <title>Archify Viewer</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Archify Viewer home">
+        <span class="brand-mark" aria-hidden="true">A</span>
+        <span>archify<span class="brand-light"> / viewer</span></span>
+      </a>
+      <div class="file-meta" id="file-meta" aria-live="polite">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span id="file-name">No diagram open</span>
+      </div>
+      <button class="open-button" id="open-file" type="button">
+        <span aria-hidden="true">＋</span> Open HTML
+      </button>
+    </header>
+    <main class="workspace">
+      <section class="welcome" id="welcome" aria-labelledby="welcome-title">
+        <div class="welcome-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+        <p class="eyebrow">ARCHIFY DESKTOP</p>
+        <h1 id="welcome-title">A clearer view<br />of your system.</h1>
+        <p class="welcome-copy">Open an Archify HTML export to explore its architecture, flows, and relationships.</p>
+        <button class="primary-button" id="welcome-open" type="button">Choose a diagram <span aria-hidden="true">↗</span></button>
+        <p class="file-hint">Works offline · HTML files stay on your device</p>
+      </section>
+      <section class="preview-panel" id="preview-panel" hidden aria-label="Diagram preview">
+        <iframe id="preview" title="Archify diagram" sandbox="allow-scripts allow-downloads allow-forms"></iframe>
+      </section>
+      <div class="error-toast" id="error-toast" role="alert" hidden></div>
+    </main>
+  </body>
+</html>

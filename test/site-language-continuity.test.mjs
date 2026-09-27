@@ -9,12 +9,12 @@ import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 
 import { ChromeVisualBrowser, findChrome } from '../archify/scripts/visual-check.mjs';
-import { DIAGRAM_TYPES, DIAGRAM_TYPE_LABELS } from '../scripts/site-copy.mjs';
+import { DIAGRAM_TYPES, DIAGRAM_TYPE_LABELS } from '../apps/site/scripts/site-copy.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
-const runtimePath = path.join(repoRoot, 'docs/assets/site-language.js');
-const navigationPath = path.join(repoRoot, 'docs/assets/site-navigation.css');
+const runtimePath = path.join(repoRoot, 'apps/site/assets/site-language.js');
+const navigationPath = path.join(repoRoot, 'apps/site/assets/site-navigation.css');
 const integrationEnabled = process.env.ARCHIFY_SITE_INTEGRATION === '1';
 const chromePath = integrationEnabled && process.env.ARCHIFY_CHROME ? findChrome() : null;
 
@@ -212,7 +212,7 @@ test('custom site builders emit every shared site asset and preserve entry, navi
       execFileSync(process.execPath, [path.join(repoRoot, 'scripts', build.script), ...build.args]);
       for (const asset of ['site-language.js', 'site-navigation.css']) {
         const emitted = path.join(tmp, build.root, 'assets', asset);
-        const canonicalAsset = path.join(repoRoot, 'docs/assets', asset);
+        const canonicalAsset = path.join(repoRoot, 'apps/site/assets', asset);
         assert.ok(fs.existsSync(emitted), `${build.script}: ${asset} missing from custom output`);
         assert.equal(fs.readFileSync(emitted, 'utf8'), fs.readFileSync(canonicalAsset, 'utf8'));
       }
@@ -266,13 +266,13 @@ test('custom site builders emit every shared site asset and preserve entry, navi
 
 test('all site pages consume one language runtime and one navigation contract', () => {
   const pages = [
-    'docs/index.html',
-    'scripts/gallery-template.html',
-    'scripts/guide-template.html',
-    'scripts/start-template.html',
-    'docs/gallery.html',
-    'docs/guide.html',
-    'docs/start.html',
+    'apps/site/index.html',
+    'apps/site/scripts/gallery-template.html',
+    'apps/site/scripts/guide-template.html',
+    'apps/site/scripts/start-template.html',
+    'apps/site/gallery.html',
+    'apps/site/guide.html',
+    'apps/site/start.html',
   ];
 
   for (const relative of pages) {
@@ -303,9 +303,9 @@ test('all site pages consume one language runtime and one navigation contract', 
 
 test('site page identity paths localize with the selected language', () => {
   const pages = [
-    { paths: ['scripts/guide-template.html', 'docs/guide.html'], en: '/ guide', zh: '/ 场景指南' },
-    { paths: ['scripts/gallery-template.html', 'docs/gallery.html'], en: '/ proof lab', zh: '/ 验证作品集' },
-    { paths: ['scripts/start-template.html', 'docs/start.html'], en: '/ start', zh: '/ 快速上手' },
+    { paths: ['apps/site/scripts/guide-template.html', 'apps/site/guide.html'], en: '/ guide', zh: '/ 场景指南' },
+    { paths: ['apps/site/scripts/gallery-template.html', 'apps/site/gallery.html'], en: '/ proof lab', zh: '/ 验证作品集' },
+    { paths: ['apps/site/scripts/start-template.html', 'apps/site/start.html'], en: '/ start', zh: '/ 快速上手' },
   ];
 
   for (const page of pages) {
@@ -331,7 +331,7 @@ test('proof gallery type filters localize with the selected language', () => {
     zh: DIAGRAM_TYPE_LABELS.zh[type],
   }));
 
-  const template = fs.readFileSync(path.join(repoRoot, 'scripts/gallery-template.html'), 'utf8');
+  const template = fs.readFileSync(path.join(repoRoot, 'apps/site/scripts/gallery-template.html'), 'utf8');
   for (const filter of filters) {
     const placeholder = filter.type.toUpperCase();
     assert.ok(
@@ -340,7 +340,7 @@ test('proof gallery type filters localize with the selected language', () => {
     );
   }
 
-  for (const relative of ['docs/gallery.html']) {
+  for (const relative of ['apps/site/gallery.html']) {
     const html = fs.readFileSync(path.join(repoRoot, relative), 'utf8');
     assert.match(
       html,
@@ -362,14 +362,14 @@ test('proof gallery type filters localize with the selected language', () => {
 });
 
 test('scenario guide type filters use consistent Chinese diagram names', () => {
-  const template = fs.readFileSync(path.join(repoRoot, 'scripts/guide-template.html'), 'utf8');
+  const template = fs.readFileSync(path.join(repoRoot, 'apps/site/scripts/guide-template.html'), 'utf8');
   assert.match(template, /var types = \[\[DIAGRAM_TYPES_JSON\]\];/);
   assert.match(template, /var labels = \[\[DIAGRAM_TYPE_LABELS_JSON\]\];/);
 
-  const html = fs.readFileSync(path.join(repoRoot, 'docs/guide.html'), 'utf8');
+  const html = fs.readFileSync(path.join(repoRoot, 'apps/site/guide.html'), 'utf8');
   assert.ok(
     html.includes(`var labels = ${JSON.stringify(DIAGRAM_TYPE_LABELS)};`),
-    'docs/guide.html: Guide filters must use the shared Chinese diagram names',
+    'apps/site/guide.html: Guide filters must use the shared Chinese diagram names',
   );
 });
 
@@ -377,7 +377,7 @@ test('real Chrome preserves language through entry, navigation, selection, refre
   skip: chromePath ? false : 'Set ARCHIFY_CHROME to run the real site regression.',
   timeout: 60000,
 }, async () => {
-  const docsRoot = path.join(repoRoot, 'docs');
+  const docsRoot = path.join(repoRoot, 'apps/site');
   const server = startStaticServer(docsRoot);
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
   const address = server.address();

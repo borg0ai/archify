@@ -1,0 +1,248 @@
+{
+  "schemaVersion": 1,
+  "mapId": "archify-repository",
+  "revision": 4,
+  "language": "zh",
+  "project": {
+    "id": "archify",
+    "name": "Archify",
+    "revision": "c7f785014ad6f6c0d3723a1f3f5529f6c1b25e30"
+  },
+  "constraintDiscovery": {
+    "checkedAt": "2026-09-27T16:42:00.000Z",
+    "checkedPaths": [
+      "CONTRIBUTING.md",
+      "README.md",
+      "package.json",
+      "pnpm-workspace.yaml",
+      "archify/SKILL.md",
+      "archify/scripts/archify.mjs",
+      "toolings/archify-dev/package.json",
+      "toolings/archify-dev/src/cli.ts",
+      "toolings/archify-dev/src/generate-viewer.ts",
+      "templates/viewer",
+      ".spec/rfc/0002-consolidate-development-tooling.md",
+      "scripts/build-gallery.mjs",
+      "scripts/build-guide.mjs",
+      "scripts/build-start.mjs",
+      "scripts/build-readme-showcase.mjs",
+      "apps/viewer/README.md",
+      "apps/viewer/package.json",
+      "apps/viewer/src/main.ts",
+      "apps/viewer/src-tauri/src/lib.rs"
+    ],
+    "uninspectedPaths": [
+      "apps/viewer/src-tauri/src/main.rs",
+      "integrations",
+      "test",
+      "docs"
+    ]
+  },
+  "modules": [
+    {
+      "id": "agent-skill",
+      "name": "Agent Skill",
+      "kind": "local",
+      "role": "generic",
+      "roleAssessment": {
+        "basis": "out-of-taxonomy",
+        "note": "技能负责把用户意图转成代理侧的图表创作流程；职责不属于前端、后端、存储、队列或安全分类。"
+      },
+      "responsibility": "定义 Archify 的代理使用入口、图表类型路由、输入约束和交付流程。",
+      "ownership": [{ "kind": "file", "path": "archify/SKILL.md" }],
+      "evidence": [{ "path": "archify/SKILL.md", "note": "技能元数据、快速创作路径和图表类型路由定义代理侧职责。" }],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": { "row": 0, "column": 0 }
+    },
+    {
+      "id": "archify-cli",
+      "name": "Archify CLI",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "暴露 render、validate、deliver、compare 等命令，并分派到对应渲染器。",
+      "ownership": [
+        { "kind": "directory", "path": "archify/scripts" },
+        { "kind": "file", "path": "test/cli.test.mjs" }
+      ],
+      "evidence": [{ "path": "archify/scripts/archify.mjs", "note": "命令用法与 rendererPath 展示 CLI 路由和渲染器分派。" }],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": { "row": 1, "column": 1 }
+    },
+    {
+      "id": "diagram-engine",
+      "name": "Diagram Engine",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "维护类型化图表契约与五类图表渲染能力，供 CLI 生成独立 HTML/SVG 成品。",
+      "ownership": [
+        { "kind": "directory", "path": "archify/schemas" },
+        { "kind": "directory", "path": "archify/renderers" },
+        { "kind": "directory", "path": "archify/assets" }
+      ],
+      "evidence": [
+        { "path": "archify/SKILL.md", "note": "声明五类图表、typed JSON 输入和独立 HTML 输出。" },
+        { "path": "archify/scripts/archify.mjs", "note": "定义五种受支持类型并按类型定位渲染器。" }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": { "row": 2, "column": 1 }
+    },
+    {
+      "id": "viewer-template",
+      "name": "Skill Viewer Template",
+      "kind": "local",
+      "role": "frontend",
+      "responsibility": "只维护生成 archify/assets 的 Skill Viewer 源。站点页面模板不属于这里。",
+      "ownership": [
+        { "kind": "directory", "path": "templates/viewer" },
+        { "kind": "file", "path": "archify/assets/template.html" }
+      ],
+      "evidence": [
+        { "path": "toolings/archify-dev/src/generate-viewer.ts", "line": 5, "symbol": "TEMPLATE_VIEWER", "note": "源目录是 templates/viewer，输出是 archify/assets/template.html。" }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": { "row": 0, "column": 2 }
+    },
+    {
+      "id": "dev-tooling",
+      "name": "Development Tooling",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "开发命令只组装和检查 Skill 资产。站点构建留在根 scripts，不进这个包。",
+      "ownership": [
+        { "kind": "directory", "path": "toolings/archify-dev" }
+      ],
+      "evidence": [
+        { "path": "toolings/archify-dev/package.json", "note": "定义 archify-dev 构建、viewer generate/check 和自身测试命令。" },
+        { "path": "toolings/archify-dev/src/cli.ts", "note": "将 viewer generate/check 转给模板生成器。" }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": { "row": 1, "column": 3 }
+    },
+    {
+      "id": "desktop-viewer",
+      "name": "Desktop Viewer",
+      "kind": "local",
+      "role": "frontend",
+      "responsibility": "通过 Tauri 文件选择器读取本地 Archify HTML，并在隔离 WebView 中预览。",
+      "ownership": [{ "kind": "directory", "path": "apps/viewer" }],
+      "evidence": [
+        { "path": "apps/viewer/src/main.ts", "note": "读取选中的 HTML 文件并赋给 iframe srcdoc。" },
+        { "path": "apps/viewer/src-tauri/src/lib.rs", "note": "注册 Tauri 文件系统和文件选择器插件。" },
+        { "path": "apps/viewer/README.md", "note": "说明桌面应用本地打开并预览导出图表。" }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": { "row": 2, "column": 3 }
+    },
+    {
+      "id": "workspace-checks",
+      "name": "Workspace Checks",
+      "kind": "local",
+      "role": "generic",
+      "roleAssessment": {
+        "basis": "out-of-taxonomy",
+        "note": "根工作区负责协调包脚本和验证任务；职责是仓库级质量流程，不符合现有模块角色分类。"
+      },
+      "responsibility": "通过 pnpm/Turborepo 编排工作区构建与测试，覆盖 Skill 内容及开发工具。",
+      "ownership": [
+        { "kind": "file", "path": "package.json" },
+        { "kind": "file", "path": "pnpm-workspace.yaml" },
+        { "kind": "directory", "path": ".github" },
+        { "kind": "directory", "path": ".spec" },
+        { "kind": "file", "path": "CONTRIBUTING.md" },
+        { "kind": "directory", "path": "test" }
+      ],
+      "evidence": [
+        { "path": "package.json", "note": "根脚本通过 Turborepo 运行开发工具、Skill 内容检查和测试。" },
+        { "path": "pnpm-workspace.yaml", "note": "将 apps、toolings 和 integrations 纳入 pnpm workspace。" }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": { "row": 3, "column": 1 }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "skill-guides-cli",
+      "from": "agent-skill",
+      "to": "archify-cli",
+      "label": "指导代理调用",
+      "evidence": [{ "path": "archify/SKILL.md", "note": "技能规定图表类型选择、CLI 命令和交付步骤。" }],
+      "kind": "control",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "cli-dispatches-engine",
+      "from": "archify-cli",
+      "to": "diagram-engine",
+      "label": "分派类型并渲染",
+      "evidence": [{ "path": "archify/scripts/archify.mjs", "note": "CLI 根据类型定位 render-<type>.mjs 并启动对应 Node 进程。" }],
+      "kind": "request",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "tooling-assembles-template",
+      "from": "dev-tooling",
+      "to": "viewer-template",
+      "label": "读取分片并生成模板",
+      "evidence": [{ "path": "toolings/archify-dev/src/generate-viewer.ts", "line": 61, "symbol": "generateViewerTemplate", "note": "从 templates/viewer 读取分片，写出 archify/assets/template.html。" }],
+      "kind": "request",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "template-feeds-engine",
+      "from": "viewer-template",
+      "to": "diagram-engine",
+      "label": "提供嵌入式 Viewer 资产",
+      "evidence": [{ "path": "toolings/archify-dev/src/generate-viewer.ts", "note": "生成资产路径为 archify/assets/template.html，归入 Skill 运行时资源。" }],
+      "kind": "dependency",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "workspace-runs-tooling",
+      "from": "workspace-checks",
+      "to": "dev-tooling",
+      "label": "运行构建与模板检查",
+      "evidence": [{ "path": "package.json", "note": "根工作区将 viewer build/check 任务转给 archify-dev。" }],
+      "kind": "control",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "workspace-checks-product",
+      "from": "workspace-checks",
+      "to": "diagram-engine",
+      "label": "验证 Skill 运行内容",
+      "evidence": [{ "path": "package.json", "note": "根 test:skill 脚本执行 Skill 检查及根 test 脚本。" }],
+      "kind": "control",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "viewer-opens-diagram",
+      "from": "desktop-viewer",
+      "to": "diagram-engine",
+      "label": "打开导出的 HTML",
+      "evidence": [{ "path": "apps/viewer/src/main.ts", "note": "桌面应用通过文件选择器读取 HTML 并在 WebView 中展示内容。" }],
+      "kind": "dependency",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    }
+  ]
+}

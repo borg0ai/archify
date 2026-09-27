@@ -7,7 +7,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'archify');
 const cli = path.join(skillRoot, 'scripts/archify.mjs');
 const base = path.join(skillRoot, 'examples/checkout-platform.base.architecture.json');
 const head = path.join(skillRoot, 'examples/checkout-platform.head.architecture.json');

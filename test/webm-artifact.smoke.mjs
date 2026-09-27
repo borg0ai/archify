@@ -1771,7 +1771,7 @@ try {
   }
 
   await verifyResolvedLegendContract(legendOutputs);
-  await verifySemanticPassportDismissal(path.resolve(skillRoot, '../docs/gallery/artifacts/production-deployment.architecture.html'));
+  await verifySemanticPassportDismissal(path.resolve(skillRoot, '../apps/site/gallery/artifacts/production-deployment.architecture.html'));
   await verifyArchitectureDeltaNavigator(path.resolve(skillRoot, '../examples/checkout-platform-delta.html'));
   await captureShareCard(output, 'architecture-wide');
   await captureShareCard(sequenceOutput, 'sequence-tall');

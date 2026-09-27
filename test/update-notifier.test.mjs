@@ -11,11 +11,11 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import {
   acknowledgeUpdate,
   checkForUpdate,
-} from '../scripts/check-update.mjs';
-import { DEFAULT_MANIFEST_URL, compareSemver, parseSemver } from '../scripts/update-contract.mjs';
+} from '../archify/scripts/check-update.mjs';
+import { DEFAULT_MANIFEST_URL, compareSemver, parseSemver } from '../archify/scripts/update-contract.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.resolve(here, '..');
+const skillRoot = path.resolve(here, '..', 'archify');
 const checkerPath = path.join(skillRoot, 'scripts', 'check-update.mjs');
 const contractPath = path.join(skillRoot, 'scripts', 'update-contract.mjs');
 const expectedRepository = 'https://github.com/tt-a1i/archify';

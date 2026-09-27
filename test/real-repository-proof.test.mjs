@@ -10,9 +10,9 @@ import { verifyRepositoryEvidence } from '../archify/renderers/shared/repository
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const skillRoot = path.resolve(__dirname, '..', 'archify');
 const repoRoot = path.resolve(skillRoot, '..');
-const sourcePath = path.join(repoRoot, 'docs', 'cases', 'mco-runtime.architecture.json');
-const artifactPath = path.join(repoRoot, 'docs', 'cases', 'mco-runtime.architecture.html');
-const shareCardPath = path.join(repoRoot, 'docs', 'assets', 'mco-runtime-share-card.png');
+const sourcePath = path.join(repoRoot, 'apps/site', 'cases', 'mco-runtime.architecture.json');
+const artifactPath = path.join(repoRoot, 'apps/site', 'cases', 'mco-runtime.architecture.html');
+const shareCardPath = path.join(repoRoot, 'apps/site', 'assets', 'mco-runtime-share-card.png');
 const experimentSourcePath = path.join(repoRoot, 'experiments', 'mco-showcase', 'mco-runtime.architecture.json');
 const experimentArtifactPath = path.join(repoRoot, 'experiments', 'mco-showcase', 'mco-runtime.html');
 const cli = path.join(skillRoot, 'scripts', 'archify.mjs');
@@ -200,9 +200,9 @@ test('MCO public proof is source-backed, valid, and linked from every README', (
   const shortRevision = source.meta.repository.revision.slice(0, 7);
   for (const filename of ['README.md', 'README_EN.md', 'README_ZH.md']) {
     const readme = fs.readFileSync(path.join(repoRoot, filename), 'utf8');
-    assert.match(readme, /docs\/assets\/mco-runtime-share-card\.png/);
+    assert.match(readme, /apps\/site\/assets\/mco-runtime-share-card\.png/);
     assert.match(readme, /cases\/mco-runtime\.architecture\.html\?theme=dark&present=1#view=dispatch-path/);
-    assert.match(readme, /docs\/cases\/mco-runtime\.architecture\.json/);
+    assert.match(readme, /apps\/site\/cases\/mco-runtime\.architecture\.json/);
     assert.ok(readme.includes(`[\`${repositorySlug}\`](${source.meta.repository.url})`), `${filename}: repository link drifted`);
     assert.ok(readme.includes(`\`${shortRevision}\``), `${filename}: repository revision drifted`);
   }

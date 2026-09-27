@@ -5,7 +5,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const skillRoot = path.join(here, '..');
+const skillRoot = path.resolve(here, '..', 'archify');
 const skill = readFileSync(path.join(skillRoot, 'SKILL.md'), 'utf8');
 const authoringContract = readFileSync(path.join(skillRoot, 'references', 'authoring-contract.md'), 'utf8');
 const frontmatter = skill.match(/^---\n([\s\S]*?)\n---/);

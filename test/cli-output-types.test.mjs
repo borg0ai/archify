@@ -8,11 +8,12 @@ import assert from 'node:assert/strict';
 import { startPreview } from '../archify/scripts/preview.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const cli = path.join(root, 'scripts/archify.mjs');
-const workflow = path.join(root, 'examples/agent-tool-call.workflow.json');
-const architecture = path.join(root, 'examples/web-app.architecture.json');
-const base = path.join(root, 'examples/checkout-platform.base.architecture.json');
-const head = path.join(root, 'examples/checkout-platform.head.architecture.json');
+const skillRoot = path.join(root, 'archify');
+const cli = path.join(skillRoot, 'scripts/archify.mjs');
+const workflow = path.join(skillRoot, 'examples/agent-tool-call.workflow.json');
+const architecture = path.join(skillRoot, 'examples/web-app.architecture.json');
+const base = path.join(skillRoot, 'examples/checkout-platform.base.architecture.json');
+const head = path.join(skillRoot, 'examples/checkout-platform.head.architecture.json');
 const marker = 'MARKER=do-not-destroy';
 function workspace(t) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'archify-cli-types-'));

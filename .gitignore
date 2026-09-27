@@ -1,6 +1,8 @@
 .DS_Store
 .harnessed/
 node_modules/
-.claude/
+toolings/archify-dev/dist/
 .lore/
 /.impeccable/
+.playwright-mcp/
+FEEDBACK.md
