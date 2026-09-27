@@ -6,6 +6,9 @@ import { defineConfig, type Plugin } from 'vite';
 
 const SITE_ROOT = path.dirname(fileURLToPath(import.meta.url));
 const PAGES_REPOSITORY = 'archify';
+// 登记在 ws/prj/port.md。避开 Vite 默认 5173。
+const SITE_DEV_PORT = 5196;
+const SITE_PREVIEW_PORT = 5197;
 const STATIC_DIRECTORIES = ['assets', 'gallery', 'cases', 'skill-updates'] as const;
 const PAGE_ENTRIES = {
   index: path.join(SITE_ROOT, 'index.html'),
@@ -55,6 +58,14 @@ export default defineConfig({
   base: siteBase(),
   publicDir: false,
   plugins: [vue(), mountVueRuntime(), publishStaticSite()],
+  server: {
+    port: SITE_DEV_PORT,
+    strictPort: true,
+  },
+  preview: {
+    port: SITE_PREVIEW_PORT,
+    strictPort: true,
+  },
   build: {
     rollupOptions: {
       input: PAGE_ENTRIES,

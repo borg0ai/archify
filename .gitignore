@@ -6,3 +6,6 @@ toolings/archify-dev/dist/
 /.impeccable/
 .playwright-mcp/
 FEEDBACK.md
+
+# ReasonGraph local state (per-machine)
+.reasongraph/state/

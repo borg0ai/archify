@@ -1,0 +1,12 @@
+{
+  "distiller": {
+    "backend": "agent",
+    "model": {
+      "claude": "haiku",
+      "agent": "auto"
+    }
+  },
+  "redaction": [],
+  "timeBudgetMs": 60000,
+  "sync": "auto"
+}
